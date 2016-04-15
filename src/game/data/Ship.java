@@ -68,9 +68,9 @@ public class Ship implements Serializable {
     private int y;
 
     /**
-     * The size of the ship
+     * The length of the ship
      */
-    private int size;
+    private int length;
     
     /**
      * If the ship has _any_ type of upgrade, this is set to true
@@ -138,12 +138,12 @@ public class Ship implements Serializable {
         this.y = y;
     }
 
-    public int getSize() {
-        return size;
+    public int getLength() {
+        return length;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setLength(int length) {
+        this.length = length;
     }
 
     public boolean isHasUpgrade() {
@@ -163,6 +163,8 @@ public class Ship implements Serializable {
     }
     
     
+    /* helper classes */
+    
     public class Upgrades implements Serializable {
 
         private static final long serialVersionUID = -6735966214424190784L;
@@ -173,7 +175,11 @@ public class Ship implements Serializable {
         private int sonar;
         private int power;
 
-        
+        @Override
+        public String toString() {
+            return "Upgrades{" + "armor=" + armor + ", sonar=" + sonar + ", power=" + power + '}';
+        }
+
         public void addUpgrade(final UPGRADES upgrade) {
             switch (upgrade) {
                 case ARMOR:
@@ -225,9 +231,14 @@ public class Ship implements Serializable {
         public void setPower(int power) {
             this.power = power;
         }
-        
-        
-        
     }
+
+    @Override
+    public String toString() {
+        return "Ship{" + "type=" + type + ", direction=" + direction + ", upgrades=" + upgrades + ", x=" + x + ", y=" + y + ", length=" + length + ", hasUpgrade=" + hasUpgrade + '}';
+    }
+    
+    
+    
     
 }
