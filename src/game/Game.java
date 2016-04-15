@@ -1,14 +1,34 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package game;
 
 import game.data.Player;
 
 /**
- * The actual game.
+ * The actual game.<br>
+ * Every game session on the server has one instance of this class active,
+ * as long as the session exists.
  * @author rudz
  */
 public class Game {
@@ -28,13 +48,13 @@ public class Game {
         players[1] = playerTwo;
     }
     
-    
-    
-    public Player getPlayer(PLAYERS player) {
-        return (player == PLAYERS.PLAYER_ONE) ? players[0] : players[1];
+    public Player getPlayer(PLAYERS which) {
+        return (which == PLAYERS.PLAYER_ONE) ? players[0] : players[1];
     }
     
-    
+    public void setPlayer(final PLAYERS which, final Player player) {
+        players[which == PLAYERS.PLAYER_ONE ? 0 : 1] = player;
+    }
     
     /* game functionality */
     
@@ -42,25 +62,25 @@ public class Game {
      * Determines if a ship is hit or not.
      * @param x The X
      * @param y The Y
-     * @param board The board of the opponent
+     * @param player
      * @return true if hit, false otherwise.
      */
-    public boolean isHit(int x, int y, int[][] board) {
-        return board[x][y] > 1;
+    public boolean isHit(final int x, final int y, final Player player) {
+        return player.getBoard()[x][y] > 1;
     }
     
     /**
      * Will damage the ship if it is hit.
      * @param x The X
      * @param y The Y
-     * @param board The board of the opponent
+     * @param player
      * @return true if there is no more armour.
      */
-    public boolean damageShip(int x, int y, int[][] board) {
-        if (isHit(x, y, board)) {
-            board[x][y]--;
+    public boolean damageShip(int x, int y, final Player player) {
+        if (isHit(x, y, player)) {
+            player.boardHit(x, y);
         }
-        return board[x][y] == 0;
+        return player.getBoard()[x][y] == 0;
     }
     
     /**
@@ -69,15 +89,13 @@ public class Game {
      * @param y The Y start
      * @param xLen the X length
      * @param yLen the Y length
-     * @param board the board
+     * @param player The player who is being shot at.
      * @return true if sunk, otherwise false.
      */
-    public boolean isShipSunk(int x, int y, int xLen, int yLen, int[][] board) {
+    public boolean isShipSunk(int x, int y, int xLen, int yLen, final Player player) {
         // TODO : Implement.
         return false;
     }
-
-    
 
     /* getters & setters */
 
@@ -85,7 +103,7 @@ public class Game {
         return players;
     }
 
-    public void setPlayers(Player[] players) {
+    public void setPlayers(final Player[] players) {
         this.players = players;
     }
 
@@ -93,10 +111,8 @@ public class Game {
         return isGameLost;
     }
 
-    public void setIsGameLost(boolean isGameLost) {
+    public void setIsGameLost(final boolean isGameLost) {
         this.isGameLost = isGameLost;
     }
-    
-    
     
 }
