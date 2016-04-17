@@ -24,6 +24,8 @@
 package game.data;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * The Player class for BattleShip.<br>
@@ -37,10 +39,12 @@ public class Player implements Serializable {
     private static final int MAX_SHIPS = 5;
     private static final int BOARD_SIZE = 10;
 
-    private String id;
+    private int id;
     private String name;
     private String token;
 
+    
+    
     /*
     board defined as :
     0 = empty not shot
@@ -76,7 +80,7 @@ public class Player implements Serializable {
                 board[i][j] = player.getBoard()[i][j];
             }
         }
-        if (MAX_SHIPS < 25) { // threshold for manual array copy advantage in count.
+        if (MAX_SHIPS < 25) { // threshold for manual array copy advantage.
             for (int i = 0; i < MAX_SHIPS; i++) {
                 ships[i] = player.getShips()[i];
             }
@@ -86,12 +90,27 @@ public class Player implements Serializable {
     }
 
     public void boardHit(final int x, final int y) {
+        if (board[x][y] == 0) {
+            /* area apparently not hit before.. */
+            for (int i = 0; i < MAX_SHIPS; i++) {
+                for (int j = 0; j < ships[i].getLength(); j++) {
+                    int pos = x;
+                    if (ships[i].getDirection() == Ship.DIRECTION.HORIZONTAL) {
+                        for (int k = 0; k < pos + j; k++) {
+                            if (x  ships[i].getX() )
+                        }
+                    } else {
+                        
+                    }
+                }
+            }
+        }
         board[x][y]--;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(150);
         sb.append("Name : ").append(name).append("\n");
         sb.append("ID   : ").append(id).append("\n");
         sb.append("------------\n-");
@@ -123,18 +142,30 @@ public class Player implements Serializable {
     public boolean equals(Object obj) {
         if (obj instanceof Player) {
             Player p = (Player) obj;
-            if (!p.id.equals(id)) return false;
+            if (p.id != id) return false;
             if (!p.name.equals(name)) return false;
+            if (obj.hashCode() != hashCode()) return false;
         }
         return super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 43 * hash + Objects.hashCode(id);
+        hash = 43 * hash + Objects.hashCode(name);
+        hash = 43 * hash + Objects.hashCode(token);
+        hash = 43 * hash + Arrays.deepHashCode(board);
+        hash = 43 * hash + Arrays.deepHashCode(ships);
+        return hash;
+    }
     
     /* getters & setters */
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

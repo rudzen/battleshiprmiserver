@@ -23,6 +23,7 @@
  */
 package game.data;
 
+import java.awt.Point;
 import java.io.Serializable;
 
 /**
@@ -62,10 +63,12 @@ public class Ship implements Serializable {
     private Upgrades upgrades;
     
     /**
-     * Upper-left coordinates of the ship
+     * Points for ship location
+     * locStart = start
+     * locEnd = end
      */
-    private int x;
-    private int y;
+    private PPoint locStart;
+    private PPoint locEnd;
 
     /**
      * The length of the ship
@@ -81,17 +84,14 @@ public class Ship implements Serializable {
     public Ship() { }
     
     public Ship(final int x, final int y, final TYPE type, final DIRECTION direction) {
-        this.x = x;
-        this.y = y;
+        locStart = new PPoint(x, y);
         this.type = type;
         this.direction = direction;
+        
     }
 
     public Ship(final int x, final int y, final TYPE type, final DIRECTION direction, final Upgrades upgrades) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
-        this.direction = direction;
+        this(x, y, type, direction);
         this.upgrades = upgrades;
     }
     
@@ -104,7 +104,45 @@ public class Ship implements Serializable {
         upgrades.removeUpgrade(upgradeType);
     }
     
+    /* helper methods */
+    private static PPoint setEnd(final Point start, final TYPE type, final DIRECTION direction) {
+        int len = 0;
+        if (null != type) switch (type) {
+            case DESTROYER:
+            case SUBMARINE:
+                len = 3;
+                break;
+            case CARRIER:
+                len = 5;
+                break;
+            case CRUISER:
+                len = 4;
+                break;
+            default:
+                // patrol boat
+                len = 2;
+                break;
+        }
+        return (direction == DIRECTION.HORIZONTAL) ? new PPoint(start.x + len, start.y) : new PPoint(start.x, start.y + len);
+    }
+    
     /* getters & setters */
+
+    public PPoint getLocStart() {
+        return locStart;
+    }
+
+    public void setLocStart(PPoint locStart) {
+        this.locStart = locStart;
+    }
+
+    public PPoint getLocEnd() {
+        return locEnd;
+    }
+
+    public void setLocEnd(PPoint locEnd) {
+        this.locEnd = locEnd;
+    }
     
     public TYPE getType() {
         return type;
@@ -120,22 +158,6 @@ public class Ship implements Serializable {
 
     public void setDirection(DIRECTION direction) {
         this.direction = direction;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public int getLength() {
@@ -235,7 +257,7 @@ public class Ship implements Serializable {
 
     @Override
     public String toString() {
-        return "Ship{" + "type=" + type + ", direction=" + direction + ", upgrades=" + upgrades + ", x=" + x + ", y=" + y + ", length=" + length + ", hasUpgrade=" + hasUpgrade + '}';
+        return "Ship{" + "type=" + type + ", direction=" + direction + ", upgrades=" + upgrades + ", start=" + locStart + ", end=" + locEnd + ", length=" + length + ", hasUpgrade=" + hasUpgrade + '}';
     }
     
     
