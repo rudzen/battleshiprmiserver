@@ -23,7 +23,7 @@
  */
 package game.data;
 
-import java.awt.Point;
+import game.data.Upgrades.UPGRADES;
 import java.io.Serializable;
 
 /**
@@ -64,13 +64,6 @@ public class Ship implements Serializable {
      * The ship direction
      */
     private DIRECTION direction;
-
-    /**
-     * The possible ship upgrades.
-     */
-    public enum UPGRADES {
-        ARMOR, SONAR, POWER
-    }
 
     /**
      * The upgrades for the ship.
@@ -142,8 +135,8 @@ public class Ship implements Serializable {
         hasUpgrade = upgrades.hasUpgrades();
         if (hasUpgrade) {
             this.upgrades = new Upgrades(upgrades);
-            if (upgrades.armor > 0) {
-                life += upgrades.armor;
+            if (upgrades.getArmor() > 0) {
+                life += upgrades.getArmor();
             }
         }
     }
@@ -324,166 +317,6 @@ public class Ship implements Serializable {
 
     public void setUpgrades(Upgrades upgrades) {
         this.upgrades = upgrades;
-    }
-
-    /* helper classes */
-    public class Upgrades implements Serializable {
-
-        private static final long serialVersionUID = -6735966214424190784L;
-
-        /**
-         * Default constructor
-         */
-        public Upgrades() {
-        }
-
-        /**
-         * Constructs upgrade with specific amounts of upgrades
-         *
-         * @param armor The armor
-         * @param sonar The sonar
-         * @param power The power
-         */
-        public Upgrades(final int armor, final int sonar, final int power) {
-            this.armor = armor;
-            this.sonar = sonar;
-            this.power = power;
-        }
-
-        /**
-         * Constructs upgrade using supplied object
-         *
-         * @param upgrades The object to copy from
-         */
-        public Upgrades(final Upgrades upgrades) {
-            this(upgrades.armor, upgrades.sonar, upgrades.power);
-        }
-
-        /**
-         * The armor
-         */
-        private int armor;
-
-        /**
-         * The sonar
-         */
-        private int sonar;
-
-        /**
-         * The power
-         */
-        private int power;
-
-        @Override
-        public String toString() {
-            return "Upgrades{" + "armor=" + armor + ", sonar=" + sonar + ", power=" + power + '}';
-        }
-
-        /**
-         * Resets the upgrades to 0 (ZERO!)
-         */
-        public void reset() {
-            armor = sonar = power = 0;
-        }
-
-        /**
-         * Determine if the upgrade contains _any_ values.
-         *
-         * @return true if ship has at least one upgrade, otherwise false.
-         */
-        public boolean hasUpgrades() {
-            return armor + sonar + power > 0;
-        }
-
-        /**
-         * Add a single upgrade
-         *
-         * @param upgrade The upgrade type to add
-         */
-        public void addUpgrade(final UPGRADES upgrade) {
-            switch (upgrade) {
-                case ARMOR:
-                    armor++;
-                    break;
-                case POWER:
-                    power++;
-                    break;
-                case SONAR:
-                    sonar++;
-                    break;
-            }
-        }
-
-        /**
-         * Remove an upgrade
-         *
-         * @param upgrade The upgrade to remove
-         */
-        public void removeUpgrade(final UPGRADES upgrade) {
-            switch (upgrade) {
-                case ARMOR:
-                    if (armor > 0) {
-                        armor--;
-                    }
-                    break;
-                case POWER:
-                    if (power > 0) {
-                        power--;
-                    }
-                    break;
-                case SONAR:
-                    if (sonar > 0) {
-                        sonar--;
-                    }
-                    break;
-            }
-        }
-
-        /**
-         * Adds a specified amount of upgrades of a specific type
-         *
-         * @param upgrade The upgrade type to add
-         * @param amount The amount of upgrades to add
-         */
-        public void addUpgrades(final UPGRADES upgrade, final int amount) {
-            if (amount > 0) {
-                switch (upgrade) {
-                    case ARMOR:
-                        armor += amount;
-                        break;
-                    case POWER:
-                        power += amount;
-                        break;
-                    case SONAR:
-                        sonar += amount;
-                        break;
-                }
-            }
-        }
-
-        public int getArmor() {
-            return armor;
-        }
-
-        public void setArmor(int armor) {
-            this.armor = armor;
-        }
-
-        public int getSonar() {
-            return sonar;
-        }
-
-        public void setSonar(int sonar) {
-            this.sonar = sonar;
-        }
-
-        public int getPower() {
-            return power;
-        }
-
-        public void setPower(int power) {
-            this.power = power;
-        }
     }
 
     @Override
