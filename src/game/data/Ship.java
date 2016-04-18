@@ -150,8 +150,9 @@ public class Ship implements Serializable {
     /**
      * Hit the ship!! (argh!)
      */
-    private void hit() {
+    private void hit(final int location) {
         life--;
+        hits[location] = 1;
     }
 
     
@@ -161,9 +162,11 @@ public class Ship implements Serializable {
     
     public boolean isHit(byte x, byte y) {
         /* check off the bat for direct start & end hit first! */
-        if ((x == locStart.getX() && y == locStart.getY()) ||
-             (x == locEnd.getX()   && y == locEnd.getY())) {
-            hit();
+        if (x == locStart.getX() && y == locStart.getY()) {
+            hit(0);
+            return true;
+        } else if (x == locEnd.getX()   && y == locEnd.getY()) {
+            hit(length - 1);
             return true;
         }
         
@@ -173,7 +176,7 @@ public class Ship implements Serializable {
                 
             }
         } else {
-            if (y + locStart.getY() < locEnd.getX()) {
+            if (y + locStart.getY() < locEnd.getY()) {
                 
             }
         }
