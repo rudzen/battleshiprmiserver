@@ -43,8 +43,6 @@ public class Player implements Serializable {
     private String name;
     private String token;
 
-    
-    
     /*
     board defined as :
     0 = empty not shot
@@ -52,7 +50,7 @@ public class Player implements Serializable {
     2 = shot, hit
     3 = shot, hit, armor rating
     4 = ship location
-    5 = ship sunk
+    5 = ship, sunk
      */
     private int[][] board;
 
@@ -90,22 +88,53 @@ public class Player implements Serializable {
     }
 
     public void boardHit(final int x, final int y) {
-        if (board[x][y] == 0) {
-            /* area apparently not hit before.. */
-            for (int i = 0; i < MAX_SHIPS; i++) {
-                for (int j = 0; j < ships[i].getLength(); j++) {
-                    int pos = x;
-                    if (ships[i].getDirection() == Ship.DIRECTION.HORIZONTAL) {
-                        for (int k = 0; k < pos + j; k++) {
-                            if (x  ships[i].getX() )
-                        }
-                    } else {
+        
+        // TODO : Needs to be reworked somehow!
+        
+        // TODO : Attacker and defender needs to get the right message back from here !.
+        
+        StringBuilder sbAttacker = new StringBuilder();
+        StringBuilder sbDefender = new StringBuilder();
+        switch (board[x][y]) {
+            case 0:
+            case 3:
+                // board has not been hit here before.
+                for (int i = 0; i < MAX_SHIPS; i++) {
+                    if (ships[i].isHit(x, y)) { // could be if board[x][y] == 4 if board is updated with ship layouts.
+                        // ship appears to be hit.
+                        sbAttacker.append("Ship hit");
+                        sbDefender.append("The attacker has hit your ").append(ships[i].getShipType());
                         
+                        if (!ships[i].isDead()) {
+                            // ship is still alive
+                            if (ships[i].isHasUpgrade() && ships[i].getUpgrades().getArmor() > 0) {
+                                board[x][y] = 3;
+                            } else {
+                                board[x][y] = 2;
+                            }
+                            // TODO : Send message to users.
+                        } else {
+                            // ship is sunk
+                            sbAttacker.append(",\nwhich was enough to sink the ").append(ships[i].getShipType());
+                            sbDefender.append(",\nand sunk it!");
+                            board[x][y] = 5;
+                        }
                     }
                 }
-            }
+            case 1: // shot, no hit.
+                sbAttacker.append("You have wasted another shot on this spot...");
+                sbDefender.append("The opponent has wasted the turn!");
+                break;
+            case 2:
+                sbAttacker.append("Ship has already been hit at this location.");
+                sbDefender.append("The opponent has wasted the turn!");
+                break;
+            case 5:
+                sbAttacker.append("Ship has already been sunk!");
+                sbDefender.append("The opponent has wasted the turn!");
+                break;
         }
-        board[x][y]--;
+        // TODO : send sb.toString(); to the attacker...
     }
 
     @Override
@@ -142,9 +171,15 @@ public class Player implements Serializable {
     public boolean equals(Object obj) {
         if (obj instanceof Player) {
             Player p = (Player) obj;
-            if (p.id != id) return false;
-            if (!p.name.equals(name)) return false;
-            if (obj.hashCode() != hashCode()) return false;
+            if (p.id != id) {
+                return false;
+            }
+            if (!p.name.equals(name)) {
+                return false;
+            }
+            if (obj.hashCode() != hashCode()) {
+                return false;
+            }
         }
         return super.equals(obj);
     }
@@ -159,7 +194,7 @@ public class Player implements Serializable {
         hash = 43 * hash + Arrays.deepHashCode(ships);
         return hash;
     }
-    
+
     /* getters & setters */
     public int getId() {
         return id;

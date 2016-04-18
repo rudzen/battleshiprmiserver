@@ -253,6 +253,28 @@ public class Ship implements Serializable {
                 return 2;
         }
     }
+    
+    /**
+     * Get the ship name defined by it's type
+     * @return The string name of the ship
+     */
+    public String getShipType() {
+        switch (type) {
+            case CARRIER:
+                return "Carrier";
+            case CRUISER:
+                return "Cruiser";
+            case DESTROYER:
+                return "Destroyer";
+            case SUBMARINE:
+                return "Submarine";
+            default:
+                return "Patrol boat";
+        }
+    }
+    
+    
+    
 
     /* getters & setters */
     public int getLife() {
