@@ -26,7 +26,8 @@ package game;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,10 +43,10 @@ public abstract class BattleGameAbstract {
      * Contains the game sessions themselves, the game uses these to find
      * something valuable :-)
      */
-    protected final HashMap<String, GameSession> sessions;
+    protected final Map<String, GameSession> sessions;
 
     protected BattleGameAbstract() {
-        sessions = new HashMap<>();
+        sessions = new ConcurrentHashMap<>();
     }
 
     protected String isInSession(final IClientListener client) {

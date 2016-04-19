@@ -240,41 +240,35 @@ public class Ship implements Serializable {
      * @return The length of the ship
      */
     private static int getLen(final TYPE type) {
-        switch (type) {
-            case DESTROYER:
-            case SUBMARINE:
-                return 3;
-            case CARRIER:
-                return 5;
-            case CRUISER:
-                return 4;
-            default:
-                // patruljepølse
-                return 2;
+        if (type == TYPE.DESTROYER || type == TYPE.SUBMARINE) {
+            return 3;
+        } else if (type == TYPE.CARRIER) {
+            return 5;
+        } else if (type == TYPE.CRUISER) {
+            return 4;
+        } else { // patrol boat
+            return 2;
         }
     }
-    
+
     /**
      * Get the ship name defined by it's type
+     *
      * @return The string name of the ship
      */
     public String getShipType() {
-        switch (type) {
-            case CARRIER:
-                return "Carrier";
-            case CRUISER:
-                return "Cruiser";
-            case DESTROYER:
-                return "Destroyer";
-            case SUBMARINE:
-                return "Submarine";
-            default:
-                return "Patrol boat";
+        if (type == TYPE.CARRIER) {
+            return "Carrier";
+        } else if (type == TYPE.DESTROYER) {
+            return "Destroyer";
+        } else if (type == TYPE.SUBMARINE) {
+            return "Submarine";
+        } else if (type == TYPE.CRUISER) {
+            return "Cruiser";
+        } else { // patrol boat
+            return "Patrol boat";
         }
     }
-    
-    
-    
 
     /* getters & setters */
     public int getLife() {
