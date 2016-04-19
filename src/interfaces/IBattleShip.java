@@ -23,6 +23,7 @@
  */
 package interfaces;
 
+import game.data.PWdto;
 import game.data.Player;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -35,43 +36,60 @@ import java.rmi.RemoteException;
 public interface IBattleShip extends Remote {
 
     /**
-     * Registers a client at the server.
+     * Registers a client at the server.<br>
+     * Used when creating a new session.
      * @param clientInterface The client's interface.
      * @return true if okay, else false.
      * @throws RemoteException 
      */
-    boolean registerClient(IClientListener clientInterface) throws RemoteException;
+    boolean registerClient(final IClientListener clientInterface) throws RemoteException;
+
+    /**
+     * Registers a client at the server with a specific session.<br>
+     * Used when the client knows the sessionID to join.
+     * @param clientInterface The client's interface.
+     * @param sessionID
+     * @return true if okay, else false.
+     * @throws RemoteException 
+     */
+    boolean registerClient(final IClientListener clientInterface, final String sessionID) throws RemoteException;
+
     
     /**
      * Removes a client registration at the server.
-     * @param clientInterface The client interface to remove
+     * @param clientInterface The player to remove
      * @return true if removed, otherwise false.
      * @throws RemoteException 
      */
-    boolean removeClient(IClientListener clientInterface) throws RemoteException;
+    boolean removeClient(final IClientListener clientInterface) throws RemoteException;
 
     /**
-     * Get server information about me!
-     * @return The player object for the client.
+     * Removes a client registration at the server.<br>
+     * @param clientInterface The player to remove
+     * @param sessionID If the player is currently in a session, let the server know which session it is.
+     * @return true if removed, otherwise false.
      * @throws RemoteException 
      */
-    Player getMe() throws RemoteException; // PlayerDTO
+    boolean removeClient(final IClientListener clientInterface, final String sessionID) throws RemoteException;
     
     /**
-     * Get the opponent information object.
-     * @return The Player object which contains public information about the opponent.
+     * Get the opponent information object.<br>
+     * @param clientInterface The player to remove
+     * @param sessionID The current session
+     * @return The Player object which contains public information about the opponent (without token etc)
      * @throws RemoteException 
      */
-    Player getOther() throws RemoteException;
+    Player getOther(final IClientListener clientInterface, final String sessionID) throws RemoteException;
 
     /**
      * Let the server know at what location you attempted to fire a shot at.
      * @param x the X
      * @param y the Y
-     * @param client Who the fuck is actually firering! :-)
+     * @param clientInterface Who the fuck is actually shooting?! :-)
+     * @param sessionID The sessionID of the game currently being played
      * @throws RemoteException 
      */
-    void fireShot(int x, int y, IClientListener client) throws RemoteException;
+    void fireShot(int x, int y, final IClientListener clientInterface, final String sessionID) throws RemoteException;
     
     /**
      * Login attempt
@@ -81,6 +99,24 @@ public interface IBattleShip extends Remote {
      * @throws RemoteException 
      */
     boolean login(final String user, final String pw) throws RemoteException;
+    
+
+    /**
+     * Sends a PWdto to the RMI server, which will then split it apart.
+     * @param dto The object to send
+     * @return true if the login was ok, otherwise false.
+     * @throws RemoteException 
+     */
+    boolean login(final PWdto dto) throws RemoteException;
+    
+    
+    /**
+     * User has timed out, this method is ONLY called through the timeout timer.
+     * @param player The player who timed out
+     * @param sessionID The sessionID of the game currently being played
+     * @throws RemoteException 
+     */
+    void forefeit(final Player player, final String sessionID) throws RemoteException;
     
     
 }

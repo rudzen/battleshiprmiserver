@@ -32,7 +32,7 @@ import java.util.Objects;
  *
  * @author rudz
  */
-public class Player implements Serializable {
+public class Player implements Serializable, IPlayer {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,6 +42,8 @@ public class Player implements Serializable {
     private int id;
     private String name;
     private String token;
+    
+    private byte hits;
 
     /*
     board defined as :
@@ -87,6 +89,7 @@ public class Player implements Serializable {
         }
     }
 
+    @Override
     public void boardHit(final int x, final int y) {
         
         // TODO : Needs to be reworked somehow!
@@ -198,42 +201,63 @@ public class Player implements Serializable {
     }
 
     /* getters & setters */
+
+    @Override
+    public byte getHits() {
+        return hits;
+    }
+
+    @Override
+    public void setHits(byte hits) {
+        this.hits = hits;
+    }
+    
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getToken() {
         return token;
     }
 
+    @Override
     public void setToken(String token) {
         this.token = token;
     }
 
+    @Override
     public int[][] getBoard() {
         return board;
     }
 
+    @Override
     public void setBoard(int[][] board) {
         this.board = board;
     }
 
+    @Override
     public Ship[] getShips() {
         return ships;
     }
 
+    @Override
     public void setShips(Ship[] ships) {
         this.ships = ships;
     }

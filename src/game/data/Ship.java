@@ -34,36 +34,19 @@ import java.io.Serializable;
  * @version 1.0
  * @since 16-04-2016
  */
-public class Ship implements Serializable {
+public class Ship implements Serializable, IShip {
 
     private static final long serialVersionUID = -5311711410232026986L;
 
     /**
-     * The type of possible ship types. Patrol = 2 length Destroyer & Submarine
-     * = 3 length Cruiser = 4 length Carrier = 5 length
-     */
-    public enum TYPE {
-        PATROL, DESTROYER, SUBMARINE, CRUISER, CARRIER
-    }
-
-    /**
-     * The possible directions for the ship<br>
-     * HORIZONTAL = right-left<br>
-     * VERTICAL = up-down
-     */
-    public enum DIRECTION {
-        HORIZONTAL, VERTICAL;
-    }
-
-    /**
      * The ship type
      */
-    private TYPE type;
+    private IShip.TYPE type;
 
     /**
      * The ship direction
      */
-    private DIRECTION direction;
+    private IShip.DIRECTION direction;
 
     /**
      * The upgrades for the ship.
@@ -110,7 +93,7 @@ public class Ship implements Serializable {
      * @param type The type of the ship
      * @param direction The direction of placement
      */
-    public Ship(final int x, final int y, final TYPE type, final DIRECTION direction) {
+    public Ship(final int x, final int y, final IShip.TYPE type, final IShip.DIRECTION direction) {
         locStart = new PPoint(x, y);
         length = getLen(type);
         locEnd = setEnd(locStart, length, direction);
@@ -130,7 +113,7 @@ public class Ship implements Serializable {
      * @param direction The placement direction
      * @param upgrades The upgrades for the ship.
      */
-    public Ship(final int x, final int y, final TYPE type, final DIRECTION direction, final Upgrades upgrades) {
+    public Ship(final int x, final int y, final IShip.TYPE type, final IShip.DIRECTION direction, final Upgrades upgrades) {
         this(x, y, type, direction);
         hasUpgrade = upgrades.hasUpgrades();
         if (hasUpgrade) {
@@ -147,6 +130,7 @@ public class Ship implements Serializable {
      *
      * @param upgradeType The upgrade type.
      */
+    @Override
     public void addUpgrade(final UPGRADES upgradeType) {
         upgrades.addUpgrade(upgradeType);
     }
@@ -156,6 +140,7 @@ public class Ship implements Serializable {
      *
      * @param upgradeType The upgrade type.
      */
+    @Override
     public void removeUpgrade(final UPGRADES upgradeType) {
         upgrades.removeUpgrade(upgradeType);
     }
@@ -166,6 +151,7 @@ public class Ship implements Serializable {
      *
      * @return true if ship if dead, otherwise false
      */
+    @Override
     public boolean isDead() {
         return life == 0;
     }
@@ -178,36 +164,36 @@ public class Ship implements Serializable {
         hits[location] = 1;
     }
 
-    /**
-     * Determines if the ship has been hit.<br>
-     * The ship will loose 1 life if hit.
-     *
-     * @param x The X coordinate to check
-     * @param y The Y coordinate to check
-     * @return true if ship is hit, otherwise false.
-     */
-    public boolean isHit(byte x, byte y) {
-        /* check off the bat for direct start & end hit first! */
-        if (x == locStart.getX() && y == locStart.getY()) {
-            hit(0);
-            return true;
-        } else if (x == locEnd.getX() && y == locEnd.getY()) {
-            hit(length - 1);
-            return true;
-        }
-
-        // TODO :: WHAT WHAT!!!
-        if (direction == DIRECTION.HORIZONTAL) {
-            if (x + locStart.getX() < locEnd.getX()) {
-                hit(locEnd.getX() - x);
-                return true;
-            }
-        } else if (y + locStart.getY() < locEnd.getY()) {
-            hit(locEnd.getY() - y);
-            return true;
-        }
-        return false;
-    }
+//    /**
+//     * Determines if the ship has been hit.<br>
+//     * The ship will loose 1 life if hit.
+//     *
+//     * @param x The X coordinate to check
+//     * @param y The Y coordinate to check
+//     * @return true if ship is hit, otherwise false.
+//     */
+//    public boolean isHit(byte x, byte y) {
+//        /* check off the bat for direct start & end hit first! */
+//        if (x == locStart.getX() && y == locStart.getY()) {
+//            hit(0);
+//            return true;
+//        } else if (x == locEnd.getX() && y == locEnd.getY()) {
+//            hit(length - 1);
+//            return true;
+//        }
+//
+//        // TODO :: WHAT WHAT!!!
+//        if (direction == DIRECTION.HORIZONTAL) {
+//            if (x + locStart.getX() < locEnd.getX()) {
+//                hit(locEnd.getX() - x);
+//                return true;
+//            }
+//        } else if (y + locStart.getY() < locEnd.getY()) {
+//            hit(locEnd.getY() - y);
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * Overload of {@link #isHit(byte x, byte y)} to check for hit with
@@ -217,6 +203,7 @@ public class Ship implements Serializable {
      * @param y The Y coordinate to check
      * @return true if ship is hit, otherwise false.
      */
+    @Override
     public boolean isHit(int x, int y) {
         return isHit((byte) x, (byte) y);
     }
@@ -256,6 +243,7 @@ public class Ship implements Serializable {
      *
      * @return The string name of the ship
      */
+    @Override
     public String getShipType() {
         if (type == TYPE.CARRIER) {
             return "Carrier";
@@ -271,66 +259,82 @@ public class Ship implements Serializable {
     }
 
     /* getters & setters */
+    @Override
     public int getLife() {
         return life;
     }
 
+    @Override
     public void setLife(int life) {
         this.life = life;
     }
 
+    @Override
     public PPoint getLocStart() {
         return locStart;
     }
 
+    @Override
     public void setLocStart(PPoint locStart) {
         this.locStart = locStart;
     }
 
+    @Override
     public PPoint getLocEnd() {
         return locEnd;
     }
 
+    @Override
     public void setLocEnd(PPoint locEnd) {
         this.locEnd = locEnd;
     }
 
+    @Override
     public TYPE getType() {
         return type;
     }
 
+    @Override
     public void setType(TYPE type) {
         this.type = type;
     }
 
+    @Override
     public DIRECTION getDirection() {
         return direction;
     }
 
+    @Override
     public void setDirection(DIRECTION direction) {
         this.direction = direction;
     }
 
+    @Override
     public int getLength() {
         return length;
     }
 
+    @Override
     public void setLength(int length) {
         this.length = length;
     }
 
+    @Override
     public boolean isHasUpgrade() {
         return hasUpgrade;
     }
 
+    @Override
     public void setHasUpgrade(boolean hasUpgrade) {
         this.hasUpgrade = hasUpgrade;
     }
 
+    @Override
     public Upgrades getUpgrades() {
         return upgrades;
     }
 
+    @Override
     public void setUpgrades(Upgrades upgrades) {
         this.upgrades = upgrades;
     }

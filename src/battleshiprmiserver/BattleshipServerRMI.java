@@ -26,6 +26,7 @@ package battleshiprmiserver;
 import args.MainArgsHandler;
 import args.intervals.GenericInterval;
 import args.intervals.Interval;
+import game.data.PWdto;
 import game.data.Player;
 import interfaces.IBattleShip;
 import java.rmi.Naming;
@@ -188,22 +189,37 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public Player getMe() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Player getOther() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void fireShot(int x, int y, IClientListener client) throws RemoteException {
-        System.out.println("Client " + client + " fired at [" + x + ", " + y + "]");
-    }
-
-    @Override
     public boolean login(String user, String pw) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean registerClient(IClientListener clientInterface, String sessionID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean removeClient(IClientListener clientInterface, String sessionID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Player getOther(IClientListener clientInterface, String sessionID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void fireShot(int x, int y, IClientListener clientInterface, String sessionID) throws RemoteException {
+        System.out.println("Client " + clientInterface + " fired at [" + x + ", " + y + "]");
+    }
+
+    @Override
+    public boolean login(PWdto dto) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void forefeit(Player player, String sessionID) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

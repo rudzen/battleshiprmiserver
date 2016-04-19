@@ -49,7 +49,7 @@ public class BattleGame extends BattleGameAbstract {
         try {
             final String sessionID = isInSession(client);
             if (sessionID != null) {
-                IClientListener otherPlayer = sessions.get(sessionID).getOtherPlayer(client);
+                Player otherPlayer = sessions.get(sessionID).getOtherPlayer(client);
 
                 // TODO : Determine if the shot actually hit something here!!!
                 boolean hit = true;

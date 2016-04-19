@@ -23,6 +23,7 @@
  */
 package game;
 
+import game.data.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -45,11 +46,14 @@ public abstract class BattleGameAbstract {
      */
     protected final Map<String, GameSession> sessions;
 
+    protected final Map<Player, IClientListener> players;
+    
     protected BattleGameAbstract() {
         sessions = new ConcurrentHashMap<>();
+        players = new ConcurrentHashMap<>();
     }
 
-    protected String isInSession(final IClientListener client) {
+    protected String isInSession(final Player client) {
 
         for (GameSession gs : sessions.values()) {
             if (!gs.isFull() && gs.isInSession(client)) {
@@ -76,10 +80,12 @@ public abstract class BattleGameAbstract {
     }
 
     protected void endOldSessions() {
+        
         final long now = System.currentTimeMillis();
         for (GameSession gs : sessions.values()) {
             if (now - gs.getTimeCreated() > TIME_LIMIT) {
                 try {
+                    
                     gs.getPlayerOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
                     gs.getPlayerTwo().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
                 } catch (final RemoteException re) {
