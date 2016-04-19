@@ -24,26 +24,32 @@
 package game;
 
 import interfaces.IClientListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author rudz
  */
 public abstract class BattleGameAbstract {
-    
-     /**
-     * Contains the game sessions themselves, the game uses these to find something valuable :-)
+
+    private final static long TIME_LIMIT = 1000000;
+    private final static String TIME_LIMIT_MSG = "Your current game has been terminated due to age";
+
+    /**
+     * Contains the game sessions themselves, the game uses these to find
+     * something valuable :-)
      */
     protected final HashMap<String, GameSession> sessions;
 
     protected BattleGameAbstract() {
         sessions = new HashMap<>();
     }
-    
+
     protected String isInSession(final IClientListener client) {
-        
+
         for (GameSession gs : sessions.values()) {
             if (!gs.isFull() && gs.isInSession(client)) {
                 return gs.getGameSessionID();
@@ -51,11 +57,11 @@ public abstract class BattleGameAbstract {
         }
         return null;
     }
-    
+
     protected final String createSessionID(final IClientListener client) {
         return client.toString();
-    } 
-    
+    }
+
     protected ArrayList<String> getFreePlayerNames() {
         final ArrayList<String> list = new ArrayList<>();
         for (GameSession gs : sessions.values()) {
@@ -67,5 +73,21 @@ public abstract class BattleGameAbstract {
         }
         return list;
     }
-    
+
+    protected void endOldSessions() {
+        final long now = System.currentTimeMillis();
+        for (GameSession gs : sessions.values()) {
+            if (now - gs.getTimeCreated() > TIME_LIMIT) {
+                try {
+                    gs.getPlayerOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
+                    gs.getPlayerTwo().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
+                } catch (final RemoteException re) {
+                    // whoops..
+                }
+                
+
+            }
+        }
+    }
+
 }

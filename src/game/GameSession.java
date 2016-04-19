@@ -25,49 +25,48 @@ package game;
 
 import game.data.Player;
 import interfaces.IClientListener;
+import java.util.Objects;
 
 /**
  * Represents a game session.<br>
  * Contains:<br>
  * <li>Players</li>
  * <li>Time for last activity</li>
- * 
+ *
  * @author rudz
  */
 public class GameSession {
-    
+
     private IClientListener playerOne;
-    private IClientListener playerTwo;
-    
+    private IClientListener playerTwo = null;
+
     private Player p1;
     private Player p2;
-    
+
     private String gameSessionID; // should be an unique string "hash" based on both players.
-    
+
     private long timeCreated;
-    
+
     /* constructors */
-    
-    public GameSession(final IClientListener playerOne) {    
+    public GameSession(final IClientListener playerOne) {
         this.playerOne = playerOne;
-        playerTwo = null;
+        timeCreated = System.currentTimeMillis();
     }
-    
+
     public GameSession(final IClientListener playerOne, final IClientListener playerTwo) {
-        this.playerOne = playerOne;
+        this(playerOne);
         this.playerTwo = playerTwo;
     }
 
     /* helper methods */
-    
     public void setTimeCreated(final long newTime) {
         timeCreated = newTime;
     }
-    
+
     public long getTimeCreated() {
         return timeCreated;
     }
-    
+
     public boolean isFull() {
         return playerTwo != null && playerOne != null;
     }
@@ -79,17 +78,16 @@ public class GameSession {
     public IClientListener getOtherPlayer(final IClientListener client) {
         return (playerOne.equals(client)) ? playerTwo : playerOne;
     }
-    
+
     /* getters & setters */
-    
     public void setGameSessionID(final String newID) {
         gameSessionID = newID;
     }
-    
+
     public String getGameSessionID() {
         return gameSessionID;
     }
-    
+
     public IClientListener getPlayerOne() {
         return playerOne;
     }
@@ -97,16 +95,56 @@ public class GameSession {
     public IClientListener getPlayerTwo() {
         return playerTwo;
     }
-    
+
     public void setPlayerOne(final IClientListener playerOne) {
         this.playerOne = playerOne;
     }
-    
+
     public void setPlayerTwo(final IClientListener playerTwo) {
         this.playerTwo = playerTwo;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.playerOne);
+        hash = 79 * hash + Objects.hashCode(this.playerTwo);
+        hash = 79 * hash + (int) (this.timeCreated ^ (this.timeCreated >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GameSession other = (GameSession) obj;
+        if (this.timeCreated != other.timeCreated) {
+            return false;
+        }
+        if (!Objects.equals(this.gameSessionID, other.gameSessionID)) {
+            return false;
+        }
+        if (!Objects.equals(this.playerOne, other.playerOne)) {
+            return false;
+        }
+        if (!Objects.equals(this.playerTwo, other.playerTwo)) {
+            return false;
+        }
+        if (!Objects.equals(this.p1, other.p1)) {
+            return false;
+        }
+        if (!Objects.equals(this.p2, other.p2)) {
+            return false;
+        }
+        return true;
+    }
+
     // TODO : Add battleship logic here!!
-    
-    
 }

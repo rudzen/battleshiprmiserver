@@ -93,6 +93,8 @@ public class Player implements Serializable {
         
         // TODO : Attacker and defender needs to get the right message back from here !.
         
+        // TODO : Perhaps integrate ship positions in board when the ships are known!
+        
         StringBuilder sbAttacker = new StringBuilder();
         StringBuilder sbDefender = new StringBuilder();
         switch (board[x][y]) {

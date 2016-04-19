@@ -24,6 +24,7 @@
 package game;
 
 import game.data.Player;
+import game.data.Ship;
 
 /**
  * The actual game.<br>
@@ -66,7 +67,14 @@ public class Game {
      * @return true if hit, false otherwise.
      */
     public boolean isHit(final int x, final int y, final Player player) {
-        return player.getBoard()[x][y] > 1;
+        boolean isHit = false;
+        for (Ship ship : player.getShips()) {
+            if (ship.isHit(x, y)) {
+                isHit = true;
+                break;
+            }
+        }
+        return isHit;
     }
     
     /**
@@ -93,9 +101,22 @@ public class Game {
      * @return true if sunk, otherwise false.
      */
     public boolean isShipSunk(int x, int y, int xLen, int yLen, final Player player) {
+        
+        // TODO : Re-code
+        
+        for (int i = 0; i < 5; i++) {
+        }
+        
+        
         // TODO : Implement.
         return false;
     }
+    
+    
+    
+    
+    
+    
 
     /* getters & setters */
 
@@ -114,5 +135,7 @@ public class Game {
     public void setIsGameLost(final boolean isGameLost) {
         this.isGameLost = isGameLost;
     }
+    
+    
     
 }
