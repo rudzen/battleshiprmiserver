@@ -23,8 +23,10 @@
  */
 package game;
 
-import game.data.Player;
-import game.data.Ship;
+import dataobjects.Player;
+import dataobjects.Ship;
+import interfaces.IPlayer;
+import interfaces.IShip;
 
 /**
  * The actual game.<br>
@@ -66,9 +68,9 @@ public class Game {
      * @param player
      * @return true if hit, false otherwise.
      */
-    public boolean isHit(final int x, final int y, final Player player) {
+    public boolean isHit(final int x, final int y, final IPlayer player) {
         boolean isHit = false;
-        for (Ship ship : player.getShips()) {
+        for (IShip ship : player.getShips()) {
             if (ship.isHit(x, y)) {
                 isHit = true;
                 break;

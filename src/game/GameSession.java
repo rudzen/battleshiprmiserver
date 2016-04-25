@@ -23,7 +23,8 @@
  */
 package game;
 
-import game.data.Player;
+import dataobjects.Player;
+import interfaces.IClientListener;
 import java.util.Objects;
 
 /**
@@ -39,6 +40,9 @@ public class GameSession {
     private Player playerOne;
     private Player playerTwo;
 
+    private IClientListener clientOne;
+    private IClientListener clientTwo;
+    
     private String gameSessionID; // should be an unique string "hash" based on both players.
 
     private long timeCreated;
@@ -66,9 +70,17 @@ public class GameSession {
     }
 
     public Player getOtherPlayer(final Player player) {
-        return (playerOne.equals(player)) ? playerTwo : playerOne;
+        return playerOne.equals(player) ? playerTwo : playerOne;
     }
 
+    public boolean isInSession(final IClientListener client) {
+        return clientOne.equals(client) || clientTwo.equals(client);
+    }
+    
+    public IClientListener getOtherPlayer(final IClientListener client) {
+        return clientOne.equals(client) ? clientOne : clientTwo;
+    }
+    
     public void updateActionTime() {
         lastAction = System.currentTimeMillis();
     }
@@ -105,7 +117,7 @@ public class GameSession {
     public Player getPlayerTwo() {
         return playerTwo;
     }
-
+    
     public void setPlayerOne(final Player playerOne) {
         this.playerOne = playerOne;
     }
@@ -114,11 +126,29 @@ public class GameSession {
         this.playerTwo = playerTwo;
     }
 
+    public IClientListener getClientOne() {
+        return clientOne;
+    }
+
+    public void setClientOne(IClientListener clientOne) {
+        this.clientOne = clientOne;
+    }
+
+    public IClientListener getClientTwo() {
+        return clientTwo;
+    }
+
+    public void setClientTwo(IClientListener clientTwo) {
+        this.clientTwo = clientTwo;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.playerOne);
         hash = 79 * hash + Objects.hashCode(this.playerTwo);
+        hash = 79 * hash + Objects.hashCode(this.clientOne);
+        hash = 79 * hash + Objects.hashCode(this.clientTwo);
         hash = 79 * hash + (int) (this.timeCreated ^ (this.timeCreated >>> 32));
         return hash;
     }
@@ -147,10 +177,10 @@ public class GameSession {
         if (!Objects.equals(this.playerTwo, other.playerTwo)) {
             return false;
         }
-        if (!Objects.equals(this.playerOne, other.playerOne)) {
+        if (!Objects.equals(this.clientOne, other.clientOne)) {
             return false;
         }
-        if (!Objects.equals(this.playerTwo, other.playerTwo)) {
+        if (!Objects.equals(this.clientTwo, other.clientTwo)) {
             return false;
         }
         return true;

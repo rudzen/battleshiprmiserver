@@ -21,7 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package game.data;
+package interfaces;
+
+import dataobjects.PPoint;
+import dataobjects.Upgrades;
+
 
 /**
  *
@@ -85,6 +89,8 @@ public interface IShip {
 
     boolean isHasUpgrade();
 
+    boolean isPlaced();
+    
     /**
      * Overload of {@link #isHit(byte x, byte y)} to check for hit with
      * integers.
@@ -118,6 +124,8 @@ public interface IShip {
 
     void setUpgrades(Upgrades upgrades);
 
+    void setIsPlaced(boolean isPlaced);
+    
     @Override
     String toString();
 

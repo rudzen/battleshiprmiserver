@@ -21,9 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package game.data;
+package dataobjects;
 
-import game.data.Upgrades.UPGRADES;
+import dataobjects.Upgrades.UPGRADES;
+import interfaces.IShip;
 import java.io.Serializable;
 
 /**
@@ -78,6 +79,11 @@ public class Ship implements Serializable, IShip {
      * The basic hit index. 0 = not hit, 1 = hit
      */
     private int[] hits;
+
+    /**
+     * Is the ship placed on the board?
+     */
+    private boolean isPlaced = false;
 
     /**
      * Default constructor.
@@ -164,36 +170,35 @@ public class Ship implements Serializable, IShip {
         hits[location] = 1;
     }
 
-//    /**
-//     * Determines if the ship has been hit.<br>
-//     * The ship will loose 1 life if hit.
-//     *
-//     * @param x The X coordinate to check
-//     * @param y The Y coordinate to check
-//     * @return true if ship is hit, otherwise false.
-//     */
-//    public boolean isHit(byte x, byte y) {
-//        /* check off the bat for direct start & end hit first! */
-//        if (x == locStart.getX() && y == locStart.getY()) {
-//            hit(0);
-//            return true;
-//        } else if (x == locEnd.getX() && y == locEnd.getY()) {
-//            hit(length - 1);
-//            return true;
-//        }
-//
-//        // TODO :: WHAT WHAT!!!
-//        if (direction == DIRECTION.HORIZONTAL) {
-//            if (x + locStart.getX() < locEnd.getX()) {
-//                hit(locEnd.getX() - x);
-//                return true;
-//            }
-//        } else if (y + locStart.getY() < locEnd.getY()) {
-//            hit(locEnd.getY() - y);
-//            return true;
-//        }
-//        return false;
-//    }
+    /**
+     * Determines if the ship has been hit.<br>
+     * The ship will loose 1 life if hit.
+     *
+     * @param x The X coordinate to check
+     * @param y The Y coordinate to check
+     * @return true if ship is hit, otherwise false.
+     */
+    public boolean isHit(byte x, byte y) {
+        if (isPlaced) {
+            System.out.println("isHit is running on : " + getShipType());
+            if (direction == DIRECTION.HORIZONTAL) {
+                for (int i = 0; i < length; i++) {
+                    if (x == locStart.getX() + i || y == locStart.getX() + i) {
+                        hit(i);
+                        return true;
+                    }
+                }
+            } else if (direction == DIRECTION.VERTICAL) {
+                for (int i = 0; i < length; i++) {
+                    if (x == locStart.getY() + i || y == locStart.getY() + i) {
+                        hit(i);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Overload of {@link #isHit(byte x, byte y)} to check for hit with
@@ -212,11 +217,11 @@ public class Ship implements Serializable, IShip {
      * Set the end specified by the start and the type combined with direction.
      *
      * @param start The start PPoint object containing the start coordinates
-     * @param type The type of the ship
+     * @param length the length
      * @param direction The direction of the ship
      * @return The end PPoint object
      */
-    private static PPoint setEnd(final PPoint start, final int length, final DIRECTION direction) {
+    public static PPoint setEnd(final PPoint start, final int length, final DIRECTION direction) {
         return (direction == DIRECTION.HORIZONTAL) ? new PPoint(start.getX() + length, start.getY()) : new PPoint(start.getX(), start.getY() + length);
     }
 
@@ -227,15 +232,17 @@ public class Ship implements Serializable, IShip {
      * @return The length of the ship
      */
     private static int getLen(final TYPE type) {
+        final int returnValue;
         if (type == TYPE.DESTROYER || type == TYPE.SUBMARINE) {
-            return 3;
+            returnValue = 3;
         } else if (type == TYPE.CARRIER) {
-            return 5;
+            returnValue = 5;
         } else if (type == TYPE.CRUISER) {
-            return 4;
+            returnValue = 4;
         } else { // patrol boat
-            return 2;
+            returnValue = 2;
         }
+        return returnValue;
     }
 
     /**
@@ -341,7 +348,17 @@ public class Ship implements Serializable, IShip {
 
     @Override
     public String toString() {
-        return "Ship{" + "type=" + type + ", direction=" + direction + ", upgrades=" + upgrades + ", start=" + locStart + ", end=" + locEnd + ", length=" + length + ", hasUpgrade=" + hasUpgrade + '}';
+        return "Ship{" + "type=" + type + ", direction=" + direction + ", upgrades=" + upgrades + ", locStart=" + locStart + ", locEnd=" + locEnd + ", length=" + length + ", life=" + life + ", hasUpgrade=" + hasUpgrade + ", hits=" + hits + ", isPlaced=" + isPlaced + '}';
+    }
+
+    @Override
+    public boolean isPlaced() {
+        return isPlaced;
+    }
+
+    @Override
+    public void setIsPlaced(boolean isPlaced) {
+        this.isPlaced = isPlaced;
     }
 
 }

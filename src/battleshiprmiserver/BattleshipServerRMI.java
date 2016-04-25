@@ -26,8 +26,8 @@ package battleshiprmiserver;
 import args.MainArgsHandler;
 import args.intervals.GenericInterval;
 import args.intervals.Interval;
-import game.data.PWdto;
-import game.data.Player;
+import game.BattleGame;
+import dataobjects.Player;
 import interfaces.IBattleShip;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -37,6 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaces.IClientListener;
+import interfaces.IPlayer;
 import java.util.List;
 
 /**
@@ -51,7 +52,10 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     private static boolean verbose = true;
 
+    private BattleGame bg = new BattleGame();
+
     private final CopyOnWriteArrayList<IClientListener> list = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<IPlayer> plys = new CopyOnWriteArrayList<>();
 
     private volatile int x, y;
 
@@ -146,12 +150,15 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             // Load the service
             BattleshipServerRMI server = new BattleshipServerRMI();
+
             // Check to see if a registry was specified
-            String registry = "localhost";
+            String registry;
 
             if (args.length >= 1) {
                 setArgs(args);
                 registry = args[0];
+            } else {
+                registry = "localhost";
             }
 
             /* update the prettyprinter */
@@ -162,13 +169,19 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             // service // Note the :port field is optional
             String registration = "rmi://" + registry + "/Battleship";
 
+            if (System.getSecurityManager() == null) {
+                System.setSecurityManager(new SecurityManager());
+                System.out.println("SecurityManager created.");
+            }
+
             // Register with service so that clients can find us
             Naming.rebind(registration, server);
             // Create a thread, and pass the server.
             // This will activate the run() method, and
             // trigger regular coordinate changes.
-            Thread thread = new Thread(server);
-            thread.start();
+
+            //Thread thread = new Thread(server);
+            //thread.start();
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
         } catch (Exception e) {
@@ -177,49 +190,58 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
+    public boolean login(String user, String pw) throws RemoteException {
+        System.out.println("User attempted login : " + user + " // " + pw);
+        return false;
+    }
+
+    @Override
     public boolean registerClient(IClientListener clientInterface) throws RemoteException {
-        System.out.println("adding listener -" + clientInterface);
-        return list.add(clientInterface);
+        System.out.println("ADDED IClientListener -> " + clientInterface);
+        System.out.println("Player fetched from client : " + clientInterface.getPlayer());
+//        System.out.println("ADDED Player -> " + player);
+        return list.add(clientInterface);// && plys.add(player);
     }
 
     @Override
     public boolean removeClient(IClientListener clientInterface) throws RemoteException {
-        System.out.println("removing listener -" + clientInterface);
-        return list.remove(clientInterface);
+        System.out.println("REMOVE IClientListener -> " + clientInterface);
+        //System.out.println("REMOVE Player -> " + player);
+        return list.remove(clientInterface);// && plys.remove(player);
     }
 
     @Override
-    public boolean login(String user, String pw) throws RemoteException {
+    public IPlayer getOther() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean registerClient(IClientListener clientInterface, String sessionID) throws RemoteException {
+    public void fireShot(int x, int y, IPlayer player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean removeClient(IClientListener clientInterface, String sessionID) throws RemoteException {
+    public boolean logout(IPlayer player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Player getOther(IClientListener clientInterface, String sessionID) throws RemoteException {
+    public void pong(IPlayer player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void fireShot(int x, int y, IClientListener clientInterface, String sessionID) throws RemoteException {
-        System.out.println("Client " + clientInterface + " fired at [" + x + ", " + y + "]");
-    }
-
-    @Override
-    public boolean login(PWdto dto) throws RemoteException {
+    public void deployShips(IPlayer player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void forefeit(Player player, String sessionID) throws RemoteException {
+    public void requestPlayers(IPlayer player) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updatePlayer(IPlayer newPlayer) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

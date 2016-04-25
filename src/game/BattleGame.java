@@ -23,6 +23,7 @@
  */
 package game;
 
+import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
@@ -42,23 +43,23 @@ public class BattleGame extends BattleGameAbstract {
      * Catch for shotFired (from any client).
      * @param x
      * @param y
-     * @param client 
+     * @param player
      */
-    public void shotFired(final int x, final int y, IClientListener client) {
+    public void shotFired(final int x, final int y, final Player player) {
 
         try {
-            final String sessionID = isInSession(client);
+            final String sessionID = isInSession(player);
             if (sessionID != null) {
-                Player otherPlayer = sessions.get(sessionID).getOtherPlayer(client);
+                Player otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
 
                 // TODO : Determine if the shot actually hit something here!!!
                 boolean hit = true;
-                otherPlayer.shotFired(x, y, hit);
+                players.get(otherPlayer).shotFired(x, y, hit);
 
                 // TODO : If hit, determine if the ship is sunk and the name of the sunken ship.
                 final String shipHit = hit ? "HIT SHIP" : "NO SHIT";
 
-                client.showMessage("Shot...", hit ? "You hit the opponents " + shipHit : "You missed... looser.", hit ? JOptionPane.WARNING_MESSAGE : JOptionPane.ERROR_MESSAGE);
+                players.get(player).showMessage("Shot...", hit ? "You hit the opponents " + shipHit : "You missed... looser.", hit ? JOptionPane.WARNING_MESSAGE : JOptionPane.ERROR_MESSAGE);
 
                 // TODO : 
             } else {
@@ -78,10 +79,10 @@ public class BattleGame extends BattleGameAbstract {
             if (NOW - gs.getTimeCreated() > 360000) {
                 if (notifyClients) {
                     if (gs.getPlayerOne() != null) {
-                        gs.getPlayerOne().showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
+                        players.get(gs.getPlayerOne()).showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
                     }
                     if (gs.getPlayerTwo() != null) {
-                        gs.getPlayerOne().showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
+                        players.get(gs.getPlayerTwo()).showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
                     }
                 }
                 sessions.remove(gs.getGameSessionID());
@@ -93,14 +94,15 @@ public class BattleGame extends BattleGameAbstract {
     /**
      * Generate session from one single client.
      *
+     * @param player
      * @param client The client to generate the session with
      * @return true if session was created, otherwise false.
      */
-    public boolean createSession(final IClientListener client) {
+    public boolean createSession(final Player player, final IClientListener client) {
         boolean returnValue;
         final String sessionID = createSessionID(client);
         if (!sessions.containsKey(sessionID)) {
-            sessions.put(sessionID, new GameSession(client));
+            sessions.put(sessionID, new GameSession(player));
             returnValue = true;
         } else {
             returnValue = false;
@@ -112,12 +114,16 @@ public class BattleGame extends BattleGameAbstract {
      * Creates a session based on two players.
      * @param playerOne The first player in the session.
      * @param playerTwo The second player in the session
+     * @param clientOne
+     * @param clientTwo
      * @return true if session was created, otherwise false.
      */
-    public boolean createSession(final IClientListener playerOne, final IClientListener playerTwo) {
-        boolean returnValue = createSession(playerOne);
+    public boolean createSession(final Player playerOne, final Player playerTwo, final IClientListener clientOne, final IClientListener clientTwo) {
+        boolean returnValue = createSession(playerOne, clientOne);
         if (returnValue) {
-            sessions.get(createSessionID(playerOne)).setPlayerTwo(playerTwo);
+            final String sID = createSessionID(clientOne);
+            sessions.get(sID).setPlayerTwo(playerTwo);
+            sessions.get(sID).setClientTwo(clientTwo);
         }
         return returnValue;   
     }

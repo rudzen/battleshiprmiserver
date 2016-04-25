@@ -21,23 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package game.data;
-
-import java.util.ArrayList;
+package interfaces;
 
 /**
  *
- * @author rudz
+ * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class Board {
-   
-    private ArrayList<Ship> ships = new ArrayList<>();
+public interface IPlayer {
 
-    public Board() { }
+    void initShips();
     
-    public boolean canFit(final Ship ship) {
-        return false;
-    }
+    IShip getShip(int index);
     
+    void setShip(int index, IShip ship);
     
+    void boardHit(final int x, final int y);
+
+    byte getHits();
+    
+    void setHits(byte hits);
+    
+     int getId();
+             
+    void setId(int id);
+    
+    String getName();
+
+    void setName(String name);
+
+    String getToken();
+
+    void setToken(String token);
+
+    int[][] getBoard();
+
+    void setBoard(int[][] board);
+
+    IShip[] getShips();
+
+    void setShips(IShip[] ships);
+
+             
 }

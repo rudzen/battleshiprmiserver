@@ -21,48 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package game.data;
+package dataobjects;
+
+import java.util.ArrayList;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author rudz
  */
-public interface IPlayer {
+public class Board {
+   
+    private ArrayList<Ship> ships = new ArrayList<>();
 
-    void boardHit(final int x, final int y);
-
-    @Override
-    String toString();
-
-    @Override
-    boolean equals(Object obj);
-
-    @Override
-    int hashCode();
+    public Board() { }
     
-    byte getHits();
+    public boolean canFit(final Ship ship) {
+        return false;
+    }
     
-    void setHits(byte hits);
     
-     int getId();
-             
-    void setId(int id);
-    
-    String getName();
-
-    void setName(String name);
-
-    String getToken();
-
-    void setToken(String token);
-
-    int[][] getBoard();
-
-    void setBoard(int[][] board);
-
-    Ship[] getShips();
-
-    void setShips(Ship[] ships);
-
-             
 }

@@ -23,7 +23,7 @@
  */
 package game;
 
-import game.data.Player;
+import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -45,7 +45,6 @@ public abstract class BattleGameAbstract {
      * something valuable :-)
      */
     protected final Map<String, GameSession> sessions;
-
     protected final Map<Player, IClientListener> players;
     
     protected BattleGameAbstract() {
@@ -53,7 +52,7 @@ public abstract class BattleGameAbstract {
         players = new ConcurrentHashMap<>();
     }
 
-    protected String isInSession(final Player client) {
+    protected String isInSession(final IClientListener client) {
 
         for (GameSession gs : sessions.values()) {
             if (!gs.isFull() && gs.isInSession(client)) {
@@ -63,6 +62,16 @@ public abstract class BattleGameAbstract {
         return null;
     }
 
+    protected String isInSession(final Player player) {
+        for (GameSession gs : sessions.values()) {
+            if (gs.isInSession(player)) {
+                return gs.getGameSessionID();
+            }
+        }
+        return null;
+    }
+    
+    
     protected final String createSessionID(final IClientListener client) {
         return client.toString();
     }
@@ -85,9 +94,8 @@ public abstract class BattleGameAbstract {
         for (GameSession gs : sessions.values()) {
             if (now - gs.getTimeCreated() > TIME_LIMIT) {
                 try {
-                    
-                    gs.getPlayerOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
-                    gs.getPlayerTwo().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
+                    players.get(gs.getPlayerOne()).showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
+                    players.get(gs.getPlayerOne()).showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
                 } catch (final RemoteException re) {
                     // whoops..
                 }
@@ -96,5 +104,16 @@ public abstract class BattleGameAbstract {
             }
         }
     }
+
+    public Map<String, GameSession> getSessions() {
+        return sessions;
+    }
+
+    public Map<Player, IClientListener> getPlayers() {
+        return players;
+    }
+    
+    
+    
 
 }
