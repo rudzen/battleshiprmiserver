@@ -23,6 +23,7 @@
  */
 package interfaces;
 
+import dataobjects.Player;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -47,10 +48,10 @@ public interface IClientListener extends Remote {
     /**
      * Ship has been sunk.
      *
-     * @param ship the ship that are sunk
+     * @param shipindex the ship that are sunk
      * @throws RemoteException
      */
-    void shipSunk(final IShip ship) throws RemoteException;
+    void shipSunk(final int shipindex) throws RemoteException;
 
     /**
      * The game is over
@@ -89,7 +90,7 @@ public interface IClientListener extends Remote {
      * @param player The opponent data object which contains the new information
      * @throws RemoteException 
      */
-    void updateOpponent(final IPlayer player) throws RemoteException;
+    void updateOpponent(final String player) throws RemoteException;
 
     /**
      * The client should update the playing field.
@@ -125,9 +126,8 @@ public interface IClientListener extends Remote {
      * @param players The list of players from which you can play against.
      * @throws RemoteException 
      */
-    void playerList(ArrayList<IPlayer> players) throws RemoteException;
+    void playerList(ArrayList<String> players) throws RemoteException;
     
-    
-    IPlayer getPlayer() throws RemoteException;
+    String getPlayer() throws RemoteException;
     
 }

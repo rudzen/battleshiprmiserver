@@ -26,8 +26,8 @@ package battleshiprmiserver;
 import args.MainArgsHandler;
 import args.intervals.GenericInterval;
 import args.intervals.Interval;
-import game.BattleGame;
 import dataobjects.Player;
+import game.BattleGame;
 import interfaces.IBattleShip;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -37,7 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaces.IClientListener;
-import interfaces.IPlayer;
+import interfaces.IShip;
 import java.util.List;
 
 /**
@@ -52,15 +52,14 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     private static boolean verbose = true;
 
-    private BattleGame bg = new BattleGame();
+    private volatile BattleGame bg = new BattleGame();
 
     private final CopyOnWriteArrayList<IClientListener> list = new CopyOnWriteArrayList<>();
-    private final CopyOnWriteArrayList<IPlayer> plys = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<String> plys = new CopyOnWriteArrayList<>();
 
     private volatile int x, y;
 
-    public BattleshipServerRMI() throws java.rmi.RemoteException {
-        // Assign a default setting for the temperature
+    public BattleshipServerRMI() throws RemoteException {
         x = 2;
         y = 3;
     }
@@ -130,6 +129,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             IClientListener listener = (IClientListener) list.get(i);
             try {
                 listener.shotFired(x, y, true);
+                listener.showMessage(Integer.toString(i), Integer.toString(x), 0);
             } catch (RemoteException ex) {
                 /* if the exception is caught, the client is most likely not connected, so kill it without mercy */
                 Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,9 +141,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     public static void main(String args[]) {
-        System.out.println("Loading battleship server");
-        // Only required for dynamic class loading
-        //System.setSecurityManager ( new RMISecurityManager() );
+        System.out.println("Loading battleship server, please wait.");
         try {
 
             java.rmi.registry.LocateRegistry.createRegistry(1099); // start i server-JVM
@@ -151,12 +149,18 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             // Load the service
             BattleshipServerRMI server = new BattleshipServerRMI();
 
+            if (System.getSecurityManager() == null) {
+                System.setSecurityManager(new SecurityManager());
+                System.out.println("SecurityManager created.");
+            }
+
             // Check to see if a registry was specified
             String registry;
 
             if (args.length >= 1) {
                 setArgs(args);
                 registry = args[0];
+                System.out.println("Registry changed through command-line to " + registry);
             } else {
                 registry = "localhost";
             }
@@ -169,19 +173,14 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             // service // Note the :port field is optional
             String registration = "rmi://" + registry + "/Battleship";
 
-            if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new SecurityManager());
-                System.out.println("SecurityManager created.");
-            }
-
             // Register with service so that clients can find us
             Naming.rebind(registration, server);
             // Create a thread, and pass the server.
             // This will activate the run() method, and
             // trigger regular coordinate changes.
 
-            //Thread thread = new Thread(server);
-            //thread.start();
+            Thread thread = new Thread(server);
+            thread.start();
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
         } catch (Exception e) {
@@ -196,53 +195,73 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public boolean registerClient(IClientListener clientInterface) throws RemoteException {
+    public boolean registerClient(IClientListener clientInterface, String player) throws RemoteException {
+        
+        
         System.out.println("ADDED IClientListener -> " + clientInterface);
-        System.out.println("Player fetched from client : " + clientInterface.getPlayer());
+        System.out.println("Player fetched from client : " + player);
+        if (!bg.addPlayer(player, clientInterface)) {
+            System.out.println("Failed to add player " + player + " to player map.");
+        }
+//        bg.createSession(player, clientInterface);
+        
+        clientInterface.showMessage("title", "text", 0);
+
 //        System.out.println("ADDED Player -> " + player);
-        return list.add(clientInterface);// && plys.add(player);
+        return list.add(clientInterface) && plys.add(player);
     }
 
     @Override
-    public boolean removeClient(IClientListener clientInterface) throws RemoteException {
+    public boolean removeClient(IClientListener clientInterface, String player) throws RemoteException {
         System.out.println("REMOVE IClientListener -> " + clientInterface);
         //System.out.println("REMOVE Player -> " + player);
-        return list.remove(clientInterface);// && plys.remove(player);
+        return list.remove(clientInterface) && plys.remove(player);
     }
 
     @Override
-    public IPlayer getOther() throws RemoteException {
+    public String getOther() throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void fireShot(int x, int y, IPlayer player) throws RemoteException {
+    public void fireShot(int x, int y, String player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean logout(IPlayer player) throws RemoteException {
+    public boolean logout(String player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void pong(IPlayer player) throws RemoteException {
+    public void pong(String player) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deployShips(IPlayer player) throws RemoteException {
+    public void deployShips(String player, IShip[] ships) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void requestPlayers(IPlayer player) throws RemoteException {
+    public void requestPlayers(String player) throws RemoteException {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updatePlayer(IPlayer newPlayer) throws RemoteException {
+    public void updatePlayer(String newPlayer) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void publicMessage(String origin, String message, String title, int modal) throws RemoteException {
+        for (int i = 0; i < plys.size(); i++) {
+            if (!plys.get(i).equals(origin)) {
+                list.get(i).showMessage(title, message, modal);
+            }
+        }
+        //bg.sendMessageAll(origin, message, title, modal);
     }
 
 }

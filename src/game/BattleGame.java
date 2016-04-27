@@ -26,6 +26,8 @@ package game;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,16 +43,17 @@ public class BattleGame extends BattleGameAbstract {
 
     /**
      * Catch for shotFired (from any client).
+     *
      * @param x
      * @param y
      * @param player
      */
-    public void shotFired(final int x, final int y, final Player player) {
+    public void shotFired(final int x, final int y, final String player) {
 
         try {
             final String sessionID = isInSession(player);
             if (sessionID != null) {
-                Player otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
+                String otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
 
                 // TODO : Determine if the shot actually hit something here!!!
                 boolean hit = true;
@@ -72,7 +75,6 @@ public class BattleGame extends BattleGameAbstract {
 
     }
 
-    
     private void clearOldSessions(final boolean notifyClients) throws RemoteException {
         final long NOW = System.currentTimeMillis();
         for (GameSession gs : sessions.values()) {
@@ -89,8 +91,7 @@ public class BattleGame extends BattleGameAbstract {
             }
         }
     }
-    
-    
+
     /**
      * Generate session from one single client.
      *
@@ -98,43 +99,76 @@ public class BattleGame extends BattleGameAbstract {
      * @param client The client to generate the session with
      * @return true if session was created, otherwise false.
      */
-    public boolean createSession(final Player player, final IClientListener client) {
-        boolean returnValue;
-        final String sessionID = createSessionID(client);
+    public synchronized boolean createSession(final String player, final IClientListener client) {
+        final String sessionID = updateSessionID(player, client);
         if (!sessions.containsKey(sessionID)) {
-            sessions.put(sessionID, new GameSession(player));
-            returnValue = true;
-        } else {
-            returnValue = false;
+            final GameSession g = new GameSession(player, client);
+            g.setGameSessionID(sessionID);
+            sessions.put(player, g);
+            return true;
         }
-        return returnValue;
+        return false;
     }
 
     /**
      * Creates a session based on two players.
+     *
      * @param playerOne The first player in the session.
      * @param playerTwo The second player in the session
-     * @param clientOne
-     * @param clientTwo
+     * @param clientOne The client interface for the first player
+     * @param clientTwo The client interface for the second player
      * @return true if session was created, otherwise false.
      */
-    public boolean createSession(final Player playerOne, final Player playerTwo, final IClientListener clientOne, final IClientListener clientTwo) {
-        boolean returnValue = createSession(playerOne, clientOne);
-        if (returnValue) {
-            final String sID = createSessionID(clientOne);
-            sessions.get(sID).setPlayerTwo(playerTwo);
-            sessions.get(sID).setClientTwo(clientTwo);
+    public synchronized boolean createSession(final String playerOne, final String playerTwo, final IClientListener clientOne, final IClientListener clientTwo) {
+        final String sessionID = updateSessionID(playerOne, clientOne, playerTwo, clientTwo);
+        if (sessionID != null && !sessions.containsKey(sessionID)) {
+            final GameSession g = new GameSession(playerOne, clientOne, playerTwo, clientTwo);
+            g.setGameSessionID(sessionID);
+            sessions.put(sessionID, g);
+            return true;
         }
-        return returnValue;   
+        return false;
+    }
+
+    public synchronized boolean joinSession(final Player whichSession, final Player joinee) {
+        return false;
+    }
+
+    public boolean addPlayer(final String player, final IClientListener client) {
+        if (players.put(player, client) != null) {
+            System.out.print(player + " added");
+            try {
+                client.showMessage("Added to server", player + " added to server player index", JOptionPane.INFORMATION_MESSAGE);
+            } catch (RemoteException ex) {
+                Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
      * Removes a session from the list.
+     *
      * @param sessionID The sessionID to remove.
      */
-    private void removeSession(final String sessionID) {
+    public void removeSession(final String sessionID) {
         if (sessionID != null) {
             sessions.remove(sessionID);
+        }
+    }
+
+    public void sendMessageAll(final String sourceplayer, final String text, final String title, final int modal) {
+
+        for (final String target : players.keySet()) {
+            if (!target.equals(sourceplayer)) {
+                try {
+                    IClientListener client = players.get(target);
+                    client.showMessage(title, text, modal);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 

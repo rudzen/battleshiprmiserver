@@ -23,7 +23,7 @@
  */
 package game;
 
-import dataobjects.Player;
+import com.twmacinta.util.MD5;
 import interfaces.IClientListener;
 import java.util.Objects;
 
@@ -33,58 +33,108 @@ import java.util.Objects;
  * <li>Players</li>
  * <li>Time for last activity</li>
  *
+ * Uses :
+ * http://www.twmacinta.com/myjava/fast_md5.php
+ * 
  * @author rudz
  */
 public class GameSession {
 
-    private Player playerOne;
-    private Player playerTwo;
-
-    private IClientListener clientOne;
-    private IClientListener clientTwo;
+    /* name of player one in this session */
+    private String playerOne;
     
-    private String gameSessionID; // should be an unique string "hash" based on both players.
+    /* name of player two in this session */
+    private String playerTwo;
 
+    /* player one's client interface */
+    private IClientListener clientOne;
+    
+    /* player two's client interface */
+    private IClientListener clientTwo;
+
+    /* the game session ID - this is a MD5 hash (very good for the purpose and very fast!) */
+    private String gameSessionID;
+
+    /* when the session was created */
     private long timeCreated;
+    
+    /* when the last action was performed */
     private long lastAction;
 
-    /* constructors */
-    public GameSession(final Player playerOne) {
+    /* constructor for one player */
+    public GameSession(final String playerOne, final IClientListener clientOne) {
         this.playerOne = playerOne;
+        this.clientOne = clientOne;
         timeCreated = System.currentTimeMillis();
         lastAction = timeCreated;
     }
 
-    public GameSession(final Player playerOne, final Player playerTwo) {
-        this(playerOne);
+    /* constructor for two players */
+    public GameSession(final String playerOne, final IClientListener clientOne, final String playerTwo, final IClientListener clientTwo) {
+        this(playerOne, clientOne);
         this.playerTwo = playerTwo;
+        this.clientTwo = clientTwo;
     }
 
     /* helper methods */
+    
+    /**
+     * Determine if this session is occupied by two players.
+     * @return true if two players exists, otherwise false
+     */
     public boolean isFull() {
+        updateActionTime();
         return playerOne != null && playerTwo != null;
     }
 
-    public boolean isInSession(final Player player) {
+    /**
+     * Determine if a player exists in this session
+     * @param player The player's name to check for
+     * @return true if the player parsed exists, otherwise false
+     */
+    public boolean isInSession(final String player) {
+        updateActionTime();
         return playerOne.equals(player) || playerTwo.equals(player);
     }
 
-    public Player getOtherPlayer(final Player player) {
+    /**
+     * Determine if a client exists in this session
+     * @param client The client interface to check for
+     * @return true if exists, otherwise false
+     */
+    public boolean isInSession(final IClientListener client) {
+        updateActionTime();
+        return clientOne.equals(client) || clientTwo.equals(client);
+    }
+
+    /**
+     * Retrieves the other player based on the parsed player
+     * @param player The "player" requesting the opponent
+     * @return The other players name
+     */
+    public String getOtherPlayer(final String player) {
+        updateActionTime();
         return playerOne.equals(player) ? playerTwo : playerOne;
     }
 
-    public boolean isInSession(final IClientListener client) {
-        return clientOne.equals(client) || clientTwo.equals(client);
-    }
-    
+    /**
+     * Retrieves the other client based on parsed client interface
+     * @param client The client interface requesting the opponent
+     * @return The other players client interface
+     */
     public IClientListener getOtherPlayer(final IClientListener client) {
-        return clientOne.equals(client) ? clientOne : clientTwo;
+        updateActionTime();
+        return clientOne.equals(client) ? clientTwo : clientOne;
     }
-    
+
+    /**
+     * Updates the last known action time index.<br>
+     * This function is called from the helper methods when they are used.
+     */
     public void updateActionTime() {
         lastAction = System.currentTimeMillis();
     }
-    
+
     /* getters & setters */
     public long getLastAction() {
         return lastAction;
@@ -110,19 +160,19 @@ public class GameSession {
         return gameSessionID;
     }
 
-    public Player getPlayerOne() {
+    public String getPlayerOne() {
         return playerOne;
     }
 
-    public Player getPlayerTwo() {
+    public String getPlayerTwo() {
         return playerTwo;
     }
-    
-    public void setPlayerOne(final Player playerOne) {
+
+    public void setPlayerOne(final String playerOne) {
         this.playerOne = playerOne;
     }
 
-    public void setPlayerTwo(final Player playerTwo) {
+    public void setPlayerTwo(final String playerTwo) {
         this.playerTwo = playerTwo;
     }
 
@@ -141,7 +191,7 @@ public class GameSession {
     public void setClientTwo(IClientListener clientTwo) {
         this.clientTwo = clientTwo;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -185,4 +235,10 @@ public class GameSession {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "GameSession{" + "playerOne=" + playerOne + ", playerTwo=" + playerTwo + ", clientOne=" + clientOne + ", clientTwo=" + clientTwo + ", gameSessionID=" + gameSessionID + ", timeCreated=" + timeCreated + ", lastAction=" + lastAction + '}';
+    }
+    
 }
