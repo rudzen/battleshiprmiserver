@@ -28,6 +28,7 @@ import args.intervals.GenericInterval;
 import args.intervals.Interval;
 import dataobjects.Player;
 import game.BattleGame;
+import game.GameSession;
 import interfaces.IBattleShip;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -39,6 +40,8 @@ import java.util.logging.Logger;
 import interfaces.IClientListener;
 import interfaces.IShip;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -56,6 +59,11 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     private final CopyOnWriteArrayList<IClientListener> list = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<String> plys = new CopyOnWriteArrayList<>();
+
+    private final CopyOnWriteArrayList<GameSession> games = new CopyOnWriteArrayList<>();
+
+    /* locks for session system */
+    private final ReentrantLock games_lock = new ReentrantLock();
 
     private volatile int x, y;
 
@@ -189,38 +197,55 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public boolean login(String user, String pw) throws RemoteException {
+    public boolean login(String user, String pw, Player player) throws RemoteException {
         System.out.println("User attempted login : " + user + " // " + pw);
+        System.out.println(player.toString());
         return false;
     }
 
     @Override
     public boolean registerClient(IClientListener clientInterface, String player) throws RemoteException {
-        
-        
-        System.out.println("ADDED IClientListener -> " + clientInterface);
-        System.out.println("Player fetched from client : " + player);
-        if (!bg.addPlayer(player, clientInterface)) {
-            System.out.println("Failed to add player " + player + " to player map.");
+        if (list.contains(clientInterface) || plys.contains(player)) {
+            System.out.println("Player : " + player + " was rejected, already connected.");
+            return false;
         }
-//        bg.createSession(player, clientInterface);
-        
-        clientInterface.showMessage("title", "text", 0);
-
-//        System.out.println("ADDED Player -> " + player);
-        return list.add(clientInterface) && plys.add(player);
+        System.out.println("Connected > " + player);
+        try {
+            clientInterface.showMessage(player + ".\nYou are connected to the server.", "Server message", JOptionPane.INFORMATION_MESSAGE);
+            return list.add(clientInterface) && plys.add(player);
+        } catch (final RemoteException re) {
+            System.out.println("Unable to contact client");
+        }
+        return false;
     }
 
     @Override
     public boolean removeClient(IClientListener clientInterface, String player) throws RemoteException {
-        System.out.println("REMOVE IClientListener -> " + clientInterface);
-        //System.out.println("REMOVE Player -> " + player);
+        System.out.println("Disconnected manually -> " + player);
         return list.remove(clientInterface) && plys.remove(player);
     }
 
     @Override
-    public String getOther() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getOther(String playerOne) throws RemoteException {
+        games_lock.lock();
+        String returnName = null;
+        boolean found = false;
+        try {
+            for (GameSession gs : games) {
+                if (gs.isInSession(playerOne)) {
+                    returnName = gs.getOtherPlayer(playerOne);
+                    found = true;
+                    break;
+                }
+            }
+            games_lock.unlock();
+        } catch (final Exception e) {
+            // nothing here
+        } finally {
+            games_lock.unlock();
+            return returnName;
+        }
+
     }
 
     @Override
@@ -245,7 +270,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void requestPlayers(String player) throws RemoteException {
-        
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
