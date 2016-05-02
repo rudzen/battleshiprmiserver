@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 rudz.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,19 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package interfaces;
+package battleshiprmiserver;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+import interfaces.IClientListener;
+import java.util.concurrent.Callable;
 
 /**
- * Login interface for RMI Client< - >Server login attempt.
+ *
  * @author rudz
  */
-public interface ILogin extends Remote {
+public class CallableSub implements Callable {
 
-    String login(String theLoginInformation) throws RemoteException;
+    private final IClientListener client;
     
-    boolean logout() throws RemoteException;
+    private final String json;
+
+    public CallableSub(IClientListener client, final String json_string) {
+        this.client = client;
+        this.json = json_string;
+    }
+    
+    @Override
+    public Object call() throws Exception {
+        
+    }
     
 }

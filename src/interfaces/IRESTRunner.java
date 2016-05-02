@@ -23,17 +23,10 @@
  */
 package interfaces;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
 /**
- * Login interface for RMI Client< - >Server login attempt.
- * @author rudz
+ * This is just to be able to tell Runnable apart from the ACTUAL implementation used !
+ * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public interface ILogin extends Remote {
-
-    String login(String theLoginInformation) throws RemoteException;
-    
-    boolean logout() throws RemoteException;
+public interface IRESTRunner extends Runnable {
     
 }

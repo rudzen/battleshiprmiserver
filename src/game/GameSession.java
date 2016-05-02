@@ -23,7 +23,7 @@
  */
 package game;
 
-import com.twmacinta.util.MD5;
+import dataobjects.Player;
 import interfaces.IClientListener;
 import java.util.Objects;
 
@@ -41,10 +41,10 @@ import java.util.Objects;
 public class GameSession {
 
     /* name of player one in this session */
-    private String playerOne;
+    private Player playerOne;
     
     /* name of player two in this session */
-    private String playerTwo;
+    private Player playerTwo;
 
     /* player one's client interface */
     private IClientListener clientOne;
@@ -62,7 +62,7 @@ public class GameSession {
     private long lastAction;
 
     /* constructor for one player */
-    public GameSession(final String playerOne, final IClientListener clientOne) {
+    public GameSession(final Player playerOne, final IClientListener clientOne) {
         this.playerOne = playerOne;
         this.clientOne = clientOne;
         timeCreated = System.currentTimeMillis();
@@ -70,7 +70,7 @@ public class GameSession {
     }
 
     /* constructor for two players */
-    public GameSession(final String playerOne, final IClientListener clientOne, final String playerTwo, final IClientListener clientTwo) {
+    public GameSession(final Player playerOne, final IClientListener clientOne, final Player playerTwo, final IClientListener clientTwo) {
         this(playerOne, clientOne);
         this.playerTwo = playerTwo;
         this.clientTwo = clientTwo;
@@ -92,15 +92,16 @@ public class GameSession {
      * @param player The player's name to check for
      * @return true if the player parsed exists, otherwise false
      */
-    public boolean isInSession(final String player) {
+    public boolean isInSession(final Player player) {
         updateActionTime();
-        return playerOne.equals(player) || playerTwo.equals(player);
+        return playerOne.getName().equals(player.getName()) || playerTwo.getName().equals(player.getName());
     }
 
     /**
      * Determine if a client exists in this session
      * @param client The client interface to check for
      * @return true if exists, otherwise false
+     * @deprecated 
      */
     public boolean isInSession(final IClientListener client) {
         updateActionTime();
@@ -112,15 +113,16 @@ public class GameSession {
      * @param player The "player" requesting the opponent
      * @return The other players name
      */
-    public String getOtherPlayer(final String player) {
+    public Player getOtherPlayer(final Player player) {
         updateActionTime();
-        return playerOne.equals(player) ? playerTwo : playerOne;
+        return playerOne.getName().equals(player.getName()) ? playerTwo : playerOne;
     }
 
     /**
      * Retrieves the other client based on parsed client interface
      * @param client The client interface requesting the opponent
      * @return The other players client interface
+     * @deprecated 
      */
     public IClientListener getOtherPlayer(final IClientListener client) {
         updateActionTime();
@@ -135,6 +137,11 @@ public class GameSession {
         lastAction = System.currentTimeMillis();
     }
 
+    public void setPlayerOneAll(final Player playerOne, final IClientListener clientOne) {
+        this.playerOne = playerOne;
+        this.clientOne = clientOne;
+    }
+    
     /* getters & setters */
     public long getLastAction() {
         return lastAction;
@@ -160,19 +167,19 @@ public class GameSession {
         return gameSessionID;
     }
 
-    public String getPlayerOne() {
+    public Player getPlayerOne() {
         return playerOne;
     }
 
-    public String getPlayerTwo() {
+    public Player getPlayerTwo() {
         return playerTwo;
     }
 
-    public void setPlayerOne(final String playerOne) {
+    public void setPlayerOne(final Player playerOne) {
         this.playerOne = playerOne;
     }
 
-    public void setPlayerTwo(final String playerTwo) {
+    public void setPlayerTwo(final Player playerTwo) {
         this.playerTwo = playerTwo;
     }
 
@@ -238,7 +245,14 @@ public class GameSession {
 
     @Override
     public String toString() {
-        return "GameSession{" + "playerOne=" + playerOne + ", playerTwo=" + playerTwo + ", clientOne=" + clientOne + ", clientTwo=" + clientTwo + ", gameSessionID=" + gameSessionID + ", timeCreated=" + timeCreated + ", lastAction=" + lastAction + '}';
+        return "GameSession {" +
+                "playerOne=" + playerOne +
+                "\nplayerTwo=" + playerTwo +
+                "\nclientOne=" + clientOne +
+                "\nclientTwo=" + clientTwo +
+                "\ngameSessionID=" + gameSessionID +
+                "\ntimeCreated=" + timeCreated +
+                "\nlastAction=" + lastAction +
+                "\n}";
     }
-    
 }

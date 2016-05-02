@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 import interfaces.IClientListener;
 import interfaces.IShip;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
 
@@ -61,6 +62,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private final CopyOnWriteArrayList<String> plys = new CopyOnWriteArrayList<>();
 
     private final CopyOnWriteArrayList<GameSession> games = new CopyOnWriteArrayList<>();
+
+    /* to keep track of how many clients there are connected. */
+    private final AtomicInteger clientCount = new AtomicInteger(0);
 
     /* locks for session system */
     private final ReentrantLock games_lock = new ReentrantLock();
@@ -212,7 +216,10 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         System.out.println("Connected > " + player);
         try {
             clientInterface.showMessage(player + ".\nYou are connected to the server.", "Server message", JOptionPane.INFORMATION_MESSAGE);
-            return list.add(clientInterface) && plys.add(player);
+            if (list.add(clientInterface) && plys.add(player)) {
+                System.out.println("Number of clients connected : " + clientCount.incrementAndGet());
+                return true;
+            }
         } catch (final RemoteException re) {
             System.out.println("Unable to contact client");
         }
@@ -222,30 +229,34 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public boolean removeClient(IClientListener clientInterface, String player) throws RemoteException {
         System.out.println("Disconnected manually -> " + player);
-        return list.remove(clientInterface) && plys.remove(player);
+        if (list.remove(clientInterface) && plys.remove(player)) {
+            System.out.println("Number of clients connected " + clientCount.decrementAndGet());
+            return true;
+        }
+        System.out.println("Error while removing client : " + clientInterface.toString());
+        return false;
     }
 
     @Override
-    public String getOther(String playerOne) throws RemoteException {
+    public Player getOther(Player playerOne) throws RemoteException {
         games_lock.lock();
-        String returnName = null;
+        Player returnPlayer = null;
         boolean found = false;
         try {
             for (GameSession gs : games) {
                 if (gs.isInSession(playerOne)) {
-                    returnName = gs.getOtherPlayer(playerOne);
+                    returnPlayer = gs.getOtherPlayer(playerOne);
                     found = true;
                     break;
                 }
             }
             games_lock.unlock();
         } catch (final Exception e) {
-            // nothing here
+            System.err.println("Error while " + playerOne.getName() + " attempted to get opponent.");
         } finally {
             games_lock.unlock();
-            return returnName;
         }
-
+        return returnPlayer;
     }
 
     @Override
@@ -287,6 +298,16 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             }
         }
         //bg.sendMessageAll(origin, message, title, modal);
+    }
+
+    @Override
+    public boolean updatePlayerObject(String seesionID, Player playerObject) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String requestSessionID(String currentSessionID, Player playerObject) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

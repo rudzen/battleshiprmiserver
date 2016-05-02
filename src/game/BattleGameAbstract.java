@@ -24,6 +24,7 @@
 package game;
 
 import com.twmacinta.util.MD5;
+import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public abstract class BattleGameAbstract {
         return null;
     }
 
-    protected String isInSession(final String player) {
+    protected String isInSession(final Player player) {
         for (GameSession gs : sessions.values()) {
             if (gs.isInSession(player)) {
                 return gs.getGameSessionID();
@@ -95,7 +96,7 @@ public abstract class BattleGameAbstract {
     protected ArrayList<String> getFreePlayerNames() {
         final ArrayList<String> list = new ArrayList<>();
         sessions.values().stream().filter((gs) -> (!gs.isFull())).forEach((gs) -> {
-            list.add(gs.getPlayerOne());
+            list.add(gs.getPlayerOne().getName());
         });
         return list;
     }
@@ -122,11 +123,11 @@ public abstract class BattleGameAbstract {
      * @param client The players client interface callback
      * @return The new session ID
      */
-    protected String updateSessionID(final String player, final IClientListener client) {
+    protected String updateSessionID(final Player player, final IClientListener client) {
         md5_lock.lock();
 
         md5.Init();
-        md5.Update(player);
+        md5.Update(player.toString());
         md5.Update(client.toString());
         md5.Update(Long.toOctalString(System.currentTimeMillis()));
 

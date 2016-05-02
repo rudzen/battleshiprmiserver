@@ -48,16 +48,16 @@ public class BattleGame extends BattleGameAbstract {
      * @param y
      * @param player
      */
-    public void shotFired(final int x, final int y, final String player) {
+    public void shotFired(final int x, final int y, final Player player) {
 
         try {
             final String sessionID = isInSession(player);
             if (sessionID != null) {
-                String otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
+                Player otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
 
                 // TODO : Determine if the shot actually hit something here!!!
                 boolean hit = true;
-                players.get(otherPlayer).shotFired(x, y, hit);
+                players.get(otherPlayer.getName()).shotFired(x, y, hit);
 
                 // TODO : If hit, determine if the ship is sunk and the name of the sunken ship.
                 final String shipHit = hit ? "HIT SHIP" : "NO SHIT";
@@ -99,12 +99,12 @@ public class BattleGame extends BattleGameAbstract {
      * @param client The client to generate the session with
      * @return true if session was created, otherwise false.
      */
-    public synchronized boolean createSession(final String player, final IClientListener client) {
+    public synchronized boolean createSession(final Player player, final IClientListener client) {
         final String sessionID = updateSessionID(player, client);
         if (!sessions.containsKey(sessionID)) {
             final GameSession g = new GameSession(player, client);
             g.setGameSessionID(sessionID);
-            sessions.put(player, g);
+            sessions.put(sessionID, g);
             return true;
         }
         return false;
@@ -119,8 +119,8 @@ public class BattleGame extends BattleGameAbstract {
      * @param clientTwo The client interface for the second player
      * @return true if session was created, otherwise false.
      */
-    public synchronized boolean createSession(final String playerOne, final String playerTwo, final IClientListener clientOne, final IClientListener clientTwo) {
-        final String sessionID = updateSessionID(playerOne, clientOne, playerTwo, clientTwo);
+    public synchronized boolean createSession(final Player playerOne, final Player playerTwo, final IClientListener clientOne, final IClientListener clientTwo) {
+        final String sessionID = updateSessionID(playerOne.toString(), clientOne, playerTwo.toString(), clientTwo);
         if (sessionID != null && !sessions.containsKey(sessionID)) {
             final GameSession g = new GameSession(playerOne, clientOne, playerTwo, clientTwo);
             g.setGameSessionID(sessionID);
