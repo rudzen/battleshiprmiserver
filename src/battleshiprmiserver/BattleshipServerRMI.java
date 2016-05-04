@@ -50,6 +50,8 @@ import javax.swing.JOptionPane;
  */
 public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleShip, Runnable {
 
+    private static volatile boolean rundemo = false;
+
     private static final long serialVersionUID = 3089432827583994107L;
 
     private PrettyPrint pp;
@@ -191,8 +193,10 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             // This will activate the run() method, and
             // trigger regular coordinate changes.
 
-            Thread thread = new Thread(server);
-            thread.start();
+            if (rundemo) {
+                Thread thread = new Thread(server);
+                thread.start();
+            }
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
         } catch (Exception e) {
@@ -218,6 +222,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             clientInterface.showMessage(player + ".\nYou are connected to the server.", "Server message", JOptionPane.INFORMATION_MESSAGE);
             if (list.add(clientInterface) && plys.add(player)) {
                 System.out.println("Number of clients connected : " + clientCount.incrementAndGet());
+                RESTRunner.test(player, clientInterface);
                 return true;
             }
         } catch (final RemoteException re) {
