@@ -27,6 +27,8 @@ package interfaces;
  * This is just to be able to tell Runnable apart from the ACTUAL implementation used !
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public interface IRESTRunner extends Runnable {
+public interface IRESTRunner {
+    
+
     
 }

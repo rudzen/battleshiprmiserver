@@ -26,9 +26,12 @@ package battleshiprmiserver;
 import args.MainArgsHandler;
 import args.intervals.GenericInterval;
 import args.intervals.Interval;
+import battleshiprmiserver.threads.Runner;
+import battleshiprmiserver.threads.ThreadPool;
 import dataobjects.Player;
 import game.BattleGame;
 import game.GameSession;
+import game.Messages;
 import interfaces.IBattleShip;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -52,6 +55,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     private static volatile boolean rundemo = false;
 
+    public ThreadPool threadpool;
+
     private static final long serialVersionUID = 3089432827583994107L;
 
     private PrettyPrint pp;
@@ -74,6 +79,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private volatile int x, y;
 
     public BattleshipServerRMI() throws RemoteException {
+        System.out.println("Starting threadpool.");
+        threadpool = new ThreadPool(25, 25);
+
         x = 2;
         y = 3;
     }
@@ -266,7 +274,20 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void fireShot(int x, int y, String player) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // tmp code :
+
+        for (int i = 0; i < plys.size(); i++) {
+            if (player.equals(plys.get(i))) {
+                try {
+                    threadpool.execute(new Runner(list.get(i), new Player(player), Messages.MessageType.SHOT_FIRED, x, y));
+                } catch (Exception ex) {
+                    Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Holy fuck, something horribly happend!!");
+                }
+            }
+        }
+
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -297,12 +318,15 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void publicMessage(String origin, String message, String title, int modal) throws RemoteException {
-        for (int i = 0; i < plys.size(); i++) {
-            if (!plys.get(i).equals(origin)) {
-                list.get(i).showMessage(title, message, modal);
+        while (true) {
+            for (int i = 0; i < plys.size(); i++) {
+                if (!plys.get(i).equals(origin)) {
+                    list.get(i).showMessage(title, message, modal);
+                }
             }
+            //bg.sendMessageAll(origin, message, title, modal);
         }
-        //bg.sendMessageAll(origin, message, title, modal);
+
     }
 
     @Override

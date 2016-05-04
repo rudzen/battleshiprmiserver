@@ -23,67 +23,34 @@
  */
 package battleshiprmiserver;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.async.Callback;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import interfaces.IClientListener;
-import java.io.InputStream;
 import java.rmi.RemoteException;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- * Starts a specific REST command, and sends the result automaticly back to the
- * client.
- *
+ * Creates a new Runnable and puts it in the thread pool.
  * @author rudz
  */
 public class RESTRunner {
-
-    private IClientListener client;
-
+    
     public static void test(final String player, final IClientListener client) {
         System.out.println("Attempting to test REST for : \n" + player + "\n" + client.toString());
+
+        /* create a new runnable and start it. */
         
-        Future<HttpResponse<JsonNode>> future = Unirest.post("http://httpbin.org/post")
-                .header("accept", "application/json")
-                .field("param1", "value1")
-                .field("param2", "value2")
-                .asJsonAsync(new Callback<JsonNode>() {
+        new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    client.showMessage("Message", player, JOptionPane.PLAIN_MESSAGE);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(RESTRunner.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }.run();
 
-                    @Override
-                    public void failed(UnirestException e) {
-                        try {
-                            client.showMessage("Message failed.", "REST test", JOptionPane.ERROR_MESSAGE);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(RESTRunner.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        System.out.println("The request has failed");
-                    }
-
-                    @Override
-                    public void completed(HttpResponse<JsonNode> response) {
-                        int code = response.getStatus();
-                        JsonNode body = response.getBody();
-                        InputStream rawBody = response.getRawBody();
-                        System.out.println("Rest completed : " + code);
-                        try {
-                            client.showMessage("OK! " + player, "Code : " + Integer.toString(code), JOptionPane.INFORMATION_MESSAGE);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(RESTRunner.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                    @Override
-                    public void cancelled() {
-                        
-                        System.out.println("The request has been cancelled");
-                    }
-                });
     }
 
 }
