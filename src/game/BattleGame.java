@@ -26,6 +26,7 @@ package game;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -37,8 +38,8 @@ import javax.swing.JOptionPane;
  */
 public class BattleGame extends BattleGameAbstract {
 
-    public BattleGame() {
-        super();
+    public BattleGame(final ConcurrentHashMap<String, IClientListener> players, final ConcurrentHashMap<String, GameSession> sessions) {
+        super(players, sessions);
     }
 
     /**
@@ -62,7 +63,7 @@ public class BattleGame extends BattleGameAbstract {
                 // TODO : If hit, determine if the ship is sunk and the name of the sunken ship.
                 final String shipHit = hit ? "HIT SHIP" : "NO SHIT";
 
-                players.get(player).showMessage("Shot...", hit ? "You hit the opponents " + shipHit : "You missed... looser.", hit ? JOptionPane.WARNING_MESSAGE : JOptionPane.ERROR_MESSAGE);
+                players.get(player.getName()).showMessage("Shot...", hit ? "You hit the opponents " + shipHit : "You missed... looser.", hit ? JOptionPane.WARNING_MESSAGE : JOptionPane.ERROR_MESSAGE);
 
                 // TODO : 
             } else {
@@ -81,10 +82,10 @@ public class BattleGame extends BattleGameAbstract {
             if (NOW - gs.getTimeCreated() > 360000) {
                 if (notifyClients) {
                     if (gs.getPlayerOne() != null) {
-                        players.get(gs.getPlayerOne()).showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
+                        players.get(gs.getPlayerOne().getName()).showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
                     }
                     if (gs.getPlayerTwo() != null) {
-                        players.get(gs.getPlayerTwo()).showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
+                        players.get(gs.getPlayerTwo().getName()).showMessage("Session termineret af server.", "Der er g\u00E5et for lang tid..", 0);
                     }
                 }
                 sessions.remove(gs.getGameSessionID());
@@ -134,6 +135,44 @@ public class BattleGame extends BattleGameAbstract {
         return false;
     }
 
+    
+    /**
+     * Joins the first availble game, returns the game session ID
+     * @param player the player to join session
+     * @return Session ID
+     */
+    public synchronized String joinGame(final Player player) {
+        String sessionID = null;
+        if (sessions.isEmpty()) {
+            if (createSession(player, players.get(player.getName()))) {
+                sessionID = updateSessionID(player, players.get(player.getName()));
+            }
+        } else {
+            for (GameSession gs : sessions.values()) {
+                if (!gs.isFull()) {
+                    gs.setClientTwo(players.get(player.getName()));
+                    gs.setPlayerTwo(player);
+                    sessionID = updateSessionID(gs);
+                    gs.setGameSessionID(sessionID);
+                    gs.getPlayerOne().setToken(sessionID);
+                    gs.getPlayerTwo().setToken(sessionID);
+                    try {
+                        gs.getClientOne().showMessage(sessionID, sessionID, 0);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+            }
+            
+            GameSession gs = new GameSession(player, players.get(player.getName()));
+            final String id = updateSessionID(player, players.get(player.getName()));
+            
+            gs.updateActionTime();
+        }
+        return sessionID;
+    }
+    
     public boolean addPlayer(final String player, final IClientListener client) {
         if (players.put(player, client) != null) {
             System.out.print(player + " added");

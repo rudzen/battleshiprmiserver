@@ -21,33 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package game;
+package battleshiprmiserver;
 
-import java.util.Random;
+import args.MainArgsHandler;
+import args.intervals.GenericInterval;
+import args.intervals.Interval;
+import java.util.List;
 
 /**
+ * Generic helper class for main server class.
  *
- * @author rudz
+ * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class GameHelpers {
+public class BattleshipServerRMIHelper {
 
-    private Random rnd;
+    public static String setArgs(final String[] args) {
 
-    /**
-     * Re-seed the random object.
-     */
-    public void reseed() {
-        rnd = new Random(System.currentTimeMillis());
+        final MainArgsHandler argsHandler = MainArgsHandler.getHandler();
+        String retVal = null;
+
+        final Interval<Integer> ZERO_OR_ONE = new GenericInterval<>(0, 1);
+        argsHandler.permitVariable("registry", ZERO_OR_ONE, "Set the RMI registry information.");
+
+        try {
+            argsHandler.processMainArgs(args);
+            List<String> argsReceived;
+            argsReceived = argsHandler.getValuesFromVariable("registry");
+            if (!argsReceived.isEmpty()) {
+                retVal = argsReceived.get(0);
+            }
+        } catch (final IllegalArgumentException iae) {
+            System.out.println(argsHandler.getUsageSummary());
+            System.exit(0);
+        }
+        System.out.println();
+        return retVal;
     }
-
-    /**
-     * Generate number of player who goes first.<br>
-     * @return 0 = Player 1... 1 = Player 2.
-     */
-    private int whoPlayFirst() {
-        return rnd.nextInt(1000) % 2;
-    }
-    
-    
     
 }

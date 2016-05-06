@@ -61,6 +61,12 @@ public class GameSession {
     /* when the last action was performed */
     private long lastAction;
 
+    /* is player one ready ? */
+    private boolean playerOneReady;
+    
+    /* is player two ready ? */
+    private boolean playerTwoReady;
+    
     /* constructor for one player */
     public GameSession(final Player playerOne, final IClientListener clientOne) {
         this.playerOne = playerOne;
@@ -130,6 +136,16 @@ public class GameSession {
     }
 
     /**
+     * Retrieves the other client based on parsed player name
+     * @param playerName The player requesting the opponent
+     * @return The other players client interface.
+     */
+    public IClientListener getOtherPlayer(final String playerName) {
+        updateActionTime();
+        return playerOne.getName().equals(playerName) ? clientTwo : clientOne;
+    }
+    
+    /**
      * Updates the last known action time index.<br>
      * This function is called from the helper methods when they are used.
      */
@@ -141,8 +157,43 @@ public class GameSession {
         this.playerOne = playerOne;
         this.clientOne = clientOne;
     }
+
+    public void setPlayerTwoAll(final Player playerTwo, final IClientListener clientTwo) {
+        this.playerTwo = playerTwo;
+        this.clientTwo = clientTwo;
+    }
+    
+    public Player getPlayerByName(final String playerName) {
+        return playerName.equals(playerOne.getName()) ? playerOne : playerTwo;
+    }
+    
+    
+    /**
+     * Determine if both players in session are ready to play.
+     * @return true if both players are ready to play, otherwise false.
+     */
+    public boolean isGameReady() {
+        return playerOneReady && playerTwoReady;
+    }
     
     /* getters & setters */
+
+    public boolean isPlayerOneReady() {
+        return playerOneReady;
+    }
+
+    public void setPlayerOneReady(boolean playerOneReady) {
+        this.playerOneReady = playerOneReady;
+    }
+
+    public boolean isPlayerTwoReady() {
+        return playerTwoReady;
+    }
+
+    public void setPlayerTwoReady(boolean playerTwoReady) {
+        this.playerTwoReady = playerTwoReady;
+    }
+    
     public long getLastAction() {
         return lastAction;
     }

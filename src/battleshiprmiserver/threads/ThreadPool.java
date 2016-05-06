@@ -66,9 +66,9 @@ public class ThreadPool {
 
     public synchronized void stop() {
         this.isStopped = true;
-        for (PoolThread thread : threads) {
+        threads.stream().forEach((thread) -> {
             thread.doStop();
-        }
+        });
     }
 
 }

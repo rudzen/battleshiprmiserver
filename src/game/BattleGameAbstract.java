@@ -66,9 +66,9 @@ public abstract class BattleGameAbstract {
      */
     private final ReentrantLock md5_lock;
 
-    protected BattleGameAbstract() {
-        sessions = new ConcurrentHashMap<>();
-        players = new ConcurrentHashMap<>();
+    protected BattleGameAbstract(final ConcurrentHashMap<String, IClientListener> players, final ConcurrentHashMap<String, GameSession> sessions) {
+        this.sessions = sessions;
+        this.players = players; 
         md5_lock = new ReentrantLock(true);
         MD5.initNativeLibrary(true);
         md5 = new MD5();
@@ -164,6 +164,11 @@ public abstract class BattleGameAbstract {
         }
         return md;
     }
+    
+    protected String updateSessionID(final GameSession gs) {
+        return updateSessionID(gs.getPlayerOne().getName(), gs.getClientOne(), gs.getPlayerTwo().getName(), gs.getClientTwo());
+    }
+    
     
     
     public Map<String, GameSession> getSessions() {
