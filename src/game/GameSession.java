@@ -167,6 +167,9 @@ public class GameSession {
         return playerName.equals(playerOne.getName()) ? playerOne : playerTwo;
     }
     
+    public IClientListener getClientByName(final String playerName) {
+        return playerName.equals(playerOne.getName()) ? clientOne : clientTwo;
+    }
     
     /**
      * Determine if both players in session are ready to play.

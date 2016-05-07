@@ -56,9 +56,9 @@ public final class PrettyPrint {
 
     private final ArrayList<String> menu = new ArrayList<>(41);
 
-    public PrettyPrint(final String registry) {
+    public PrettyPrint(final String registry, final int port) {
         this.registry = registry;
-        port = 1099;
+        this.port = port;
         pos = getTop(-1);
         pos = getStatus(pos);
         pos = getButtom(pos);
@@ -100,7 +100,7 @@ public final class PrettyPrint {
         menu.add(++p, makeSingleBordered(""));
         menu.add(++p, makeFilledBorder("Status"));
         menu.add(++p, makeSingleBordered("Date started             : " + new Date().toString().trim()));
-        menu.add(++p, makeSingleBordered("Server IP                : " + ((IP != null) ? IP : "<No NIC detected.>")));
+        menu.add(++p, makeSingleBordered("Server Local IP          : " + ((IP != null) ? IP : "<No NIC detected.>")));
         menu.add(++p, makeSingleBordered("RMI Registry             : " + registry));
         menu.add(++p, makeSingleBordered("Port                     : " + Integer.toString(port)));
         menu.add(++p, makeSingleBordered("Clients Connected        : " + "N/A"));

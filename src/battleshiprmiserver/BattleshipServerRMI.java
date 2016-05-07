@@ -23,6 +23,7 @@
  */
 package battleshiprmiserver;
 
+import battleshiprmiserver.rest.BattleshipJerseyHelper;
 import battleshiprmiserver.threads.Runner;
 import battleshiprmiserver.threads.ThreadPool;
 import dataobjects.Player;
@@ -38,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaces.IClientListener;
 import interfaces.IShip;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
@@ -80,8 +82,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     /* keep track of how many sessions active */
     private final AtomicInteger sessionCount = new AtomicInteger(0);
-    
-    
+
     /* locks for session system */
     private final ReentrantLock games_lock = new ReentrantLock();
 
@@ -151,13 +152,17 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         System.out.println("Loading battleship server, please wait.");
         try {
 
-            java.rmi.registry.LocateRegistry.createRegistry(1099); // start i server-JVM
+            final int port = 5000;
+            
+            java.rmi.registry.LocateRegistry.createRegistry(port);
+            //java.rmi.registry.LocateRegistry.createRegistry(1099);
 
             // Load the service
             BattleshipServerRMI server = new BattleshipServerRMI();
 
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(new SecurityManager());
+                System.setProperty("java.rmi.server.hostname", "212.60.120.4");
                 System.out.println("SecurityManager created.");
             }
 
@@ -168,11 +173,12 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 registry = BattleshipServerRMIHelper.setArgs(args);
                 System.out.println("Registry changed through command-line to " + registry);
             } else {
-                registry = "localhost";
+                registry = "212.60.120.4";
+                //registry = "localhost";
             }
 
             /* update the prettyprinter */
-            server.setPp(new PrettyPrint(registry));
+            server.setPp(new PrettyPrint(registry, port));
             server.getPp().showMenu();
 
             // Registration format //registry_hostname:port
@@ -223,7 +229,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     }
                     index.put(playerName, clientInterface);
                     players.put(playerName, clientInterface.getPlayer());
-                    
+
                 } catch (final RemoteException re) {
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, "Client could not be reached {0}", clientInterface);
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, re);
@@ -263,7 +269,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     index.remove(playerName);
                 }
                 if (sessionID != null && sessionID.length() > 0) {
-                    
+
                 }
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
@@ -329,8 +335,19 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void deployShips(String player, IShip[] ships) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deployShips(final Player player, String sessionID) throws RemoteException {
+        new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("Deploy ships : " + player.getName() + "\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
+                    GameSession gs = bg.getSessions().get(sessionID);
+                    threadpool.execute(new Runner(gs.getClientByName(player.getName()), gs.getPlayerByName(player.getName()), Messages.MessageType.DEPLOY_SHIPS));
+                } catch (Exception ex) {
+                    Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }.run();
     }
 
     @Override

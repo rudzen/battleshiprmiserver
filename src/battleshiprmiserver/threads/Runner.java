@@ -23,6 +23,8 @@
  */
 package battleshiprmiserver.threads;
 
+import battleshiprmiserver.rest.BattleshipJerseyClient;
+import battleshiprmiserver.rest.BattleshipJerseyHelper;
 import dataobjects.Player;
 import game.Messages;
 import interfaces.IClientListener;
@@ -63,6 +65,12 @@ public class Runner implements Runnable {
     public void run() {
         System.out.print("Sending REST for " + player.getName() + ", type : ");
         if (type == Messages.MessageType.DEPLOY_SHIPS) {
+            BattleshipJerseyClient rest = new BattleshipJerseyClient();
+            try {
+                client.showMessage(rest.deployBoard("1", "1", BattleshipJerseyHelper.shipsToString(player.getShips())), "Response", 0);
+            } catch (RemoteException ex) {
+                Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("deploy ships.");
         } else if (type == Messages.MessageType.GAME_TIMEOUT) {
             System.out.println("game timeout.");

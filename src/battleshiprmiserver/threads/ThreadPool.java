@@ -52,9 +52,9 @@ public class ThreadPool {
         for (int i = 0; i < runningThreads; i++) {
             threads.add(new PoolThread(taskQueue));
         }
-        for (PoolThread thread : threads) {
+        threads.stream().forEach((thread) -> {
             thread.start();
-        }
+        });
     }
 
     public synchronized void execute(final Runner task) throws Exception {
