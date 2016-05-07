@@ -141,6 +141,12 @@ public class Ship implements Serializable, IShip {
         upgrades.addUpgrade(upgradeType);
     }
 
+    @Override
+    public void addUpgrade(final UPGRADES upgradeType, final int amount) {
+        upgrades.addUpgrade(upgradeType, amount);
+    }
+    
+    
     /**
      * Removes an upgrade from the ship (wahh, what why?)
      *

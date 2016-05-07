@@ -35,7 +35,9 @@ public final class Messages {
     public static final String TIME_LIMIT_MSG = "Your current game has been terminated due to age";
 
     public enum MessageType {
-        GAME_TIMEOUT, GAME_WON, GAME_LOST, SHIP_SUNK, SHIP_HIT, ATTACK_WASTED, DEPLOY_SHIPS, SHOT_FIRED
+        GAME_TIMEOUT, GAME_WON, GAME_LOST, SHIP_SUNK, SHIP_HIT, ATTACK_WASTED, DEPLOY_SHIPS, SHOT_FIRED,
+        GET_LOBBYS
+        
     }
     
 }

@@ -57,6 +57,8 @@ public interface IShip {
      */
     void addUpgrade(final Upgrades.UPGRADES upgradeType);
 
+    void addUpgrade(final Upgrades.UPGRADES upgradeType, final int amount);
+    
     DIRECTION getDirection();
 
     int getLength();

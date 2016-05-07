@@ -24,7 +24,9 @@
 package battleshiprmiserver.rest;
 
 import dataobjects.PPoint;
+import dataobjects.Player;
 import dataobjects.Ship;
+import dataobjects.Upgrades;
 import interfaces.IShip;
 import java.util.StringTokenizer;
 
@@ -58,7 +60,6 @@ public final class BattleshipJerseyHelper {
 
     /**
      * Convert ALL ships to string based information to send to REST server.
-     *
      * @param ships The ship array to convert.
      * @return
      */
@@ -77,6 +78,11 @@ public final class BattleshipJerseyHelper {
         return null;
     }
 
+    /**
+     * Converts an IShip.TYPE to string based name
+     * @param t The type to convert
+     * @return The name of the ship based on the type
+     */
     private static String shipTypeToString(IShip.TYPE t) {
         if (t == IShip.TYPE.CARRIER) {
             return "0";
@@ -91,6 +97,12 @@ public final class BattleshipJerseyHelper {
         }
     }
 
+    /**
+     * Convert the String name of a ship to a TYPE
+     *
+     * @param type The name to convert
+     * @return The
+     */
     private static IShip.TYPE shipStringToType(final String type) {
         if (type.endsWith("0")) {
             return IShip.TYPE.CARRIER;
@@ -100,28 +112,87 @@ public final class BattleshipJerseyHelper {
             return IShip.TYPE.DESTROYER;
         } else if (type.endsWith("3")) {
             return IShip.TYPE.SUBMARINE;
-        } else {
+        } else if (type.endsWith("4")) {
             return IShip.TYPE.PATROL;
         }
+        return null;
     }
 
+    /**
+     * Idiotic manual convertion from String to ship.
+     *
+     * @param string The response from the server representing a ship.
+     * @return The IShip object for the java clients.
+     */
     public static IShip stringToShip(final String string) {
         StringTokenizer tokenizer = new StringTokenizer(string, "/");
         Ship s = new Ship();
         PPoint start;
         String tmp[];
         int len;
-        
+
         s.setType(shipStringToType(tokenizer.nextToken()));
-        
+
         tmp = tokenizer.nextToken().split("=");
         start = new PPoint();
         start.setX(Byte.parseByte(tmp[1]));
         tmp = tokenizer.nextToken().split("=");
         start.setY(Byte.parseByte(tmp[1]));
         s.setLocStart(start);
-        
+
         return s;
     }
+
+    /**
+     * Convert a REST based player data structure to Local java data structure.<br>
+     * <b>IMPORTANT</b>. Do this <b>as the first thing</b>, otherwise ship upgrades will be lost!
+     * @param restPlayer The rest player to convert
+     * @return The new player object
+     */
+    public static Player restPlayerToLocal(rest.Player restPlayer) {
+        Player p = new Player(restPlayer.getPlayername());
+        p.initShips();
+        
+        /* set up the upgrades for the ships */
+        IShip[] ships = p.getShips();
+        for (IShip ship : ships) {
+            if (restPlayer.getArmor() > 0) {
+                ship.addUpgrade(Upgrades.UPGRADES.ARMOR, restPlayer.getArmor());
+            }
+            if (restPlayer.getDecoy() > 0) {
+                ship.addUpgrade(Upgrades.UPGRADES.DECOY, restPlayer.getDecoy());
+            }
+            if (restPlayer.getWeapon() > 0) {
+                ship.addUpgrade(Upgrades.UPGRADES.POWER, restPlayer.getWeapon());
+            }
+            if (restPlayer.getSonar() > 0) {
+                ship.addUpgrade(Upgrades.UPGRADES.SONAR, restPlayer.getSonar());
+            }
+        }
+        p.setShips(ships);
+        
+        
+        p.setId(restPlayer.getPlayerid());
+        
+        return p;
+    }
+
+    /**
+     * Pupolate a single ship with upgrades
+     * @param theShip The ship
+     * @param amount The amount of upgrades
+     * @param upgradeType The upgrade type
+     * @return The ship
+     * @deprecated Not used anymore
+     */
+    private static IShip populateUpgrade(IShip theShip,  final Integer amount, Upgrades.UPGRADES upgradeType) {
+        if (amount > 0) {
+            for (int i = 0; i < amount; i++) {
+                theShip.addUpgrade(upgradeType);
+            }
+        }
+        return theShip;
+    }
+    
 
 }

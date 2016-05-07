@@ -6,65 +6,77 @@
 package rest;
 
 import java.io.Serializable;
-import java.util.Collection;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
 
-/**
- *
- * @author root
- */
 public class Lobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Integer lobbyid;
-    private Player attackerid;
-    private Player deffenderid;
-    private Collection<Board> boardCollection;
+    private final Integer lobbyid;
+    private Player attacker;
+    private Player defender;
+    private Board attackerBoard;
+    private Board defenderBoard;
+    private boolean hasTwoPlayers, isDeployed, attackersTurn;
+    private ArrayList<String> moves = new ArrayList();
+    private ArrayList<String> chat = new ArrayList();
 
-    public Lobby() {
-    }
-
-    public Lobby(Integer lobbyid) {
+    public Lobby(Integer lobbyid, Player defender) {
         this.lobbyid = lobbyid;
+        this.defender = defender;
+        defenderBoard = new Board(this, defender);
     }
-    public Lobby(Integer lobbyid, Player deffender, Player attacker){
-        this.lobbyid =lobbyid;
-        this.deffenderid = deffender;
-        this.attackerid = attacker;
+    public Lobby(Integer lobbyid, Player defender, Player attacker){
+        this(lobbyid, defender);
+        this.attacker = attacker;
+        attackerBoard = new Board(this, attacker);
     }
 
     public Integer getLobbyid() {
         return lobbyid;
     }
-
-    public void setLobbyid(Integer lobbyid) {
-        this.lobbyid = lobbyid;
+    
+    public Player getAttacker() {
+        return attacker;
+    }
+    
+    public Integer getAttackerid() {
+        return attacker.getPlayerid();
     }
 
-    public Player getAttackerid() {
-        return attackerid;
+    public boolean setAttacker(Player attacker) {
+        if(this.attacker != null || attacker == null) return false;
+        this.attacker = attacker;
+        attackerBoard = new Board(this, attacker);
+        return true;
     }
 
-    public void setAttackerid(Player attackerid) {
-        this.attackerid = attackerid;
+    public Player getDefender() {
+        return defender;
+    }
+    
+    public Integer getDefenderid() {
+        return defender.getPlayerid();
     }
 
-    public Player getDeffenderid() {
-        return deffenderid;
+    public Board[] getBoards() {
+        return new Board[]{attackerBoard, defenderBoard};
     }
-
-    public void setDeffenderid(Player deffenderid) {
-        this.deffenderid = deffenderid;
+    public Board getBoard(int playerid){
+        if(playerid == getDefenderid()) return getDefenderBoard();
+        else if (playerid == getAttackerid()) return getAttackerBoard();
+        else return null;
     }
-
-    @XmlTransient
-    public Collection<Board> getBoardCollection() {
-        return boardCollection;
+    public Board getAttackerBoard(){
+        return attackerBoard;
     }
-
-    public void setBoardCollection(Collection<Board> boardCollection) {
-        this.boardCollection = boardCollection;
+    
+    public Board getDefenderBoard(){
+        return defenderBoard;
+    }
+    
+    public int getActiveId(){
+        if(attackersTurn) return getAttackerid();
+        else return getDefenderid();
     }
 
     @Override
@@ -85,11 +97,5 @@ public class Lobby implements Serializable {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "entity.Lobby[ lobbyid=" + lobbyid + " ]";
-    }
-    
+    }   
 }

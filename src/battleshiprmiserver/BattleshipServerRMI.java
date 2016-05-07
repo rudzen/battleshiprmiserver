@@ -23,6 +23,7 @@
  */
 package battleshiprmiserver;
 
+import battleshiprmiserver.rest.BattleshipJerseyClient;
 import battleshiprmiserver.rest.BattleshipJerseyHelper;
 import battleshiprmiserver.threads.Runner;
 import battleshiprmiserver.threads.ThreadPool;
@@ -153,8 +154,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         try {
 
             final int port = 5000;
+            final String myIP = "212.60.120.4";
             
-            java.rmi.registry.LocateRegistry.createRegistry(port);
+            java.rmi.registry.LocateRegistry.createRegistry(1099);
             //java.rmi.registry.LocateRegistry.createRegistry(1099);
 
             // Load the service
@@ -162,7 +164,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(new SecurityManager());
-                System.setProperty("java.rmi.server.hostname", "212.60.120.4");
+                //System.setProperty("java.rmi.server.hostname", myIP);
+                System.setProperty("java.rmi.server.hostname", "localhost");
                 System.out.println("SecurityManager created.");
             }
 
@@ -173,8 +176,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 registry = BattleshipServerRMIHelper.setArgs(args);
                 System.out.println("Registry changed through command-line to " + registry);
             } else {
-                registry = "212.60.120.4";
-                //registry = "localhost";
+                //registry = "212.60.120.4";
+                registry = "localhost";
             }
 
             /* update the prettyprinter */
@@ -229,14 +232,20 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     }
                     index.put(playerName, clientInterface);
                     players.put(playerName, clientInterface.getPlayer());
-
+                    try {
+                        threadpool.execute(new Runner(clientInterface, clientInterface.getPlayer(), Messages.MessageType.GET_LOBBYS));
+                    } catch (Exception ex) {
+                        Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (final RemoteException re) {
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, "Client could not be reached {0}", clientInterface);
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, re);
                     index.remove(playerName);
                 }
+                
             }
         }.run();
+        
         return index.contains(clientInterface);
 
 //        if (list.contains(clientInterface) || plys.contains(player)) {
