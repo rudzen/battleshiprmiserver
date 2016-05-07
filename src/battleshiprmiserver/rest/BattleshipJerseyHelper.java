@@ -201,7 +201,8 @@ public final class BattleshipJerseyHelper {
 
     /**
      * Convert an entire Lobby object to a RMI based GameSession.<br>
-     * This includes Players.
+     * This includes Players.<br>
+     * Note that this function should be the first to be called in case the response contains a lobby.
      *
      * @param lobby The JSON string to convert.
      * @return The gamesession. Note that the ClientInterfaces is NOT PRESENT!,
@@ -267,13 +268,14 @@ public final class BattleshipJerseyHelper {
           they are going to be copied manually after this function
           has returned the new gamesession from the old gamesession.
         */
-        
         gs.setClientOne(null);
         gs.setClientTwo(null);
         gs.setPlayerOne(p1);
         gs.setPlayerTwo(p2);
 
+        /* because i'm a bastard! */
         gs.updateActionTime();
+        
         return gs;
     }
 

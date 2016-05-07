@@ -44,7 +44,7 @@ public class Runner implements Runnable {
 
     private final IClientListener client;
     private final Player player;
-    private Point shotDest;
+    private Point shotDest = null;
     
     private final Messages.MessageType type;
     
