@@ -67,6 +67,12 @@ public class GameSession {
     /* is player two ready ? */
     private boolean playerTwoReady;
     
+    /* lobby id from database */
+    private int lobbyID;
+    
+    /* active id from database */
+    private int activeID;
+    
     /* constructor for one player */
     public GameSession(final Player playerOne, final IClientListener clientOne) {
         this.playerOne = playerOne;
@@ -181,6 +187,22 @@ public class GameSession {
     
     /* getters & setters */
 
+    public int getActiveID() {
+        return activeID;
+    }
+
+    public void setActiveID(int activeID) {
+        this.activeID = activeID;
+    }
+    
+    public int getLobbyID() {
+        return lobbyID;
+    }
+
+    public void setLobbyID(int lobbyID) {
+        this.lobbyID = lobbyID;
+    }
+
     public boolean isPlayerOneReady() {
         return playerOneReady;
     }
@@ -255,12 +277,17 @@ public class GameSession {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.playerOne);
-        hash = 79 * hash + Objects.hashCode(this.playerTwo);
-        hash = 79 * hash + Objects.hashCode(this.clientOne);
-        hash = 79 * hash + Objects.hashCode(this.clientTwo);
-        hash = 79 * hash + (int) (this.timeCreated ^ (this.timeCreated >>> 32));
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.playerOne);
+        hash = 97 * hash + Objects.hashCode(this.playerTwo);
+        hash = 97 * hash + Objects.hashCode(this.clientOne);
+        hash = 97 * hash + Objects.hashCode(this.clientTwo);
+        hash = 97 * hash + Objects.hashCode(this.gameSessionID);
+        hash = 97 * hash + (int) (this.timeCreated ^ (this.timeCreated >>> 32));
+        hash = 97 * hash + (this.playerOneReady ? 1 : 0);
+        hash = 97 * hash + (this.playerTwoReady ? 1 : 0);
+        hash = 97 * hash + this.lobbyID;
+        hash = 97 * hash + this.activeID;
         return hash;
     }
 
@@ -291,16 +318,21 @@ public class GameSession {
         if (!Objects.equals(this.clientOne, other.clientOne)) {
             return false;
         }
-        if (!Objects.equals(this.clientTwo, other.clientTwo)) {
+        if (this.lobbyID != other.lobbyID) {
             return false;
         }
-        return true;
+        if (this.activeID != other.activeID) {
+            return false;
+        }
+        return Objects.equals(this.clientTwo, other.clientTwo);
     }
 
     @Override
     public String toString() {
         return "GameSession {" +
-                "playerOne=" + playerOne +
+                "lobbyID=" + lobbyID +
+                "\nactiveID=" + activeID +
+                "\nplayerOne=" + playerOne +
                 "\nplayerTwo=" + playerTwo +
                 "\nclientOne=" + clientOne +
                 "\nclientTwo=" + clientTwo +

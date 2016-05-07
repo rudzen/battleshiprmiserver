@@ -23,12 +23,16 @@
  */
 package battleshiprmiserver.rest;
 
+import com.google.gson.Gson;
 import dataobjects.PPoint;
 import dataobjects.Player;
 import dataobjects.Ship;
 import dataobjects.Upgrades;
+import game.GameSession;
 import interfaces.IShip;
 import java.util.StringTokenizer;
+import rest.Board;
+import rest.Lobby;
 
 /**
  * - Convert java classes to parameters accepted by the web-server.<br>
@@ -45,10 +49,6 @@ public final class BattleshipJerseyHelper {
      * @return The string result based on the ship data.
      */
     public static String[] shipToString(final IShip ship) {
-
-//            public String deployBoard(String lobbyid, String playerid, String type1, String x1, String y1, String horizontal1, String type2, String x2, String y2, String horizontal2, String type3, String x3, String y3, String horizontal3, String type4, String x4, String y4, String horizontal4, String type5, String x5, String y5, String horizontal5) throws ClientErrorException {
-//        return webTarget.path(java.text.MessageFormat.format("deploy_board/lobbyid={0}/playerid={1}/ship1={2}/x={3}/y={4}/horizontal={5}/ship2={6}/x={7}/y={8}/horizontal={9}/ship3={10}/x={11}/y={12}/horizontal={13}/ship4={14}/x={15}/y={16}/horizontal={17}/ship5={18}/x={19}/y={20}/horizontal={21}", new Object[]{lobbyid, playerid, type1, x1, y1, horizontal1, type2, x2, y2, horizontal2, type3, x3, y3, horizontal3, type4, x4, y4, horizontal4, type5, x5, y5, horizontal5})).request().put(null, String.class);
-//    }
         final String[] r = new String[4];
 
         r[0] = shipTypeToString(ship.getType());
@@ -60,6 +60,7 @@ public final class BattleshipJerseyHelper {
 
     /**
      * Convert ALL ships to string based information to send to REST server.
+     *
      * @param ships The ship array to convert.
      * @return
      */
@@ -80,6 +81,7 @@ public final class BattleshipJerseyHelper {
 
     /**
      * Converts an IShip.TYPE to string based name
+     *
      * @param t The type to convert
      * @return The name of the ship based on the type
      */
@@ -144,15 +146,18 @@ public final class BattleshipJerseyHelper {
     }
 
     /**
-     * Convert a REST based player data structure to Local java data structure.<br>
-     * <b>IMPORTANT</b>. Do this <b>as the first thing</b>, otherwise ship upgrades will be lost!
+     * Convert a REST based player data structure to Local java data
+     * structure.<br>
+     * <b>IMPORTANT</b>. Do this <b>as the first thing</b>, otherwise ship
+     * upgrades will be lost!
+     *
      * @param restPlayer The rest player to convert
      * @return The new player object
      */
     public static Player restPlayerToLocal(rest.Player restPlayer) {
         Player p = new Player(restPlayer.getPlayername());
         p.initShips();
-        
+
         /* set up the upgrades for the ships */
         IShip[] ships = p.getShips();
         for (IShip ship : ships) {
@@ -170,22 +175,22 @@ public final class BattleshipJerseyHelper {
             }
         }
         p.setShips(ships);
-        
-        
+
         p.setId(restPlayer.getPlayerid());
-        
+
         return p;
     }
 
     /**
      * Pupolate a single ship with upgrades
+     *
      * @param theShip The ship
      * @param amount The amount of upgrades
      * @param upgradeType The upgrade type
      * @return The ship
      * @deprecated Not used anymore
      */
-    private static IShip populateUpgrade(IShip theShip,  final Integer amount, Upgrades.UPGRADES upgradeType) {
+    private static IShip populateUpgrade(IShip theShip, final Integer amount, Upgrades.UPGRADES upgradeType) {
         if (amount > 0) {
             for (int i = 0; i < amount; i++) {
                 theShip.addUpgrade(upgradeType);
@@ -193,6 +198,96 @@ public final class BattleshipJerseyHelper {
         }
         return theShip;
     }
-    
 
+    /**
+     * Convert an entire Lobby object to a RMI based GameSession.<br>
+     * This includes Players.
+     *
+     * @param lobby The JSON string to convert.
+     * @return The gamesession. Note that the ClientInterfaces is NOT PRESENT!,
+     * these needs to be copied over from the old one if applicable.
+     */
+    public static GameSession convertLobby(final String lobby) {
+        Gson g = new Gson();
+        Lobby l = g.fromJson(lobby, Lobby.class);
+        g = null; // help the GC on the way!
+        
+        rest.Player rP = l.getDefender();
+
+        /* convert player one */
+        Player p1 = restPlayerToLocal(rP);
+
+        /* set player two if exists */
+        Player p2 = null;
+        if (l.getAttacker() != null) {
+            p2 = restPlayerToLocal(l.getAttacker());
+        }
+
+        /* convert the boards */
+        Board[] boards = l.getBoards();
+
+        /*
+    board defined as :
+    0 = empty not shot
+    1 = shot, no hit
+    2 = shot, hit
+    3 = shot, hit, armor rating
+    4 = ship location
+    5 = ship, sunk
+         */
+        int[][] board;
+
+        for (int i = 0; i < boards.length; i++) {
+            board = new int[10][10];
+            for (int j = 0; j < 10; j++) {
+                for (int k = 0; k < 10; k++) {
+                    if (boards[i].getHit(j, k) == 1) {
+                        board[j][k] = 2;
+                    } else if (boards[i].getHit(j, k) == 2) {
+                        board[j][k] = 5;
+                    }
+                }
+            }
+            if (i == 0) {
+                p1.setBoard(board);
+            } else if (p2 != null) {
+                p2.setBoard(board);
+            }
+        }
+
+        /* put the data in the GameSession object */
+        GameSession gs = new GameSession(null, null);
+
+        /* convert both ids */
+        gs.setLobbyID(l.getLobbyid());
+        gs.setActiveID(l.getActiveId());
+
+        /* update game session with players and client interfaces.
+          Note that the interfaces are ALWAYS null, this is because
+          they are going to be copied manually after this function
+          has returned the new gamesession from the old gamesession.
+        */
+        
+        gs.setClientOne(null);
+        gs.setClientTwo(null);
+        gs.setPlayerOne(p1);
+        gs.setPlayerTwo(p2);
+
+        gs.updateActionTime();
+        return gs;
+    }
+
+    
+    public String convertGameSession(final GameSession gs) {
+        
+        Gson g = new Gson();
+        
+        /* convert all the shit back again!!!! :) */
+        
+        
+        
+        return null;
+    }
+    
+    
 }
