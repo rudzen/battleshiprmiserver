@@ -23,9 +23,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.server.RMISocketFactory;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -34,18 +32,26 @@ import java.util.Map;
  * reachable from the client).
  *
  * @author Tim Taylor
+ * 
+ * 09.May.2016
+ * -----------
+ * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * - Reworked syntax for modern Java (8).
+ * - Added usage of Java 8 concurrency library for better performance.
  */
 public class ServerTwoWaySocketFactory extends RMISocketFactory {
 
     /**
      * Socket pools where sockets requested from client are returned.
      */
-    private final Map socketPools = Collections.synchronizedMap(new HashMap());
+    //private final Map socketPools = Collections.synchronizedMap(new HashMap());
+    private final ConcurrentHashMap<String, SocketPool> socketPools = new ConcurrentHashMap<>();
 
     /**
      * Map of request streams to clients.
      */
-    private final Map requestStreams = Collections.synchronizedMap(new HashMap());
+//    private final Map requestStreams = Collections.synchronizedMap(new HashMap());
+    private final ConcurrentHashMap<String, DataOutputStream> requestStreams = new ConcurrentHashMap<>();
 
     /**
      * Add a request <code>socket</code> to the factory. The factory will use
@@ -96,7 +102,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
      * @throws java.io.IOException
      */
     @Override
-    public Socket createSocket(String address, int port) throws IOException {
+    public Socket createSocket(final String address, final int port) throws IOException {
         String endpoint = EndpointInfo.getEndpointString(address, port);
 
         DataOutputStream requestStream = (DataOutputStream) requestStreams.get(endpoint);
@@ -123,7 +129,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
                 requestStream.writeInt(port);
                 requestStream.flush();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             socketPools.remove(endpoint);
             requestStreams.remove(endpoint);
             return new Socket(address, port);
@@ -155,6 +161,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
             return in;
         }
 
+        @Override
         public synchronized void close() throws IOException {
             super.close();
         }
@@ -168,7 +175,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
      */
     class TwoWayServerSocket extends ServerSocket {
 
-        public TwoWayServerSocket(int port) throws IOException {
+        public TwoWayServerSocket(final int port) throws IOException {
             super(port);
         }
 

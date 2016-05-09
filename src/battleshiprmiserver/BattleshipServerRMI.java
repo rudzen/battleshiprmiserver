@@ -26,6 +26,7 @@ package battleshiprmiserver;
 import battleshiprmiserver.rest.BattleshipJerseyHelper;
 import battleshiprmiserver.threads.Runner;
 import battleshiprmiserver.threads.ThreadPool;
+import com.css.rmi.ServerTwoWaySocketFactory;
 import dataobjects.Player;
 import game.BattleGame;
 import game.GameSession;
@@ -38,6 +39,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaces.IClientListener;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.RMISocketFactory;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -154,8 +157,12 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             final int port = 5000;
             final String myIP = "212.60.120.4";
 
-            java.rmi.registry.LocateRegistry.createRegistry(1099);
             //java.rmi.registry.LocateRegistry.createRegistry(1099);
+
+            RMISocketFactory.setSocketFactory(new ServerTwoWaySocketFactory());
+
+            // Export the registry from the same JVM
+            LocateRegistry.createRegistry(6769);
 
             // Load the service
             BattleshipServerRMI server = new BattleshipServerRMI();
@@ -187,11 +194,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             String registration = "rmi://" + registry + "/Battleship";
 
             // Register with service so that clients can find us
-            Naming.rebind(registration, server);
-            // Create a thread, and pass the server.
-            // This will activate the run() method, and
-            // trigger regular coordinate changes.
-
+            //Naming.rebind(registration, server);
+            Naming.rebind("rmi://localhost:6769/Battleship", server);
+            
             /* configure battlegame object */
             bg = new BattleGame(index, sessions);
 

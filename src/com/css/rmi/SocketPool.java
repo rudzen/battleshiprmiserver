@@ -14,9 +14,13 @@
  */
 package com.css.rmi;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.InterruptedIOException;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  * Provides a simple producer/consumer pool of sockets.
