@@ -25,16 +25,18 @@ package login;
 
 import interfaces.IClientListener;
 import java.net.URL;
+import java.rmi.RemoteException;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 /**
  * Simple SOAP login system.....
+ *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public class Login {
 
-    public static boolean login(final String userName, final String password, final IClientListener client) {
+    public static boolean loginBA(final String userName, final String password, final IClientListener client) throws RemoteException {
 
         try {
             QName qname = new QName("http://soap.transport.brugerautorisation/", "BrugeradminImplService");
@@ -42,7 +44,7 @@ public class Login {
             Brugeradmin ba = service.getPort(Brugeradmin.class);
 
             Bruger bruger = ba.hentBruger(userName, password);
-            if (bruger.adgangskode.equals(password) && bruger.brugernavn.equals(userName)) {
+            if (bruger != null) {
                 bruger = null;
                 ba = null;
                 service = null;
@@ -50,9 +52,21 @@ public class Login {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Kan ikke forbinde til bruger database.");
+            client.showMessage("Kan ikke forbinde til bruger database.", "LoginBA()", 0);
         }
         return false;
+    }
+    
+    public static boolean loginOWNAGE(final String userName, final String password, final IClientListener client) {
+        return false;
+    }
+    
 
+    private static boolean slowEquals(byte[] a, byte[] b) {
+        int diff = a.length ^ b.length;
+        for (int i = 0; i < a.length && i < b.length; i++) {
+            diff |= a[i] ^ b[i];
+        }
+        return diff == 0;
     }
 }

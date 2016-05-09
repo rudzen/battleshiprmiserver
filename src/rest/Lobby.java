@@ -5,20 +5,23 @@
  */
 package rest;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
+
 
 public class Lobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     private final Integer lobbyid;
     private Player attacker;
     private Player defender;
     private Board attackerBoard;
     private Board defenderBoard;
     private boolean hasTwoPlayers, isDeployed, attackersTurn;
-    private ArrayList<String> moves = new ArrayList();
-    private ArrayList<String> chat = new ArrayList();
+    public ArrayList<Point> moves = new ArrayList();
+    public ArrayList<String> chat = new ArrayList();
 
     public Lobby(Integer lobbyid, Player defender) {
         this.lobbyid = lobbyid;
@@ -29,6 +32,9 @@ public class Lobby implements Serializable {
         this(lobbyid, defender);
         this.attacker = attacker;
         attackerBoard = new Board(this, attacker);
+    }
+    public void setDeployed(){
+        isDeployed = true;
     }
 
     public Integer getLobbyid() {
@@ -97,5 +103,12 @@ public class Lobby implements Serializable {
             return false;
         }
         return true;
-    }   
+    }
+
+    @Override
+    public String toString() {
+        return "Lobby{" + "lobbyid=" + lobbyid + ", attacker=" + attacker + ", defender=" + defender + ", attackerBoard=" + attackerBoard + ", defenderBoard=" + defenderBoard + ", hasTwoPlayers=" + hasTwoPlayers + ", isDeployed=" + isDeployed + ", attackersTurn=" + attackersTurn + ", moves=" + moves + ", chat=" + chat + '}';
+    }
+    
+    
 }

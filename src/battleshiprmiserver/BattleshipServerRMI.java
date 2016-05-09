@@ -209,7 +209,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public void login(String user, String pw, IClientListener client) throws RemoteException {
         System.out.println("Attempted login by : " + user);
-        boolean loginOK = Login.login(user, pw, client);
+        boolean loginOK = Login.loginBA(user, pw, client);
         System.out.println("User : " + user + (loginOK ? " has logged in." : " failed to login."));
         try {
             client.loginstatus(loginOK);

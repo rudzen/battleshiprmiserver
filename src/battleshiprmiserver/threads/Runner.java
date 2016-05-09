@@ -26,11 +26,14 @@ package battleshiprmiserver.threads;
 import battleshiprmiserver.rest.BattleshipJerseyClient;
 import battleshiprmiserver.rest.BattleshipJerseyHelper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import dataobjects.Player;
+import game.GameSession;
 import game.Messages;
 import interfaces.IClientListener;
 import java.awt.Point;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -84,10 +87,18 @@ public class Runner implements Runnable {
             final BattleshipJerseyClient restClient = new BattleshipJerseyClient();
             final String s = restClient.getLobbies();
             restClient.close();
-            System.out.println("Lobbys from server : " + s);
+            //System.out.println("Lobbys from server : " + s);
             Gson g = new Gson();
-            Lobby l = g.fromJson(s, Lobby.class);
-            System.out.println("Lobby object : " + l.toString());
+            //HashMap<Integer, Lobby> fromServer = g.fromJson(s, new TypeToken<HashMap<Integer, Lobby>>(){}.getType());
+            HashMap<String, Lobby> fromServer = g.fromJson(s, new TypeToken<HashMap<String, Lobby>>(){}.getType());
+            GameSession gs;
+            fromServer.values().stream().forEach((l) -> {
+                System.out.println("Printing new lobby : " + l.getActiveId());
+                System.out.println(BattleshipJerseyHelper.convertLobby(l).toString());
+                
+//                System.out.println(l.toString());
+            });
+            //System.out.println("Lobby object : " + l.toString());
             try {
                 client.showMessage(s, "Lobbys", 0);
             } catch (RemoteException ex) {

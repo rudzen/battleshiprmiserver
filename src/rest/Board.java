@@ -5,7 +5,11 @@
  */
 package rest;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
+
+    private static final long serialVersionUID = 1726828769918459444L;
 
     private final int lobbyid;
     private final int playerid;

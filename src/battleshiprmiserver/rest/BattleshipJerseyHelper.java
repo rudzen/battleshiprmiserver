@@ -36,7 +36,7 @@ import rest.Lobby;
 
 /**
  * - Convert java classes to parameters accepted by the web-server.<br>
- * - Convert received responses from the server back to native format too !<br>
+ * - Convert received responses from the server back to native format too (except ships, which isn't used. !<br>
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
@@ -66,7 +66,7 @@ public final class BattleshipJerseyHelper {
      */
     public static String[] shipsToString(final IShip[] ships) {
         if (ships.length > 0) {
-            final String[] r = new String[ships.length * 4];
+            final String[] r = new String[ships.length << 2];
             int posR = 0;
             for (final IShip s : ships) {
                 r[posR++] = shipTypeToString(s.getType());
@@ -156,7 +156,7 @@ public final class BattleshipJerseyHelper {
      */
     public static Player restPlayerToLocal(rest.Player restPlayer) {
         Player p = new Player(restPlayer.getPlayername());
-        p.initShips();
+        p.initShips(); // this is just so there wont be a NPE at some point!
 
         /* set up the upgrades for the ships */
         IShip[] ships = p.getShips();
@@ -204,14 +204,14 @@ public final class BattleshipJerseyHelper {
      * This includes Players.<br>
      * Note that this function should be the first to be called in case the response contains a lobby.
      *
-     * @param lobby The JSON string to convert.
+     * @param l The Lobby to convert
      * @return The gamesession. Note that the ClientInterfaces is NOT PRESENT!,
      * these needs to be copied over from the old one if applicable.
      */
-    public static GameSession convertLobby(final String lobby) {
-        Gson g = new Gson();
-        Lobby l = g.fromJson(lobby, Lobby.class);
-        g = null; // help the GC on the way!
+    public static GameSession convertLobby(final Lobby l) {
+//        Gson g = new Gson();
+//        Lobby l = g.fromJson(lobby, Lobby.class);
+//        g = null; // help the GC on the way!
         
         rest.Player rP = l.getDefender();
 
