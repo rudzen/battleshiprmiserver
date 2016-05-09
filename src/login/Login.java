@@ -21,23 +21,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package game;
+package login;
+
+import interfaces.IClientListener;
+import java.net.URL;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 
 /**
- *
+ * Simple SOAP login system.....
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public final class Messages {
+public class Login {
 
-    public static final String MSG_GAME_TERMINATED = "Game terminated";
-    
-    public static final long TIME_LIMIT = 1000000;
-    public static final String TIME_LIMIT_MSG = "Your current game has been terminated due to age";
+    public static boolean login(final String userName, final String password, final IClientListener client) {
 
-    public enum MessageType {
-        GAME_TIMEOUT, GAME_WON, GAME_LOST, SHIP_SUNK, SHIP_HIT, ATTACK_WASTED, DEPLOY_SHIPS, SHOT_FIRED,
-        GET_LOBBYS, LOGIN, LOGOUT
-        
+        try {
+            QName qname = new QName("http://soap.transport.brugerautorisation/", "BrugeradminImplService");
+            Service service = Service.create(new URL("http://javabog.dk:9901/brugeradmin?wsdl"), qname);
+            Brugeradmin ba = service.getPort(Brugeradmin.class);
+
+            Bruger bruger = ba.hentBruger(userName, password);
+            if (bruger.adgangskode.equals(password) && bruger.brugernavn.equals(userName)) {
+                bruger = null;
+                ba = null;
+                service = null;
+                qname = null;
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Kan ikke forbinde til bruger database.");
+        }
+        return false;
+
     }
-    
 }

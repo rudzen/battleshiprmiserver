@@ -79,13 +79,12 @@ public interface IBattleShip extends Remote {
     /**
      * Login attempt
      *
-     * @param user username
-     * @param pw password
-     * @param player
-     * @return true/false depending on success.
+     * @param user username The username
+     * @param pw password The password
+     * @param client The client interface that attempts to login, needed for callback
      * @throws RemoteException
      */
-    boolean login(final String user, final String pw, Player player) throws RemoteException;
+    void login(String user, String pw, IClientListener client) throws RemoteException;
 
     /**
      * Logs the user out from the system

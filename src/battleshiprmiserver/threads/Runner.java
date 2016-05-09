@@ -34,10 +34,12 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import login.Login;
 import rest.Lobby;
 
 /**
  * Overload of Runnable to allow the data structure to exist inside it! ;-)
+ *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public class Runner implements Runnable {
@@ -45,24 +47,24 @@ public class Runner implements Runnable {
     private final IClientListener client;
     private final Player player;
     private Point shotDest = null;
-    
+
     private final Messages.MessageType type;
-    
+
     public Runner(final IClientListener client, final Player player, final Messages.MessageType type) {
         this.client = client;
         this.player = player;
         this.type = type;
     }
-    
+
     public Runner(final IClientListener client, final Player player, final Messages.MessageType type, final Point shotDest) {
         this(client, player, type);
         this.shotDest = shotDest;
     }
-    
+
     public Runner(final IClientListener client, final Player player, final Messages.MessageType type, final int xShot, final int yShot) {
         this(client, player, type, new Point(xShot, yShot));
     }
-    
+
     @Override
     public void run() {
         System.out.print("Sending REST for " + player.getName() + ", type : ");
@@ -92,13 +94,11 @@ public class Runner implements Runnable {
                 Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
             }
+        } else if (type == Messages.MessageType.LOGIN) {
+
+
         }
-        try {
-            client.showMessage("From Runner", client.toString(), JOptionPane.WARNING_MESSAGE);
-        } catch (RemoteException ex) {
-            /* TODO : add removal of the client from the main mapping HERE!! */
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
-    
+
 }

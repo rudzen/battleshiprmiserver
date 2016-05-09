@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://javabog.dk:9901/brugeradmin?wsdl" uri="wsdl/javabog.dk_9901/brugeradmin.wsdl"/>
+    <system systemId="http://javabog.dk:9901/brugeradmin?xsd=1" uri="wsdl/javabog.dk_9901/brugeradmin.xsd_1.xsd"/>
+</catalog>

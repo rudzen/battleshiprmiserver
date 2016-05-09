@@ -23,7 +23,6 @@
  */
 package battleshiprmiserver;
 
-import battleshiprmiserver.rest.BattleshipJerseyClient;
 import battleshiprmiserver.rest.BattleshipJerseyHelper;
 import battleshiprmiserver.threads.Runner;
 import battleshiprmiserver.threads.ThreadPool;
@@ -39,24 +38,23 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaces.IClientListener;
-import interfaces.IShip;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
+import login.Login;
 
 /**
  *
  * @author rudz
  */
+@SuppressWarnings("serial")
 public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleShip, Runnable {
 
     private static volatile boolean rundemo = false;
 
     public ThreadPool threadpool;
-
-    private static final long serialVersionUID = 3089432827583994107L;
 
     private PrettyPrint pp;
 
@@ -155,7 +153,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             final int port = 5000;
             final String myIP = "212.60.120.4";
-            
+
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             //java.rmi.registry.LocateRegistry.createRegistry(1099);
 
@@ -209,11 +207,26 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public boolean login(String user, String pw, Player player) throws RemoteException {
-        // TODO : Insert SOAP connection login here, if SOAP server is offline, use local.
-        System.out.println("User attempting to login : " + user + " // " + pw);
-        System.out.println(player.toString());
-        return false;
+    public void login(String user, String pw, IClientListener client) throws RemoteException {
+        System.out.println("Attempted login by : " + user);
+        boolean loginOK = Login.login(user, pw, client);
+        System.out.println("User : " + user + (loginOK ? " has logged in." : " failed to login."));
+        try {
+            client.loginstatus(loginOK);
+            Player p = new Player(user);
+            p.initShips();
+            client.setPlayer(p);
+            /* replace old entry in client mapping */
+            index.keySet().stream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
+                index.remove(s);
+                return s;
+            }).forEach((_item) -> {
+                index.put(user, client);
+            });
+            players.put(user, p);
+        } catch (final RemoteException re) {
+            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, re);
+        }
     }
 
     @Override
@@ -242,10 +255,10 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, re);
                     index.remove(playerName);
                 }
-                
+
             }
         }.run();
-        
+
         return index.contains(clientInterface);
 
 //        if (list.contains(clientInterface) || plys.contains(player)) {

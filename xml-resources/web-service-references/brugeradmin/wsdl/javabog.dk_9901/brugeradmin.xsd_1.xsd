@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.6-1b01  svn-revision#13094. --><xs:schema xmlns:tns="http://soap.transport.brugerautorisation/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://soap.transport.brugerautorisation/">
+
+<xs:element name="getEkstraFelt" type="tns:getEkstraFelt"/>
+
+<xs:element name="getEkstraFeltResponse" type="tns:getEkstraFeltResponse"/>
+
+<xs:element name="hentBruger" type="tns:hentBruger"/>
+
+<xs:element name="hentBrugerResponse" type="tns:hentBrugerResponse"/>
+
+<xs:element name="sendEmail" type="tns:sendEmail"/>
+
+<xs:element name="sendEmailResponse" type="tns:sendEmailResponse"/>
+
+<xs:element name="sendGlemtAdgangskodeEmail" type="tns:sendGlemtAdgangskodeEmail"/>
+
+<xs:element name="sendGlemtAdgangskodeEmailResponse" type="tns:sendGlemtAdgangskodeEmailResponse"/>
+
+<xs:element name="setEkstraFelt" type="tns:setEkstraFelt"/>
+
+<xs:element name="setEkstraFeltResponse" type="tns:setEkstraFeltResponse"/>
+
+<xs:element name="ændrAdgangskode" type="tns:ændrAdgangskode"/>
+
+<xs:element name="ændrAdgangskodeResponse" type="tns:ændrAdgangskodeResponse"/>
+
+<xs:complexType name="getEkstraFelt">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getEkstraFeltResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:anyType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setEkstraFelt">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+<xs:element name="arg3" type="xs:anyType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="setEkstraFeltResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hentBruger">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hentBrugerResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:bruger" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="bruger">
+<xs:sequence>
+<xs:element name="brugernavn" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="sidstAktiv" type="xs:long"/>
+<xs:element name="campusnetId" type="xs:string" minOccurs="0"/>
+<xs:element name="studeretning" type="xs:string" minOccurs="0"/>
+<xs:element name="fornavn" type="xs:string" minOccurs="0"/>
+<xs:element name="efternavn" type="xs:string" minOccurs="0"/>
+<xs:element name="adgangskode" type="xs:string" minOccurs="0"/>
+<xs:element name="ekstraFelter">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:anyType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ændrAdgangskode">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ændrAdgangskodeResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:bruger" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sendGlemtAdgangskodeEmail">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sendGlemtAdgangskodeEmailResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="sendEmail">
+<xs:sequence>
+<xs:element name="arg0" type="xs:string" minOccurs="0"/>
+<xs:element name="arg1" type="xs:string" minOccurs="0"/>
+<xs:element name="arg2" type="xs:string" minOccurs="0"/>
+<xs:element name="arg3" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sendEmailResponse">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>
