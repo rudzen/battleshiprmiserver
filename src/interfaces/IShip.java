@@ -23,8 +23,8 @@
  */
 package interfaces;
 
-import dataobjects.PPoint;
 import dataobjects.Upgrades;
+import java.awt.Point;
 
 
 /**
@@ -66,9 +66,9 @@ public interface IShip {
     /* getters & setters */
     int getLife();
 
-    PPoint getLocEnd();
+    Point getLocEnd();
 
-    PPoint getLocStart();
+    Point getLocStart();
 
     /**
      * Get the ship name defined by it's type
@@ -118,9 +118,9 @@ public interface IShip {
 
     void setLife(int life);
 
-    void setLocEnd(PPoint locEnd);
+    void setLocEnd(Point locEnd);
 
-    void setLocStart(PPoint locStart);
+    void setLocStart(Point locStart);
 
     void setType(TYPE type);
 

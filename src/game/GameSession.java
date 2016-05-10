@@ -113,7 +113,6 @@ public class GameSession {
      * Determine if a client exists in this session
      * @param client The client interface to check for
      * @return true if exists, otherwise false
-     * @deprecated 
      */
     public boolean isInSession(final IClientListener client) {
         updateActionTime();

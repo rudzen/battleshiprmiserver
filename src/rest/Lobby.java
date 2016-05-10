@@ -20,8 +20,8 @@ public class Lobby implements Serializable {
     private Board attackerBoard;
     private Board defenderBoard;
     private boolean hasTwoPlayers, isDeployed, attackersTurn;
-    public ArrayList<Point> moves = new ArrayList();
-    public ArrayList<String> chat = new ArrayList();
+    public ArrayList<Point> moves = new ArrayList<>();
+    public ArrayList<String> chat = new ArrayList<>();
 
     public Lobby(Integer lobbyid, Player defender) {
         this.lobbyid = lobbyid;

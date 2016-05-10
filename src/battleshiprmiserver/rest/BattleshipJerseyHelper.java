@@ -24,12 +24,12 @@
 package battleshiprmiserver.rest;
 
 import com.google.gson.Gson;
-import dataobjects.PPoint;
 import dataobjects.Player;
 import dataobjects.Ship;
 import dataobjects.Upgrades;
 import game.GameSession;
 import interfaces.IShip;
+import java.awt.Point;
 import java.util.StringTokenizer;
 import rest.Board;
 import rest.Lobby;
@@ -52,8 +52,8 @@ public final class BattleshipJerseyHelper {
         final String[] r = new String[4];
 
         r[0] = shipTypeToString(ship.getType());
-        r[1] = Integer.toString(ship.getLocStart().getX());
-        r[2] = Integer.toString(ship.getLocStart().getY());
+        r[1] = Integer.toString(ship.getLocStart().x);
+        r[2] = Integer.toString(ship.getLocStart().y);
         r[3] = ship.getDirection() == IShip.DIRECTION.HORIZONTAL ? "1" : "0";
         return r;
     }
@@ -70,8 +70,8 @@ public final class BattleshipJerseyHelper {
             int posR = 0;
             for (final IShip s : ships) {
                 r[posR++] = shipTypeToString(s.getType());
-                r[posR++] = Integer.toString(s.getLocStart().getX());
-                r[posR++] = Integer.toString(s.getLocStart().getY());
+                r[posR++] = Integer.toString(s.getLocStart().x);
+                r[posR++] = Integer.toString(s.getLocStart().y);
                 r[posR++] = s.getDirection() == IShip.DIRECTION.HORIZONTAL ? "1" : "0";
             }
             return r;
@@ -129,17 +129,17 @@ public final class BattleshipJerseyHelper {
     public static IShip stringToShip(final String string) {
         StringTokenizer tokenizer = new StringTokenizer(string, "/");
         Ship s = new Ship();
-        PPoint start;
+        Point start;
         String tmp[];
         int len;
 
         s.setType(shipStringToType(tokenizer.nextToken()));
 
         tmp = tokenizer.nextToken().split("=");
-        start = new PPoint();
-        start.setX(Byte.parseByte(tmp[1]));
+        start = new Point();
+        start.x = Integer.valueOf(tmp[1]);
         tmp = tokenizer.nextToken().split("=");
-        start.setY(Byte.parseByte(tmp[1]));
+        start.y = Integer.valueOf(tmp[1]);
         s.setLocStart(start);
 
         return s;

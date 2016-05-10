@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * The Player class for BattleShip.<br>
  *
- * @author rudz
+ * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public class Player implements Serializable {
 
@@ -69,8 +69,7 @@ public class Player implements Serializable {
     }
 
     public Player(final Player player) {
-        this();
-        name = player.getName();
+        this(player.getName());
         id = player.getId();
         token = player.getToken();
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -98,62 +97,12 @@ public class Player implements Serializable {
         }
     }
 
-    public void boardHit(final int x, final int y) {
-        // TODO : Needs to be moved out of the player class !!!
-
-        // TODO : Needs to be reworked somehow!
-        // TODO : Attacker and defender needs to get the right message back from here !.
-        // TODO : Perhaps integrate ship positions in board when the ships are known!
-        StringBuilder sbAttacker = new StringBuilder();
-        StringBuilder sbDefender = new StringBuilder();
-        switch (board[x][y]) {
-            case 0:
-            case 3:
-                // board has not been hit here before.
-                for (int i = 0; i < MAX_SHIPS; i++) {
-                    if (ships[i].isHit(x, y)) { // could be if board[x][y] == 4 if board is updated with ship layouts.
-                        // ship appears to be hit.
-                        sbAttacker.append("Ship hit");
-                        sbDefender.append("The attacker has hit your ").append(ships[i].getShipType());
-
-                        if (!ships[i].isDead()) {
-                            // ship is still alive
-                            if (ships[i].isHasUpgrade() && ships[i].getUpgrades().getArmor() > 0) {
-                                board[x][y] = 3;
-                            } else {
-                                board[x][y] = 2;
-                            }
-                            // TODO : Send message to users.
-                        } else {
-                            // ship is sunk
-                            sbAttacker.append(",\nwhich was enough to sink the ").append(ships[i].getShipType());
-                            sbDefender.append(",\nand sunk it!");
-                            board[x][y] = 5;
-                        }
-                    }
-                }
-            case 1: // shot, no hit.
-                sbAttacker.append("You have wasted another shot on this spot...");
-                sbDefender.append("The opponent has wasted the turn!");
-                break;
-            case 2:
-                sbAttacker.append("Ship has already been hit at this location.");
-                sbDefender.append("The opponent has wasted the turn!");
-                break;
-            case 5:
-                sbAttacker.append("Ship has already been sunk!");
-                sbDefender.append("The opponent has wasted the turn!");
-                break;
-        }
-        // TODO : send sb.toString(); to the attacker...
+    public void setShip(final int index, final Ship ship) {
+        ships[index] = ship;
     }
 
     public IShip getShip(final int index) {
         return ships[index];
-    }
-
-    public void setShip(final int index, final IShip ship) {
-        ships[index] = ship;
     }
 
     @Override
@@ -173,7 +122,7 @@ public class Player implements Serializable {
         }
         return sb.toString();
     }
-
+    
     /* getters & setters */
     public int getId() {
         return id;
@@ -213,6 +162,10 @@ public class Player implements Serializable {
 
     public void setShips(IShip[] ships) {
         this.ships = ships;
+    }
+
+    public void setShip(int index, IShip ship) {
+        ships[index] = ship;
     }
 
 }

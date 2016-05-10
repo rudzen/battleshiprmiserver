@@ -17,9 +17,6 @@ package com.css.rmi;
 import java.io.InterruptedIOException;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -28,7 +25,7 @@ import java.util.logging.Logger;
  * @author Tim Taylor  -- tttaylor@cssassociates.com
  */
 public  class SocketPool {
-    private LinkedList socketList = new LinkedList();
+    private final LinkedList<Socket> socketList = new LinkedList<>();
     
     public synchronized Socket getSocket() throws InterruptedIOException {
         try {

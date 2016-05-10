@@ -33,6 +33,7 @@ import game.Messages;
 import interfaces.IClientListener;
 import java.awt.Point;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,9 +73,12 @@ public class Runner implements Runnable {
     public void run() {
         System.out.print("Sending REST for " + player.getName() + ", type : ");
         BattleshipJerseyClient rest = new BattleshipJerseyClient();
+        StringBuilder response = new StringBuilder();
         if (type == Messages.MessageType.DEPLOY_SHIPS) {
             try {
-                client.showMessage(rest.deployBoard("1", "1", BattleshipJerseyHelper.shipsToString(player.getShips())), "Response", 0);
+                response.append(rest.deployBoard("1", "1", BattleshipJerseyHelper.shipsToString(player.getShips())));
+                String[] s = BattleshipJerseyHelper.shipsToString(player.getShips());
+                client.showMessage(Arrays.toString(s), "Deployment String send to server", 0);
             } catch (RemoteException ex) {
                 Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -82,6 +86,7 @@ public class Runner implements Runnable {
         } else if (type == Messages.MessageType.GAME_TIMEOUT) {
             System.out.println("game timeout.");
         } else if (type == Messages.MessageType.SHOT_FIRED) {
+            rest.shoot("1", Integer.toString(shotDest.x), Integer.toString(shotDest.y), Integer.toString(player.getId()));
             System.out.println("shot fired.");
         } else if (type == Messages.MessageType.GET_LOBBYS) {
             final BattleshipJerseyClient restClient = new BattleshipJerseyClient();

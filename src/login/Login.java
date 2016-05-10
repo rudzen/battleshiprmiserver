@@ -34,13 +34,17 @@ import javax.xml.ws.Service;
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class Login {
+public final class Login {
 
+    private final static String ADDRESS = "http://soap.transport.brugerautorisation/";
+    private final static String IMPL = "BrugeradminImplService";
+    private final static String WSDL = "http://javabog.dk:9901/brugeradmin?wsdl";
+    
     public static boolean loginBA(final String userName, final String password, final IClientListener client) throws RemoteException {
 
         try {
-            QName qname = new QName("http://soap.transport.brugerautorisation/", "BrugeradminImplService");
-            Service service = Service.create(new URL("http://javabog.dk:9901/brugeradmin?wsdl"), qname);
+            QName qname = new QName(ADDRESS, IMPL);
+            Service service = Service.create(new URL(WSDL), qname);
             Brugeradmin ba = service.getPort(Brugeradmin.class);
 
             Bruger bruger = ba.hentBruger(userName, password);

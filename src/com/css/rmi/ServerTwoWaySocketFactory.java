@@ -90,7 +90,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
     }
 
     /**
-     * Create a socket connectoin to the host of the given <code>address
+     * Create a socket connection to the host of the given <code>address
      * </code> and <code>port</code>. If the <code>address</code> is for a host
      * that has provided a callback socket request signalling channel, then that
      * channel is used to request that the client create the socket. Otherwise a

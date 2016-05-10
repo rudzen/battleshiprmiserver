@@ -21,8 +21,8 @@ package com.css.rmi;
  */
 public class EndpointInfo {
 
-    private String host;
-    private int port;
+    private final String host;
+    private final int port;
 
     /**
      * Constructor.

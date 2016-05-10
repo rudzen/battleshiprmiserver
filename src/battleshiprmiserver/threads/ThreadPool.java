@@ -47,7 +47,7 @@ public class ThreadPool {
 
     @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
     public ThreadPool(final int runningThreads, final int defaultNumTasks) {
-        taskQueue = new LinkedBlockingDeque(defaultNumTasks);
+        taskQueue = new LinkedBlockingDeque<>(defaultNumTasks);
 
         for (int i = 0; i < runningThreads; i++) {
             threads.add(new PoolThread(taskQueue));

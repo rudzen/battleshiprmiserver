@@ -104,16 +104,14 @@ public abstract class BattleGameAbstract {
     protected void endOldSessions() {
 
         final long now = System.currentTimeMillis();
-        for (GameSession gs : sessions.values()) {
-            if (now - gs.getTimeCreated() > TIME_LIMIT) {
-                try {
-                    gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
-                    gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
-                } catch (final RemoteException re) {
-                    // whoops..
-                }
+        sessions.values().stream().filter((gs) -> (now - gs.getTimeCreated() > TIME_LIMIT)).forEach((gs) -> {
+            try {
+                gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
+                gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
+            } catch (final RemoteException re) {
+                // whoops..
             }
-        }
+        });
     }
 
     /**

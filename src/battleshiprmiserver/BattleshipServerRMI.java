@@ -90,9 +90,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     private volatile int x, y;
 
-    public BattleshipServerRMI() throws RemoteException {
+    public BattleshipServerRMI(final int runningThreads, final int threadPoolMax) throws RemoteException {
         System.out.println("Starting threadpool.");
-        threadpool = new ThreadPool(25, 25);
+        threadpool = new ThreadPool(runningThreads, threadPoolMax);
 
         x = 2;
         y = 3;
@@ -153,19 +153,22 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     public static void main(String args[]) {
         System.out.println("Loading battleship server, please wait.");
         try {
-
-            final int port = 5000;
-            final String myIP = "212.60.120.4";
+            if (args.length >= 1) {
+                BattleshipServerRMIHelper.setArgs(args);
+                System.out.println("Command line argument values changed to : " + Args.all());
+            }
 
             //java.rmi.registry.LocateRegistry.createRegistry(1099);
-
             RMISocketFactory.setSocketFactory(new ServerTwoWaySocketFactory());
 
             // Export the registry from the same JVM
-            LocateRegistry.createRegistry(6769);
+            LocateRegistry.createRegistry(Args.port);
+
+            // Check to see if a registry was specified
+            String registry;
 
             // Load the service
-            BattleshipServerRMI server = new BattleshipServerRMI();
+            BattleshipServerRMI server = new BattleshipServerRMI(Args.threads_running, Args.threads_max);
 
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(new SecurityManager());
@@ -174,29 +177,20 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 System.out.println("SecurityManager created.");
             }
 
-            // Check to see if a registry was specified
-            String registry;
-
-            if (args.length >= 1) {
-                registry = BattleshipServerRMIHelper.setArgs(args);
-                System.out.println("Registry changed through command-line to " + registry);
-            } else {
-                //registry = "212.60.120.4";
-                registry = "localhost";
-            }
 
             /* update the prettyprinter */
-            server.setPp(new PrettyPrint(registry, port));
+            server.setPp(new PrettyPrint(Args.ip, Args.port));
             server.getPp().showMenu();
 
             // Registration format //registry_hostname:port
             // service // Note the :port field is optional
-            String registration = "rmi://" + registry + "/Battleship";
+            String registration = "rmi://" + Args.registry() + "/Battleship";
+            System.out.println("Using registry : " + registration);
 
             // Register with service so that clients can find us
             //Naming.rebind(registration, server);
-            Naming.rebind("rmi://localhost:6769/Battleship", server);
-            
+            Naming.rebind(registration, server);
+
             /* configure battlegame object */
             bg = new BattleGame(index, sessions);
 
