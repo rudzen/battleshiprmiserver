@@ -21,32 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package battleshiprmiserver;
+package battleshiprmiserver.commander.tasks;
 
 /**
- * Simple argument wrapper class
+ *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public final class Args {
-    
-    public static String ip;
-    public static int port;
-    public static int threads_max;
-    public static int threads_running;
+public class GetPlayer implements Runnable {
 
-    static {
-        ip = "localhost";
-        port = 6769;
-        threads_running = 5;
-        threads_max = 5;
-    }
-    
-    public static String all() {
-        return "Args{" + "ip=" + ip + ", port=" + port + ", threads_max=" + threads_max + ", threads_running=" + threads_running + '}';
-    }
-    
-    public static String registry() {
-        return ip + ":" + Integer.toString(port);
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

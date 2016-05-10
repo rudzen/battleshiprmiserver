@@ -33,6 +33,7 @@ import game.Messages;
 import interfaces.IClientListener;
 import java.awt.Point;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -97,19 +98,20 @@ public class Runner implements Runnable {
             //HashMap<Integer, Lobby> fromServer = g.fromJson(s, new TypeToken<HashMap<Integer, Lobby>>(){}.getType());
             HashMap<String, Lobby> fromServer = g.fromJson(s, new TypeToken<HashMap<String, Lobby>>(){}.getType());
             GameSession gs;
+            ArrayList<String> names = new ArrayList<>();
             fromServer.values().stream().forEach((l) -> {
-                System.out.println("Printing new lobby : " + l.getActiveId());
-                System.out.println(BattleshipJerseyHelper.convertLobby(l).toString());
-                
+                //System.out.println("Printing new lobby : " + l.getActiveId());
+                //System.out.println(BattleshipJerseyHelper.convertLobby(l).toString());
+                names.add(Integer.toString(l.getLobbyid()) + " : " + l.getDefender().getPlayername());
 //                System.out.println(l.toString());
             });
-            //System.out.println("Lobby object : " + l.toString());
             try {
-                client.showMessage(s, "Lobbys", 0);
+                client.playerList(names);
+                //System.out.println("Lobby object : " + l.toString());
             } catch (RemoteException ex) {
                 Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
             }
+
         } else if (type == Messages.MessageType.LOGIN) {
 
 

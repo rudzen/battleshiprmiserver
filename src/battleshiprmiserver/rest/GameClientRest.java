@@ -29,6 +29,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
+ * 
+ * NOT DONE YET!!!
+ * 
  * This is the REST client implementation of the RMI server's client interface.<br>
  * This makes it possible for an RMI client to play together with a REST client.
  * 
@@ -115,6 +118,21 @@ public class GameClientRest implements IClientListener {
 
     @Override
     public void loginstatus(boolean wasOkay) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateSessionID(String newID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public void setOtherPlayer(Player player) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setFreeLobbies(ArrayList<String> lobbies) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

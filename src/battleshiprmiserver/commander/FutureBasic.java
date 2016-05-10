@@ -21,32 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package battleshiprmiserver;
+package battleshiprmiserver.commander;
+
+import battleshiprmiserver.commander.tasks.GetFreeLobbys;
+import battleshiprmiserver.commander.tasks.GetLobbys;
+import interfaces.IClientListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * Simple argument wrapper class
+ *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public final class Args {
-    
-    public static String ip;
-    public static int port;
-    public static int threads_max;
-    public static int threads_running;
+public class FutureBasic {
 
-    static {
-        ip = "localhost";
-        port = 6769;
-        threads_running = 5;
-        threads_max = 5;
+    private static final ExecutorService pool = Executors.newFixedThreadPool(100);
+
+    public static void getLobbys(IClientListener client) {
+        pool.submit(new GetLobbys(client));
     }
     
-    public static String all() {
-        return "Args{" + "ip=" + ip + ", port=" + port + ", threads_max=" + threads_max + ", threads_running=" + threads_running + '}';
+    public static void getFreeLobbys(IClientListener client) {
+        pool.submit(new GetFreeLobbys(client));
     }
-    
-    public static String registry() {
-        return ip + ":" + Integer.toString(port);
-    }
-    
+
 }

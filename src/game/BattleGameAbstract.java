@@ -121,7 +121,7 @@ public abstract class BattleGameAbstract {
      * @param client The players client interface callback
      * @return The new session ID
      */
-    protected String updateSessionID(final Player player, final IClientListener client) {
+    public String updateSessionID(final Player player, final IClientListener client) {
         md5_lock.lock();
 
         md5.Init();
@@ -141,7 +141,7 @@ public abstract class BattleGameAbstract {
         return md;
     }
 
-    protected String updateSessionID(final String playerOne, final IClientListener clientOne, final String playerTwo, final IClientListener clientTwo) {
+    public String updateSessionID(final String playerOne, final IClientListener clientOne, final String playerTwo, final IClientListener clientTwo) {
         md5_lock.lock();
 
         md5.Init();
@@ -163,7 +163,10 @@ public abstract class BattleGameAbstract {
         return md;
     }
     
-    protected String updateSessionID(final GameSession gs) {
+    public String updateSessionID(final GameSession gs) {
+        if (gs.getClientTwo() == null || gs.getPlayerTwo() == null) {
+            return updateSessionID(gs.getPlayerOne(), gs.getClientOne());
+        }
         return updateSessionID(gs.getPlayerOne().getName(), gs.getClientOne(), gs.getPlayerTwo().getName(), gs.getClientTwo());
     }
     

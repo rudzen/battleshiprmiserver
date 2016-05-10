@@ -94,6 +94,20 @@ public class BattleGame extends BattleGameAbstract {
     }
 
     /**
+     * Removes Game Sessions without Clients attached.
+     */
+    public synchronized void deleteEmptySessions() {
+        new Runnable() {
+            @Override
+            public void run() {
+                sessions.keySet().stream().filter((s) -> (sessions.get(s).getClientOne() == null && sessions.get(s).getClientTwo() == null)).forEach((s) -> {
+                    sessions.remove(s);
+                });
+            }
+        }.run();
+    }
+
+    /**
      * Generate session from one single client.
      *
      * @param player
@@ -135,9 +149,9 @@ public class BattleGame extends BattleGameAbstract {
         return false;
     }
 
-    
     /**
      * Joins the first availble game, returns the game session ID
+     *
      * @param player the player to join session
      * @return Session ID
      */
@@ -161,18 +175,18 @@ public class BattleGame extends BattleGameAbstract {
                     } catch (RemoteException ex) {
                         Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+
                 }
             }
-            
+
             GameSession gs = new GameSession(player, players.get(player.getName()));
             final String id = updateSessionID(player, players.get(player.getName()));
-            
+
             gs.updateActionTime();
         }
         return sessionID;
     }
-    
+
     public boolean addPlayer(final String player, final IClientListener client) {
         if (players.put(player, client) != null) {
             System.out.print(player + " added");

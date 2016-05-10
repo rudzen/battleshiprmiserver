@@ -43,7 +43,7 @@ public class ThreadPool {
 
     private LinkedBlockingDeque<Runner> taskQueue = null;
     private final ArrayList<PoolThread> threads = new ArrayList<>();
-    private boolean isStopped;
+    private volatile boolean isStopped;
 
     @SuppressWarnings("CallToThreadStartDuringObjectConstruction")
     public ThreadPool(final int runningThreads, final int defaultNumTasks) {

@@ -54,7 +54,7 @@ public final class BattleshipJerseyHelper {
         r[0] = shipTypeToString(ship.getType());
         r[1] = Integer.toString(ship.getLocStart().x);
         r[2] = Integer.toString(ship.getLocStart().y);
-        r[3] = ship.getDirection() == IShip.DIRECTION.HORIZONTAL ? "1" : "0";
+        r[3] = Boolean.toString(ship.getDirection() == IShip.DIRECTION.HORIZONTAL);
         return r;
     }
 
@@ -72,7 +72,7 @@ public final class BattleshipJerseyHelper {
                 r[posR++] = shipTypeToString(s.getType());
                 r[posR++] = Integer.toString(s.getLocStart().x);
                 r[posR++] = Integer.toString(s.getLocStart().y);
-                r[posR++] = s.getDirection() == IShip.DIRECTION.HORIZONTAL ? "1" : "0";
+                r[posR++] = Boolean.toString(s.getDirection() == IShip.DIRECTION.HORIZONTAL);
             }
             return r;
         }
