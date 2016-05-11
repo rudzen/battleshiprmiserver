@@ -35,7 +35,8 @@ import rest.entities.Lobby;
 
 /**
  * - Convert java classes to parameters accepted by the web-server.<br>
- * - Convert received responses from the server back to native format too (except ships, which isn't used. !<br>
+ * - Convert received responses from the server back to native format too
+ * (except ships, which isn't used. !<br>
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
@@ -201,7 +202,8 @@ public final class BattleshipJerseyHelper {
     /**
      * Convert an entire Lobby object to a RMI based GameSession.<br>
      * This includes Players.<br>
-     * Note that this function should be the first to be called in case the response contains a lobby.
+     * Note that this function should be the first to be called in case the
+     * response contains a lobby.
      *
      * @param l The Lobby to convert
      * @return The gamesession. Note that the ClientInterfaces is NOT PRESENT!,
@@ -211,7 +213,7 @@ public final class BattleshipJerseyHelper {
 //        Gson g = new Gson();
 //        Lobby l = g.fromJson(lobby, Lobby.class);
 //        g = null; // help the GC on the way!
-        
+
         rest.entities.Player rP = l.getDefender();
 
         /* convert player one */
@@ -266,7 +268,7 @@ public final class BattleshipJerseyHelper {
           Note that the interfaces are ALWAYS null, this is because
           they are going to be copied manually after this function
           has returned the new gamesession from the old gamesession.
-        */
+         */
         gs.setClientOne(null);
         gs.setClientTwo(null);
         gs.setPlayerOne(p1);
@@ -274,21 +276,33 @@ public final class BattleshipJerseyHelper {
 
         /* because i'm a bastard! */
         gs.updateActionTime();
-        
+
         return gs;
     }
 
-    
     public String convertGameSession(final GameSession gs) {
-        
+
         Gson g = new Gson();
-        
+
         /* convert all the shit back again!!!! :) */
-        
-        
-        
         return null;
     }
-    
-    
+
+    public static int[][] convertLobbyBoard(final Board lobbyBoard) {
+
+        int[][] board;
+
+        board = new int[10][10];
+        for (int j = 0; j < 10; j++) {
+            for (int k = 0; k < 10; k++) {
+                if (lobbyBoard.getHit(j, k) == 1) {
+                    board[j][k] = 2;
+                } else if (lobbyBoard.getHit(j, k) == 2) {
+                    board[j][k] = 5;
+                }
+            }
+        }
+        return board;
+    }
+
 }

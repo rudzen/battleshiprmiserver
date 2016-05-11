@@ -23,21 +23,48 @@
  */
 package battleshiprmiserver.commander.tasks;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import interfaces.IClientListener;
-import rest.BattleshipJerseyClient;
+import java.awt.Point;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rest.BattleshipJerseyHelper;
+import rest.entities.Lobby;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public abstract class GetAbstract implements Runnable {
+public class Wait extends GetAbstract {
+
+    private final int playerID;
+    private final int lobbyID;
     
-    protected IClientListener client;
-    protected BattleshipJerseyClient rest = new BattleshipJerseyClient();
-    
-    public GetAbstract(final IClientListener client) {
-        this.client = client;
+    public Wait(final IClientListener client, final int lobbyID, final int playerID) {
+        super(client);
+        this.playerID = playerID;
+        this.lobbyID = lobbyID;
     }
-    
+
+    @Override
+    public void run() {
+        final String s = rest.waitForOpponent(Integer.toString(lobbyID), Integer.toString(playerID));
+        rest.close();
+        ArrayList<Point> fromServer = new Gson().fromJson(s, new TypeToken<ArrayList<Point>>() {}.getType());
+        int[][] board = new int[10][10];
+        fromServer.stream().forEach((p) -> {
+            board[p.x][p.y] = 1;
+        });
+        try {
+            client.updateBoard(board);
+            client.canPlay(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Wait.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }
