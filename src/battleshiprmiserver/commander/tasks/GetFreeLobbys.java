@@ -23,7 +23,6 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import rest.BattleshipJerseyClient;
 import battleshiprmiserver.threads.Runner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,9 +46,8 @@ public class GetFreeLobbys extends GetAbstract {
 
     @Override
     public void run() {
-        final BattleshipJerseyClient restClient = new BattleshipJerseyClient();
-        final String s = restClient.getFreeLobbies();
-        restClient.close();
+        final String s = rest.getFreeLobbies();
+        rest.close();
         HashMap<String, Lobby> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
         ArrayList<String> freeLobbys = new ArrayList<>();
         fromServer.values().stream().forEach((l) -> {

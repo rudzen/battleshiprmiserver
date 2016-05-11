@@ -30,7 +30,6 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import rest.BattleshipJerseyClient;
 import rest.entities.Fire;
 
 /**
@@ -58,8 +57,8 @@ public class FireShot extends GetAbstract {
 
     @Override
     public void run() {
-        BattleshipJerseyClient rest = new BattleshipJerseyClient();
         final String s = rest.shoot(Integer.toString(lobbyID), Integer.toString(playerID), Integer.toString(x), Integer.toString(y));
+        rest.close();
         Fire f = new Gson().fromJson(s, Fire.class);
         try {
             if (f.getStatus().equals("error")) {
@@ -71,8 +70,6 @@ public class FireShot extends GetAbstract {
         } catch (RemoteException ex) {
             Logger.getLogger(FireShot.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // TODO : Developement halted duo to excessive string parsing...
     }
 
 }

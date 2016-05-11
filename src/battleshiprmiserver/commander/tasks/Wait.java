@@ -60,7 +60,7 @@ public class Wait extends GetAbstract {
             board[p.x][p.y] = 1;
         });
         try {
-            client.updateBoard(board);
+            client.updateOpponentBoard(board);
             client.canPlay(true);
         } catch (RemoteException ex) {
             Logger.getLogger(Wait.class.getName()).log(Level.SEVERE, null, ex);

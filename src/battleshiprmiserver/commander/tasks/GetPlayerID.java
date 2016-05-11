@@ -23,7 +23,6 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import rest.BattleshipJerseyClient;
 import rest.BattleshipJerseyHelper;
 import com.google.gson.Gson;
 import dataobjects.Player;
@@ -53,9 +52,8 @@ public class GetPlayerID extends GetAbstract implements Runnable {
 
     @Override
     public void run() {
-        BattleshipJerseyClient restClient = new BattleshipJerseyClient();
-        final String s = restClient.getPlayer(name);
-        restClient.close();
+        final String s = rest.getPlayer(name);
+        rest.close();
         try {
             if (s.equals("\"error\":\"player not found\"")) {
                 client.showMessage("Unable to get player from database", "Error", JOptionPane.ERROR);
