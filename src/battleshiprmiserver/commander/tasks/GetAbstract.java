@@ -23,43 +23,19 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import battleshiprmiserver.rest.BattleshipJerseyClient;
-import battleshiprmiserver.threads.Runner;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import interfaces.IClientListener;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import rest.Lobby;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class GetFreeLobbys extends GetAbstract implements Runnable {
+public abstract class GetAbstract {
     
-    public GetFreeLobbys(final IClientListener client) {
-        super(client);
+    protected IClientListener client;
+    
+    public GetAbstract(final IClientListener client) {
+        this.client = client;
     }
-
-    @Override
-    public void run() {
-        final BattleshipJerseyClient restClient = new BattleshipJerseyClient();
-        final String s = restClient.getFreeLobbies();
-        restClient.close();
-        HashMap<String, Lobby> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
-        ArrayList<String> freeLobbys = new ArrayList<>();
-        fromServer.values().stream().forEach((l) -> {
-            freeLobbys.add(Integer.toString(l.getLobbyid()) + ":" + l.getDefender().getPlayername());
-        });
-        try {
-            client.setFreeLobbies(freeLobbys);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    
+    
 }

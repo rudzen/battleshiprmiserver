@@ -43,6 +43,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RMISocketFactory;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
@@ -169,6 +173,10 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 index.put(user, client);
             });
             players.put(user, p);
+            
+            
+            
+            
         } catch (final RemoteException re) {
             Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, re);
         }
@@ -209,14 +217,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             }
         }.run();
-
         System.out.println(clientCount.getAndIncrement() + " number of clients registered");
-        
-        FutureBasic.getLobbys(clientInterface);
-        
         return index.contains(clientInterface);
-        
-
     }
 
     @Override
@@ -297,17 +299,32 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void deployShips(final Player player, String sessionID) throws RemoteException {
+    public void deployShips(final IClientListener client, final Player player, String sessionID) throws RemoteException {
+        System.out.println(player + " -> deployShips() :\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
+        FutureBasic.deployBoard(client, client.getPlayer(), 1);
+
+        /* this is just spawning a simple runnable to get the result threaded from the blocking command .get */
         new Runnable() {
             @Override
             public void run() {
-                try {
-                    System.out.println("Deploy ships : " + player.getName() + "\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
-                    GameSession gs = bg.getSessions().get(sessionID);
-                    threadpool.execute(new Runner(gs.getClientByName(player.getName()), gs.getPlayerByName(player.getName()), Messages.MessageType.DEPLOY_SHIPS));
-                } catch (Exception ex) {
-                    Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+//                    Future<String> deploy = FutureBasic.deployBoard(player, 1);
+//                    //Future<Boolean> deploy = FutureBasic.deployBoard(player, sessions.get(sessionID).getLobbyID());
+//                    final String result = deploy.get();
+//                    System.out.println("RESULT : " + result);
+//                    
+//                    //boolean result = deploy.get(5, TimeUnit.SECONDS).equals("succes");
+//                    if (result.equals("succes")) {
+//                        client.showMessage("Board deployed OK!", "Server message", JOptionPane.INFORMATION_MESSAGE);
+//                    } else {
+//                        client.showMessage("Board failed to deploy!!\nUnknown reason (most likely timeout!).", "Server message", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                    System.out.println("Deploy ships : " + player.getName() + "\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
+//                    GameSession gs = bg.getSessions().get(sessionID);
+//                    threadpool.execute(new Runner(gs.getClientByName(player.getName()), gs.getPlayerByName(player.getName()), Messages.MessageType.DEPLOY_SHIPS));
+//                } catch (InterruptedException | ExecutionException | RemoteException ex) {
+//                    Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }
         }.run();
     }
@@ -340,13 +357,13 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public boolean updatePlayerObject(String seesionID, Player playerObject) throws RemoteException {
-        
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String requestSessionID(String currentSessionID, Player playerObject) throws RemoteException {
-        
+
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

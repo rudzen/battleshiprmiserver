@@ -76,14 +76,7 @@ public class Runner implements Runnable {
         BattleshipJerseyClient rest = new BattleshipJerseyClient();
         StringBuilder response = new StringBuilder();
         if (type == Messages.MessageType.DEPLOY_SHIPS) {
-            try {
-                response.append(rest.deployBoard("1", "1", BattleshipJerseyHelper.shipsToString(player.getShips())));
-                String[] s = BattleshipJerseyHelper.shipsToString(player.getShips());
-                client.showMessage(Arrays.toString(s), "Deployment String send to server", 0);
-            } catch (RemoteException ex) {
-                Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            System.out.println("deploy ships.");
+            
         } else if (type == Messages.MessageType.GAME_TIMEOUT) {
             System.out.println("game timeout.");
         } else if (type == Messages.MessageType.SHOT_FIRED) {

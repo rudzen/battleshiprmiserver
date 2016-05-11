@@ -28,7 +28,6 @@ import dataobjects.Player;
 import dataobjects.Ship;
 import dataobjects.Upgrades;
 import game.GameSession;
-import interfaces.IShip;
 import java.awt.Point;
 import java.util.StringTokenizer;
 import rest.Board;
@@ -48,13 +47,13 @@ public final class BattleshipJerseyHelper {
      * @param ship The ship to convert
      * @return The string result based on the ship data.
      */
-    public static String[] shipToString(final IShip ship) {
+    public static String[] shipToString(final Ship ship) {
         final String[] r = new String[4];
 
         r[0] = shipTypeToString(ship.getType());
         r[1] = Integer.toString(ship.getLocStart().x);
         r[2] = Integer.toString(ship.getLocStart().y);
-        r[3] = Boolean.toString(ship.getDirection() == IShip.DIRECTION.HORIZONTAL);
+        r[3] = Boolean.toString(ship.getDirection() == Ship.DIRECTION.HORIZONTAL);
         return r;
     }
 
@@ -64,15 +63,15 @@ public final class BattleshipJerseyHelper {
      * @param ships The ship array to convert.
      * @return
      */
-    public static String[] shipsToString(final IShip[] ships) {
+    public static String[] shipsToString(final Ship[] ships) {
         if (ships.length > 0) {
             final String[] r = new String[ships.length << 2];
             int posR = 0;
-            for (final IShip s : ships) {
+            for (final Ship s : ships) {
                 r[posR++] = shipTypeToString(s.getType());
                 r[posR++] = Integer.toString(s.getLocStart().x);
                 r[posR++] = Integer.toString(s.getLocStart().y);
-                r[posR++] = Boolean.toString(s.getDirection() == IShip.DIRECTION.HORIZONTAL);
+                r[posR++] = Boolean.toString(s.getDirection() == Ship.DIRECTION.HORIZONTAL);
             }
             return r;
         }
@@ -85,14 +84,14 @@ public final class BattleshipJerseyHelper {
      * @param t The type to convert
      * @return The name of the ship based on the type
      */
-    private static String shipTypeToString(IShip.TYPE t) {
-        if (t == IShip.TYPE.CARRIER) {
+    private static String shipTypeToString(Ship.TYPE t) {
+        if (t == Ship.TYPE.CARRIER) {
             return "0";
-        } else if (t == IShip.TYPE.CRUISER) {
+        } else if (t == Ship.TYPE.CRUISER) {
             return "1";
-        } else if (t == IShip.TYPE.DESTROYER) {
+        } else if (t == Ship.TYPE.DESTROYER) {
             return "2";
-        } else if (t == IShip.TYPE.SUBMARINE) {
+        } else if (t == Ship.TYPE.SUBMARINE) {
             return "3";
         } else {
             return "4";
@@ -105,17 +104,17 @@ public final class BattleshipJerseyHelper {
      * @param type The name to convert
      * @return The
      */
-    private static IShip.TYPE shipStringToType(final String type) {
+    private static Ship.TYPE shipStringToType(final String type) {
         if (type.endsWith("0")) {
-            return IShip.TYPE.CARRIER;
+            return Ship.TYPE.CARRIER;
         } else if (type.endsWith("1")) {
-            return IShip.TYPE.CRUISER;
+            return Ship.TYPE.CRUISER;
         } else if (type.endsWith("2")) {
-            return IShip.TYPE.DESTROYER;
+            return Ship.TYPE.DESTROYER;
         } else if (type.endsWith("3")) {
-            return IShip.TYPE.SUBMARINE;
+            return Ship.TYPE.SUBMARINE;
         } else if (type.endsWith("4")) {
-            return IShip.TYPE.PATROL;
+            return Ship.TYPE.PATROL;
         }
         return null;
     }
@@ -126,7 +125,7 @@ public final class BattleshipJerseyHelper {
      * @param string The response from the server representing a ship.
      * @return The IShip object for the java clients.
      */
-    public static IShip stringToShip(final String string) {
+    public static Ship stringToShip(final String string) {
         StringTokenizer tokenizer = new StringTokenizer(string, "/");
         Ship s = new Ship();
         Point start;
@@ -159,8 +158,8 @@ public final class BattleshipJerseyHelper {
         p.initShips(); // this is just so there wont be a NPE at some point!
 
         /* set up the upgrades for the ships */
-        IShip[] ships = p.getShips();
-        for (IShip ship : ships) {
+        Ship[] ships = p.getShips();
+        for (Ship ship : ships) {
             if (restPlayer.getArmor() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.ARMOR, restPlayer.getArmor());
             }
@@ -190,7 +189,7 @@ public final class BattleshipJerseyHelper {
      * @return The ship
      * @deprecated Not used anymore
      */
-    private static IShip populateUpgrade(IShip theShip, final Integer amount, Upgrades.UPGRADES upgradeType) {
+    private static Ship populateUpgrade(Ship theShip, final Integer amount, Upgrades.UPGRADES upgradeType) {
         if (amount > 0) {
             for (int i = 0; i < amount; i++) {
                 theShip.addUpgrade(upgradeType);

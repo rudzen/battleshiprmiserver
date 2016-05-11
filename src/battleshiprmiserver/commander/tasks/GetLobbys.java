@@ -39,12 +39,10 @@ import rest.Lobby;
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class GetLobbys implements Runnable {
-
-    final IClientListener client;
+public class GetLobbys extends GetAbstract implements Runnable {
 
     public GetLobbys(final IClientListener client) {
-        this.client = client;
+        super(client);
     }
 
     @Override
