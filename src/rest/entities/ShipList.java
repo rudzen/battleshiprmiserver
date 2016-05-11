@@ -80,7 +80,7 @@ public class ShipList extends ArrayList<ShipList.Ship>{
             j.cordinates = this.getCords();
             return true;
         }
-        class JSONShip{
+        public class JSONShip{
             String shipname;
             Integer length, row, col;
             Boolean horizontal;

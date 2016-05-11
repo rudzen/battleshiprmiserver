@@ -23,43 +23,56 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import rest.BattleshipJerseyClient;
-import battleshiprmiserver.threads.Runner;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import interfaces.IClientListener;
+import java.awt.Point;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rest.entities.Lobby;
+import javax.swing.JOptionPane;
+import rest.BattleshipJerseyClient;
+import rest.entities.Fire;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class GetFreeLobbys extends GetAbstract {
-    
-    public GetFreeLobbys(final IClientListener client) {
+public class FireShot extends GetAbstract {
+
+    private final int lobbyID;
+    private final int playerID;
+    private final int x;
+    private final int y;
+
+    public FireShot(IClientListener client, final int lobbyID, final int playerID, final int x, final int y) {
         super(client);
+        this.lobbyID = lobbyID;
+        this.playerID = playerID;
+        this.x = x;
+        this.y = y;
+    }
+
+    public FireShot(IClientListener client, final int lobbyID, final int playerID, final Point loc) {
+        this(client, lobbyID, playerID, loc.x, loc.y);
     }
 
     @Override
     public void run() {
-        final BattleshipJerseyClient restClient = new BattleshipJerseyClient();
-        final String s = restClient.getFreeLobbies();
-        restClient.close();
-        HashMap<String, Lobby> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
-        ArrayList<String> freeLobbys = new ArrayList<>();
-        fromServer.values().stream().forEach((l) -> {
-            freeLobbys.add(Integer.toString(l.getLobbyid()) + ":" + l.getDefender().getPlayername());
-        });
+        BattleshipJerseyClient rest = new BattleshipJerseyClient();
+        final String s = rest.shoot(Integer.toString(lobbyID), Integer.toString(playerID), Integer.toString(x), Integer.toString(y));
+        Fire f = new Gson().fromJson(s, Fire.class);
         try {
-            client.setFreeLobbies(freeLobbys);
+            if (f.getStatus().equals("error")) {
+                client.showMessage(f.getError() + "\n" + f.getFire().toString(), "Shot fired", JOptionPane.ERROR_MESSAGE);
+            } else {
+                client.shotFired(f.getFire().x, f.getFire().y, false); // hmm
+                client.showMessage("Shot fired OK at " + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (RemoteException ex) {
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FireShot.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        // TODO : Developement halted duo to excessive string parsing...
     }
 
 }

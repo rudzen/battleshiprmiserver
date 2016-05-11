@@ -29,7 +29,7 @@ import interfaces.IClientListener;
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public abstract class GetAbstract {
+public abstract class GetAbstract implements Runnable {
     
     protected IClientListener client;
     
