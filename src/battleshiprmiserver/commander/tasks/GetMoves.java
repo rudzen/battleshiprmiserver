@@ -33,23 +33,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * DOES NOT WORK.. LIMITED SERVER RESPONSE
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class Wait extends GetAbstract {
+public class GetMoves extends GetAbstract {
 
-    private final int playerID;
     private final int lobbyID;
+    private final int playerID;
     
-    public Wait(final IClientListener client, final int lobbyID, final int playerID) {
+    public GetMoves(final IClientListener client, final int lobbyID, final int playerID) {
         super(client);
-        this.playerID = playerID;
         this.lobbyID = lobbyID;
+        this.playerID = playerID;
     }
 
     @Override
     public void run() {
-        final String s = rest.waitForOpponent(Integer.toString(lobbyID), Integer.toString(playerID));
+        final String s = rest.getMoves(Integer.toString(lobbyID));
         rest.close();
         ArrayList<Point> fromServer = new Gson().fromJson(s, new TypeToken<ArrayList<Point>>() {}.getType());
         int[][] board = new int[10][10];
@@ -62,6 +62,7 @@ public class Wait extends GetAbstract {
         } catch (RemoteException ex) {
             Logger.getLogger(Wait.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
 }

@@ -26,6 +26,8 @@ package battleshiprmiserver.commander;
 import battleshiprmiserver.commander.tasks.DeployShips;
 import battleshiprmiserver.commander.tasks.GetFreeLobbys;
 import battleshiprmiserver.commander.tasks.GetLobbys;
+import battleshiprmiserver.commander.tasks.GetMoves;
+import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.util.concurrent.ExecutorService;
@@ -49,22 +51,16 @@ public class FutureBasic {
 
     public static void deployBoard(final IClientListener client, final Player player, final int lobbyID) {
         pool.submit(new DeployShips(client, player, lobbyID));
-//        return pool.submit(new Callable<String>() {
-//            @Override
-//            public String call() throws Exception {
-//                try {
-//                    BattleshipJerseyClient rest = new BattleshipJerseyClient();
-//                    final String response = rest.deployBoard(Integer.toString(lobbyID), Integer.toString(player.getId()), BattleshipJerseyHelper.shipsToString(player.getShips()));
-//                    rest.close();
-//                    return response;
-//                } catch (NumberFormatException nfe) {
-//                    Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, nfe);
-//                }
-//                return "fail";
-//
-//            }
-//        });
-//        return pool.submit(new DeployShips(player, lobbyID));
-//    }
     }
+    
+    public static void wait(final IClientListener client, final int lobbyID, final int playerID) {
+        pool.submit(new Wait(client, lobbyID, playerID));
+    }
+    
+    public static void getMoves(final IClientListener client, final int lobbyID, final int playerID) {
+        pool.submit(new GetMoves(client, lobbyID, playerID));
+    }
+    
+    
+    
 }

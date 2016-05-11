@@ -26,42 +26,37 @@ package battleshiprmiserver.commander.tasks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import interfaces.IClientListener;
-import java.awt.Point;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import rest.entities.Lobby;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class Wait extends GetAbstract {
+public class GetAllPlayerIDS extends GetAbstract {
 
-    private final int playerID;
-    private final int lobbyID;
-    
-    public Wait(final IClientListener client, final int lobbyID, final int playerID) {
+    public GetAllPlayerIDS(final IClientListener client) {
         super(client);
-        this.playerID = playerID;
-        this.lobbyID = lobbyID;
     }
 
     @Override
     public void run() {
-        final String s = rest.waitForOpponent(Integer.toString(lobbyID), Integer.toString(playerID));
-        rest.close();
-        ArrayList<Point> fromServer = new Gson().fromJson(s, new TypeToken<ArrayList<Point>>() {}.getType());
-        int[][] board = new int[10][10];
-        fromServer.stream().forEach((p) -> {
-            board[p.x][p.y] = 1;
-        });
-        try {
-            client.updateOpponentBoard(board);
-            client.canPlay(true);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Wait.class.getName()).log(Level.SEVERE, null, ex);
+        final String s = rest.getPlayerIds();
+        if (s != null) {
+            HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
+            try {
+                if (!fromServer.isEmpty()) {
+                    client.showMessage("All player ids :\n" + fromServer.toString(), "Server message", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    client.showMessage("No player IDs found", "Server message", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(GetAllPlayerIDS.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
-    
 }
