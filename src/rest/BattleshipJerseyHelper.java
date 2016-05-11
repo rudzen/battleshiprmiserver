@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package battleshiprmiserver.rest;
+package rest;
 
 import com.google.gson.Gson;
 import dataobjects.Player;
@@ -30,8 +30,8 @@ import dataobjects.Upgrades;
 import game.GameSession;
 import java.awt.Point;
 import java.util.StringTokenizer;
-import rest.Board;
-import rest.Lobby;
+import rest.entities.Board;
+import rest.entities.Lobby;
 
 /**
  * - Convert java classes to parameters accepted by the web-server.<br>
@@ -153,7 +153,7 @@ public final class BattleshipJerseyHelper {
      * @param restPlayer The rest player to convert
      * @return The new player object
      */
-    public static Player restPlayerToLocal(rest.Player restPlayer) {
+    public static Player restPlayerToLocal(rest.entities.Player restPlayer) {
         Player p = new Player(restPlayer.getPlayername());
         p.initShips(); // this is just so there wont be a NPE at some point!
 
@@ -212,7 +212,7 @@ public final class BattleshipJerseyHelper {
 //        Lobby l = g.fromJson(lobby, Lobby.class);
 //        g = null; // help the GC on the way!
         
-        rest.Player rP = l.getDefender();
+        rest.entities.Player rP = l.getDefender();
 
         /* convert player one */
         Player p1 = restPlayerToLocal(rP);

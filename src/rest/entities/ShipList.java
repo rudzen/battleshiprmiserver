@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rest;
+package rest.entities;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
-import rest.ShipList.Ship.JSONShip;
+import rest.entities.ShipList.Ship.JSONShip;
 
 /**
  *

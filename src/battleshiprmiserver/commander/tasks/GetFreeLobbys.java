@@ -23,7 +23,7 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import battleshiprmiserver.rest.BattleshipJerseyClient;
+import rest.BattleshipJerseyClient;
 import battleshiprmiserver.threads.Runner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rest.Lobby;
+import rest.entities.Lobby;
 
 /**
  *

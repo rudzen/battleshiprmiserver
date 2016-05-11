@@ -23,8 +23,8 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import battleshiprmiserver.rest.BattleshipJerseyClient;
-import battleshiprmiserver.rest.BattleshipJerseyHelper;
+import rest.BattleshipJerseyClient;
+import rest.BattleshipJerseyHelper;
 import battleshiprmiserver.threads.Runner;
 import dataobjects.Player;
 import interfaces.IClientListener;

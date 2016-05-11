@@ -23,8 +23,8 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import battleshiprmiserver.rest.BattleshipJerseyClient;
-import battleshiprmiserver.rest.BattleshipJerseyHelper;
+import rest.BattleshipJerseyClient;
+import rest.BattleshipJerseyHelper;
 import com.google.gson.Gson;
 import dataobjects.Player;
 import interfaces.IClientListener;
@@ -60,7 +60,7 @@ public class GetPlayerID extends GetAbstract implements Runnable {
             if (s.equals("\"error\":\"player not found\"")) {
                 client.showMessage("Unable to get player from database", "Error", JOptionPane.ERROR);
             } else {
-                rest.Player p = new Gson().fromJson(s, rest.Player.class);
+                rest.entities.Player p = new Gson().fromJson(s, rest.entities.Player.class);
                 Player newPlayer = BattleshipJerseyHelper.restPlayerToLocal(p);
                 client.setPlayer(newPlayer);
                 client.showMessage("Player information updated.", "Server message", JOptionPane.INFORMATION_MESSAGE);

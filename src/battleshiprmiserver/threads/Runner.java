@@ -23,8 +23,8 @@
  */
 package battleshiprmiserver.threads;
 
-import battleshiprmiserver.rest.BattleshipJerseyClient;
-import battleshiprmiserver.rest.BattleshipJerseyHelper;
+import rest.BattleshipJerseyClient;
+import rest.BattleshipJerseyHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dataobjects.Player;
@@ -40,7 +40,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import login.Login;
-import rest.Lobby;
+import rest.entities.Lobby;
 
 /**
  * Overload of Runnable to allow the data structure to exist inside it! ;-)

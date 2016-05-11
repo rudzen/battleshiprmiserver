@@ -24,7 +24,7 @@
 package battleshiprmiserver;
 
 import battleshiprmiserver.commander.FutureBasic;
-import battleshiprmiserver.rest.BattleshipJerseyHelper;
+import rest.BattleshipJerseyHelper;
 import battleshiprmiserver.threads.Runner;
 import battleshiprmiserver.threads.ThreadPool;
 import com.css.rmi.ServerTwoWaySocketFactory;
