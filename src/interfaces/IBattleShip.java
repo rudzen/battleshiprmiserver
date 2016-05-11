@@ -60,13 +60,14 @@ public interface IBattleShip extends Remote {
     /**
      * Let the server know at what location you attempted to fire a shot at.
      *
+     * @param client
+     * @param lobbyID The lobby ID
+     * @param playerID The player shooting
      * @param x the X
      * @param y the Y
-     * @param player The player shooting
-     * @param sessionID The session ID
      * @throws RemoteException
      */
-    void fireShot(int x, int y, String player, String sessionID) throws RemoteException;
+    void fireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) throws RemoteException;
 
     /**
      * Login attempt

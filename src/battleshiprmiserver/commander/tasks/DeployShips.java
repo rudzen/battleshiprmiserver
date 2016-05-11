@@ -25,7 +25,6 @@ package battleshiprmiserver.commander.tasks;
 
 import rest.BattleshipJerseyClient;
 import rest.BattleshipJerseyHelper;
-import battleshiprmiserver.threads.Runner;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
@@ -65,7 +64,7 @@ public class DeployShips extends GetAbstract implements Runnable {
                 Logger.getLogger(DeployShips.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (NumberFormatException nfe) {
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, nfe);
+            Logger.getLogger(DeployShips.class.getName()).log(Level.SEVERE, null, nfe);
         }
     }
 

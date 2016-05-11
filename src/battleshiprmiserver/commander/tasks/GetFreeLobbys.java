@@ -23,7 +23,6 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import battleshiprmiserver.threads.Runner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import interfaces.IClientListener;
@@ -56,7 +55,7 @@ public class GetFreeLobbys extends GetAbstract {
         try {
             client.setFreeLobbies(freeLobbys);
         } catch (RemoteException ex) {
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GetFreeLobbys.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

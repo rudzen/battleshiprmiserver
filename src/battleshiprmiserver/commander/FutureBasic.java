@@ -24,12 +24,14 @@
 package battleshiprmiserver.commander;
 
 import battleshiprmiserver.commander.tasks.DeployShips;
+import battleshiprmiserver.commander.tasks.FireShot;
 import battleshiprmiserver.commander.tasks.GetFreeLobbys;
 import battleshiprmiserver.commander.tasks.GetLobbys;
 import battleshiprmiserver.commander.tasks.GetMoves;
 import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
 import interfaces.IClientListener;
+import java.awt.Point;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,6 +43,11 @@ public class FutureBasic {
 
     private static final ExecutorService pool = Executors.newFixedThreadPool(100);
 
+    /**
+     * Pool submiter for:<br>
+     * getLobbys
+     * @param client The client interface calling the command
+     */
     public static void getLobbys(IClientListener client) {
         pool.submit(new GetLobbys(client));
     }
@@ -61,6 +68,13 @@ public class FutureBasic {
         pool.submit(new GetMoves(client, lobbyID, playerID));
     }
     
+    public static void fireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) {
+        pool.submit(new FireShot(client, lobbyID, playerID, x, y));
+    }
+
+    public static void fireShot(final IClientListener client, final int lobbyID, final int playerID, final Point coords) {
+        pool.submit(new FireShot(client, lobbyID, playerID, coords));
+    }
     
     
 }

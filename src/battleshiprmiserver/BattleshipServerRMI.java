@@ -25,8 +25,6 @@ package battleshiprmiserver;
 
 import battleshiprmiserver.commander.FutureBasic;
 import rest.BattleshipJerseyHelper;
-import battleshiprmiserver.threads.Runner;
-import battleshiprmiserver.threads.ThreadPool;
 import com.css.rmi.ServerTwoWaySocketFactory;
 import dataobjects.Player;
 import game.BattleGame;
@@ -61,8 +59,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     private static volatile boolean rundemo = false;
 
-    public ThreadPool threadpool;
-
     private PrettyPrint pp;
 
     private static boolean verbose = true;
@@ -94,7 +90,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     public BattleshipServerRMI(final int runningThreads, final int threadPoolMax) throws RemoteException {
         System.out.println("Starting threadpool.");
-        threadpool = new ThreadPool(runningThreads, threadPoolMax);
     }
 
     public PrettyPrint getPp() {
@@ -173,12 +168,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 index.put(user, client);
             });
             players.put(user, p);
-            
-            
-            
-            
+
         } catch (final RemoteException re) {
-            Logger.getLogger(Runner.class.getName()).log(Level.SEVERE, null, re);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, re);
         }
     }
 
@@ -205,7 +197,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     sessions.put(ID, gs);
                     clientInterface.updateSessionID(ID);
                     try {
-                        threadpool.execute(new Runner(clientInterface, p, Messages.MessageType.GET_LOBBYS));
+                        FutureBasic.getLobbys(clientInterface);
                     } catch (Exception ex) {
                         Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -270,22 +262,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void fireShot(int x, int y, String player, String sessionID) throws RemoteException {
-        // tmp code :
-        new Runnable() {
-            @Override
-            public void run() {
-                GameSession gs = bg.getSessions().get(sessionID);
-                try {
-                    threadpool.execute(new Runner(gs.getOtherPlayer(player), gs.getPlayerByName(player), Messages.MessageType.SHOT_FIRED));
-                } catch (final NullPointerException npe) {
-                    System.out.println("Seems like the other player is null!");
-                } catch (Exception ex) {
-                    System.out.println("Error while attempting to shoot at other player....");
-                    Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }.run();
+    public void fireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) throws RemoteException {
+        FutureBasic.fireShot(client, lobbyID, playerID, x, y);
     }
 
     @Override
