@@ -64,7 +64,7 @@ public class FireShot extends GetAbstract {
             if (f.getStatus().equals("error")) {
                 client.showMessage(f.getError() + "\n" + f.getFire().toString(), "Shot fired", JOptionPane.ERROR_MESSAGE);
             } else {
-                client.shotFired(f.getFire().x, f.getFire().y, false); // hmm
+                client.shotFired(f.getFire().x, f.getFire().y, true); // hmm
                 client.showMessage("Shot fired OK at " + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (RemoteException ex) {
