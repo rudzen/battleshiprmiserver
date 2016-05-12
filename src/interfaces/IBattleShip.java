@@ -91,21 +91,22 @@ public interface IBattleShip extends Remote {
 
     /**
      * Response to client callback method ping().
-     *
-     * @param player The player
+     * This is used to determine the latency
+     * @param client The client
+     * @param time The time the actual pong was initiated
      * @throws RemoteException
      */
-    void pong(String player) throws RemoteException;
+    void pong(IClientListener client, long time) throws RemoteException;
 
     /**
      * Deploy set-up of ships to the server.
      *
      * @param client
      * @param player The player
-     * @param sessionID
+     * @param lobbyID The lobby ID
      * @throws RemoteException
      */
-    void deployShips(final IClientListener client, final Player player, String sessionID) throws RemoteException;
+    void deployShips(final IClientListener client, final int lobbyID, final Player player) throws RemoteException;
 
     /**
      * Requests a list of players currently available to play against.
@@ -193,5 +194,13 @@ public interface IBattleShip extends Remote {
      * @throws RemoteException 
      */
     void requestFreeLobbies(IClientListener client) throws RemoteException;
+    
+    /**
+     * Request that the server sends a new lobbyID
+     * @param client The client requesting lobbyID
+     * @throws RemoteException 
+     */
+    void requestLobbyID(IClientListener client) throws RemoteException;
+    
     
 }

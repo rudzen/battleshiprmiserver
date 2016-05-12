@@ -36,12 +36,12 @@ import javax.swing.JOptionPane;
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class DeployShips extends GetAbstract implements Runnable {
+public class DeployBoard extends GetAbstract implements Runnable {
 
     private final Player player;
     private final int lobbyID;
 
-    public DeployShips(IClientListener client, final Player player, final int lobbyID) {
+    public DeployBoard(IClientListener client, final Player player, final int lobbyID) {
         super(client);
         this.player = player;
         this.lobbyID = lobbyID;
@@ -51,7 +51,7 @@ public class DeployShips extends GetAbstract implements Runnable {
     public void run() {
         try {
             BattleshipJerseyClient restClient = new BattleshipJerseyClient();
-            final String response = restClient.deployBoard("1", "1", BattleshipJerseyHelper.shipsToString(player.getShips()));
+            final String response = restClient.deployBoard(Integer.toString(lobbyID), Integer.toString(player.getId()), BattleshipJerseyHelper.shipsToString(player.getShips()));
             restClient.close();
             System.out.println("Response : " + response);
             try {
@@ -61,10 +61,10 @@ public class DeployShips extends GetAbstract implements Runnable {
                     client.showMessage("Unable to deploy ships\nReason : Unknown.", "Server message", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (RemoteException ex) {
-                Logger.getLogger(DeployShips.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DeployBoard.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (NumberFormatException nfe) {
-            Logger.getLogger(DeployShips.class.getName()).log(Level.SEVERE, null, nfe);
+            Logger.getLogger(DeployBoard.class.getName()).log(Level.SEVERE, null, nfe);
         }
     }
 

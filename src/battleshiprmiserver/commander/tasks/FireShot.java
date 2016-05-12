@@ -51,10 +51,6 @@ public class FireShot extends GetAbstract {
         this.y = y;
     }
 
-    public FireShot(IClientListener client, final int lobbyID, final int playerID, final Point loc) {
-        this(client, lobbyID, playerID, loc.x, loc.y);
-    }
-
     @Override
     public void run() {
         final String s = rest.shoot(Integer.toString(lobbyID), Integer.toString(playerID), Integer.toString(x), Integer.toString(y));
@@ -63,9 +59,14 @@ public class FireShot extends GetAbstract {
         try {
             if (f.getStatus().equals("error")) {
                 client.showMessage(f.getError() + "\n" + f.getFire().toString(), "Shot fired", JOptionPane.ERROR_MESSAGE);
-            } else {
-                client.shotFired(f.getFire().x, f.getFire().y, true); // hmm
+            } else if (f.getStatus().equals("hit")) {
+                client.shotFired(f.getFire().x, f.getFire().y, true);
                 client.showMessage("Shot fired OK at " + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
+            } else if (f.getStatus().equals("destroyed")) {
+                // rework this
+                client.shotFired(f.getFire().x, f.getFire().y, true);
+                client.shipSunk(0, false);
+                client.showMessage("You have sunk the ship!" + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(FireShot.class.getName()).log(Level.SEVERE, null, ex);

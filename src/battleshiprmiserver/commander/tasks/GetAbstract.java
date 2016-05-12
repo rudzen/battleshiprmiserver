@@ -27,7 +27,7 @@ import interfaces.IClientListener;
 import rest.BattleshipJerseyClient;
 
 /**
- *
+ * Generic abstraction of needed objects to complete the task
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public abstract class GetAbstract implements Runnable {

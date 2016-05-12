@@ -51,10 +51,6 @@ public class GameClientRest implements IClientListener {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void shipSunk(int shipindex) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void gameOver(boolean won) throws RemoteException {
@@ -92,7 +88,7 @@ public class GameClientRest implements IClientListener {
     }
 
     @Override
-    public void ping() throws RemoteException {
+    public void ping(long time) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -133,6 +129,16 @@ public class GameClientRest implements IClientListener {
 
     @Override
     public void setFreeLobbies(ArrayList<String> lobbies) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setLobbyID(int lobbyID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void shipSunk(int shipType, boolean yourShip) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

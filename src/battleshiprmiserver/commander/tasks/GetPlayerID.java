@@ -45,7 +45,7 @@ public class GetPlayerID extends GetAbstract implements Runnable {
      * @param name
      * @param client
      */
-    public GetPlayerID(final String name, final IClientListener client) {
+    public GetPlayerID(final IClientListener client, final String name) {
         super(client);
         this.name = name;
     }
