@@ -31,6 +31,7 @@ import battleshiprmiserver.commander.tasks.GetLobbys;
 import battleshiprmiserver.commander.tasks.GetMoves;
 import battleshiprmiserver.commander.tasks.GetPlayer;
 import battleshiprmiserver.commander.tasks.GetPlayerID;
+import battleshiprmiserver.commander.tasks.JoinLobby;
 import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
 import interfaces.IClientListener;
@@ -117,6 +118,12 @@ public class FutureBasic {
     public static void getMoves(final IClientListener client, final int lobbyID, final int playerID) {
         POOL.submit(new GetMoves(client, lobbyID, playerID));
     }
+    
+    public static void joinLobby(final IClientListener client, final int lobbyID, final int playerID) {
+        POOL.submit(new JoinLobby(client, lobbyID, playerID));
+    }
+    
+    
 
     /**
      * Pool submiter for: Wait

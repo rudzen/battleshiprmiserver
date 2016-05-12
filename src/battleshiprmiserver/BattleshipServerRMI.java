@@ -90,7 +90,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private final ReentrantLock login_lock = new ReentrantLock();
 
     public BattleshipServerRMI(final int runningThreads, final int threadPoolMax) throws RemoteException {
-        System.out.println("Starting threadpool.");
     }
 
     public static void main(String args[]) {
@@ -131,7 +130,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             bg = new BattleGame(index, sessions);
 
             /* initiate the timer to check for dead clients */
-            deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 3600, 3600);
+            deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 10000, 10000);
 
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
@@ -331,12 +330,27 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void requestLobbyID(IClientListener client) throws RemoteException {
-
+        
     }
 
     @Override
     public void ping(IClientListener client, long time) throws RemoteException {
         client.ping(time);
+    }
+
+    @Override
+    public void requestAllPlayerIDs(IClientListener client) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void wait(IClientListener client) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void joinLobby(IClientListener cliet, int lobbyID, final int playerID) throws RemoteException {
+        FutureBasic.joinLobby(cliet, lobbyID, playerID);
     }
 
     private static class DeadTimerMaintenance extends TimerTask {
