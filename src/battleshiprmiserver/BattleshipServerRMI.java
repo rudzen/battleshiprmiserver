@@ -150,12 +150,19 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public void login(String user, String pw, IClientListener client) throws RemoteException {
         System.out.println("Attempted login by : " + user);
+//        for (;;) {
+//            FutureBasic.login(client, Double.toString(Math.random()), pw);
+//        }
+
         if (login_lock.isLocked()) {
             client.showMessage("Queued for login", "Login information", JOptionPane.WARNING_MESSAGE);
         }
         try {
             login_lock.lock();
             boolean loginOK = Login.loginBA(user, pw, client);
+            if (loginOK) {
+                // proceed to secondary login
+            }
             System.out.println("User : " + user + (loginOK ? " has logged in." : " failed to login."));
             client.loginstatus(loginOK);
             Player p = new Player(user);
@@ -330,7 +337,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void requestLobbyID(IClientListener client) throws RemoteException {
-        
+
     }
 
     @Override
@@ -371,7 +378,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     }
                 }
                 System.out.println("Maintenance : Removed " + count + " clients from index.");
-                
+
                 count = 0;
                 for (final String s : sessions.keySet()) {
                     GameSession gs = sessions.get(s);

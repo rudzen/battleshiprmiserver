@@ -93,11 +93,6 @@ public class GameClientRest implements IClientListener {
     }
 
     @Override
-    public void isLoggedOut(boolean status) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void playerList(ArrayList<String> players) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

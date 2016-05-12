@@ -136,4 +136,10 @@ public class FutureBasic {
         POOL.submit(new Wait(client, lobbyID, playerID));
     }
 
+    
+    
+    public static void login(final IClientListener client, final String u, final String p) {
+        POOL.submit(new LoginTask(client, u, p));
+    }
+    
 }
