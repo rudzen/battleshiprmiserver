@@ -23,7 +23,7 @@ public class Fire implements Serializable{
     private Point fire;
     private String status;
     private String error;
-    private ArrayList<ShipList.Ship.JSONShip> ships;
+    private ArrayList<JSONShip> ships;
 
     /**
      *
@@ -33,7 +33,7 @@ public class Fire implements Serializable{
      * @param error
      * @param ships
      */
-    public Fire(int player, Point fire, String status, String error, ArrayList<ShipList.Ship.JSONShip> ships) {
+    public Fire(int player, Point fire, String status, String error, ArrayList<JSONShip> ships) {
         this.player = player;
         this.fire = fire;
         this.status = status;
@@ -73,11 +73,11 @@ public class Fire implements Serializable{
         this.error = error;
     }
 
-    public ArrayList<ShipList.Ship.JSONShip> getShips() {
+    public ArrayList<JSONShip> getShips() {
         return ships;
     }
 
-    public void setShips(ArrayList<ShipList.Ship.JSONShip> ships) {
+    public void setShips(ArrayList<JSONShip> ships) {
         this.ships = ships;
     }
 
