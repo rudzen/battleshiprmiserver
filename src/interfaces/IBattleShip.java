@@ -90,13 +90,24 @@ public interface IBattleShip extends Remote {
     boolean logout(String player) throws RemoteException;
 
     /**
-     * Response to client callback method ping().
-     * This is used to determine the latency
+     * Response to client callback method ping(). This is used to determine the
+     * latency
+     *
      * @param client The client
      * @param time The time the actual pong was initiated
      * @throws RemoteException
      */
     void pong(IClientListener client, long time) throws RemoteException;
+
+    /**
+     * Response to client callback method ping(). This is used to determine the
+     * latency
+     *
+     * @param client The client
+     * @param time The time the actual pong was initiated
+     * @throws RemoteException
+     */
+    void ping(IClientListener client, long time) throws RemoteException;
 
     /**
      * Deploy set-up of ships to the server.
@@ -183,6 +194,7 @@ public interface IBattleShip extends Remote {
 
     /**
      * Request the opponent information object.
+     *
      * @param client
      * @throws RemoteException
      */
@@ -190,17 +202,18 @@ public interface IBattleShip extends Remote {
 
     /**
      * Request free lobbies (lobbies with just one player) from the server.
+     *
      * @param client ME!
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     void requestFreeLobbies(IClientListener client) throws RemoteException;
-    
+
     /**
      * Request that the server sends a new lobbyID
+     *
      * @param client The client requesting lobbyID
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     void requestLobbyID(IClientListener client) throws RemoteException;
-    
-    
+
 }

@@ -39,6 +39,8 @@ import interfaces.IClientListener;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RMISocketFactory;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
@@ -67,14 +69,16 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     /**
      * player object index based on the player names
-     * @deprecated 
+     *
+     * @deprecated
      */
     private static final ConcurrentHashMap<String, Player> players = new ConcurrentHashMap<>();
 
-    
     private static final ConcurrentHashMap<Integer, IClientListener> id_index = new ConcurrentHashMap<>();
-    
-    
+
+    /* timer to check for dead clients */
+    private static Timer deadTimer = new Timer(true);
+
     /* to keep track of how many clients there are connected. */
     private final AtomicInteger clientCount = new AtomicInteger(0);
 
@@ -92,7 +96,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     public static void main(String args[]) {
         System.out.println("Loading battleship server, please wait.");
         try {
-            
+
             if (args.length >= 1) {
                 BattleshipServerRMIHelper.setArgs(args);
                 System.out.println("Command line argument values changed to : " + Args.all());
@@ -125,6 +129,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             /* configure battlegame object */
             bg = new BattleGame(index, sessions);
+
+            /* initiate the timer to check for dead clients */
+            deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 3600, 3600);
 
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
@@ -205,7 +212,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             }
         }.run();
-        System.out.println(clientCount.getAndIncrement() + " number of clients registered");
+        System.out.println(clientCount.incrementAndGet() + " number of clients registered");
         return index.contains(clientInterface);
     }
 
@@ -263,7 +270,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void pong(final IClientListener client, final long time) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -326,6 +332,50 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public void requestLobbyID(IClientListener client) throws RemoteException {
 
+    }
+
+    @Override
+    public void ping(IClientListener client, long time) throws RemoteException {
+        client.ping(time);
+    }
+
+    private static class DeadTimerMaintenance extends TimerTask {
+
+        @Override
+        public void run() {
+            if (!index.isEmpty()) {
+                System.out.println("Maintenance : Dead client elimination in progress..");
+                int count = 0;
+                for (final String s : index.keySet()) {
+                    try {
+                        index.get(s).hello();
+                    } catch (final RemoteException re) {
+                        count++;
+                        System.out.println("Maintenance : " + s + " removed from index..");
+                        index.remove(s);
+                        players.remove(s);
+                    }
+                }
+                System.out.println("Maintenance : Removed " + count + " clients from index.");
+                
+                count = 0;
+                for (final String s : sessions.keySet()) {
+                    GameSession gs = sessions.get(s);
+                    if (gs.getPlayerOne() != null && index.get(gs.getPlayerOne().getName()) == null) {
+                        if (gs.getPlayerTwo() != null && index.get(gs.getPlayerTwo().getName()) != null) {
+                            try {
+                                index.get(gs.getPlayerTwo().getName()).showMessage("Session terminated", "Maintenance", JOptionPane.INFORMATION_MESSAGE);
+                            } catch (final RemoteException ex) {
+                            } finally {
+                                count++;
+                                sessions.remove(s);
+                            }
+                        }
+                    }
+                }
+                System.out.println("Maintenance : Removed " + count + " sessions.");
+            }
+        }
     }
 
 }

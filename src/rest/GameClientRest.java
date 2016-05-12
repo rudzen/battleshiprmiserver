@@ -141,5 +141,10 @@ public class GameClientRest implements IClientListener {
     public void shipSunk(int shipType, boolean yourShip) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void hello() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
