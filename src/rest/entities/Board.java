@@ -15,7 +15,7 @@ public class Board implements Serializable {
     private final int playerid;
     private final int[][] hits = new int[10][10];
 
-    public Board(Lobby lobby ,Player player){
+    public Board(Lobby lobby, Player player) {
         this.lobbyid = lobby.getLobbyid();
         this.playerid = player.getPlayerid();
     }
@@ -31,13 +31,15 @@ public class Board implements Serializable {
     public int[][] gethits() {
         return hits.clone();
     }
-    
-    public int getHit(int col, int row){
+
+    public int getHit(int col, int row) {
         return hits[col][row];
     }
-    
-    public boolean setHit(int col, int row, int state){
-        if(hits[col][row] >= state) return false;
+
+    public boolean setHit(int col, int row, int state) {
+        if (hits[col][row] >= state) {
+            return false;
+        }
         hits[col][row] = state;
         return true;
     }

@@ -13,11 +13,10 @@ import java.util.ArrayList;
  *
  * @author theis
  */
-public class Fire implements Serializable{
+public class Fire implements Serializable {
 
     public static final String ERROR = "error";
-    
-    
+
     private static final long serialVersionUID = 5984944541713491612L;
     private int player;
     private Point fire;
@@ -81,6 +80,4 @@ public class Fire implements Serializable{
         this.ships = ships;
     }
 
-
-    
 }

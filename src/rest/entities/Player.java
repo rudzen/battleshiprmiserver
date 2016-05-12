@@ -25,7 +25,7 @@ public class Player implements Serializable {
     private Integer sonar;
     private String password;
     private String salt;
-    
+
     public Player() {
         setArmor(0);
         setDecoy(0);
@@ -146,15 +146,12 @@ public class Player implements Serializable {
             return false;
         }
         Player other = (Player) object;
-        if ((this.playerid == null && other.playerid != null) || (this.playerid != null && !this.playerid.equals(other.playerid))) {
-            return false;
-        }
-        return true;
+        return !((this.playerid == null && other.playerid != null) || (this.playerid != null && !this.playerid.equals(other.playerid)));
     }
 
     @Override
     public String toString() {
         return "entity.Player[ playerid=" + playerid + " ]";
     }
-    
+
 }

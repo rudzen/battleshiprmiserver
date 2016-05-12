@@ -9,11 +9,10 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 public class Lobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private final Integer lobbyid;
     private Player attacker;
     private Player defender;
@@ -28,29 +27,33 @@ public class Lobby implements Serializable {
         this.defender = defender;
         defenderBoard = new Board(this, defender);
     }
-    public Lobby(Integer lobbyid, Player defender, Player attacker){
+
+    public Lobby(Integer lobbyid, Player defender, Player attacker) {
         this(lobbyid, defender);
         this.attacker = attacker;
         attackerBoard = new Board(this, attacker);
     }
-    public void setDeployed(){
+
+    public void setDeployed() {
         isDeployed = true;
     }
 
     public Integer getLobbyid() {
         return lobbyid;
     }
-    
+
     public Player getAttacker() {
         return attacker;
     }
-    
+
     public Integer getAttackerid() {
         return attacker.getPlayerid();
     }
 
     public boolean setAttacker(Player attacker) {
-        if(this.attacker != null || attacker == null) return false;
+        if (this.attacker != null || attacker == null) {
+            return false;
+        }
         this.attacker = attacker;
         attackerBoard = new Board(this, attacker);
         return true;
@@ -59,7 +62,7 @@ public class Lobby implements Serializable {
     public Player getDefender() {
         return defender;
     }
-    
+
     public Integer getDefenderid() {
         return defender.getPlayerid();
     }
@@ -67,22 +70,31 @@ public class Lobby implements Serializable {
     public Board[] getBoards() {
         return new Board[]{attackerBoard, defenderBoard};
     }
-    public Board getBoard(int playerid){
-        if(playerid == getDefenderid()) return getDefenderBoard();
-        else if (playerid == getAttackerid()) return getAttackerBoard();
-        else return null;
+
+    public Board getBoard(int playerid) {
+        if (playerid == getDefenderid()) {
+            return getDefenderBoard();
+        } else if (playerid == getAttackerid()) {
+            return getAttackerBoard();
+        } else {
+            return null;
+        }
     }
-    public Board getAttackerBoard(){
+
+    public Board getAttackerBoard() {
         return attackerBoard;
     }
-    
-    public Board getDefenderBoard(){
+
+    public Board getDefenderBoard() {
         return defenderBoard;
     }
-    
-    public int getActiveId(){
-        if(attackersTurn) return getAttackerid();
-        else return getDefenderid();
+
+    public int getActiveId() {
+        if (attackersTurn) {
+            return getAttackerid();
+        } else {
+            return getDefenderid();
+        }
     }
 
     @Override
@@ -109,6 +121,5 @@ public class Lobby implements Serializable {
     public String toString() {
         return "Lobby{" + "lobbyid=" + lobbyid + ", attacker=" + attacker + ", defender=" + defender + ", attackerBoard=" + attackerBoard + ", defenderBoard=" + defenderBoard + ", hasTwoPlayers=" + hasTwoPlayers + ", isDeployed=" + isDeployed + ", attackersTurn=" + attackersTurn + ", moves=" + moves + ", chat=" + chat + '}';
     }
-    
-    
+
 }

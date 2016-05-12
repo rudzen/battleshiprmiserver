@@ -30,49 +30,72 @@ import java.awt.Point;
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public class Ship {
+
     String name;
-        int length, x, y, hit = 0;
-        boolean hor;
-        JSONShip j;
-        public Ship(String name, int length, int x, int y, boolean hor){
-            this.name = name;
-            this.length = length;
-            this.x = x; this.y = y;
-            this.hor = hor;
-            j = new JSONShip(name, length);
-        }
-        
-        public boolean fire(int x, int y){
-            if(hor){
-                if (this.y != y) return false;
-                if(this.x > x  || this.x + this.length - 1 < x) return false;
-                hit = hit | (1<<(x-this.x));
-                return true;
-            } else {
-                if (this.x != x) return false;
-                if(this.y > y  || this.y + this.length - 1 < y) return false;
-                hit = hit | (1<<(y-this.y));
-                return true;
+    int length, x, y, hit = 0;
+    boolean hor;
+    JSONShip j;
+
+    public Ship(String name, int length, int x, int y, boolean hor) {
+        this.name = name;
+        this.length = length;
+        this.x = x;
+        this.y = y;
+        this.hor = hor;
+        j = new JSONShip(name, length);
+    }
+
+    public boolean fire(int x, int y) {
+        if (hor) {
+            if (this.y != y) {
+                return false;
             }
-        }
-        
-        public boolean isDestroyed(){
-            for(int i = 0; i < length; i++)
-                if((hit&(1<<i)) == 0) return false;
-            j.isDestroyed = true;
-            j.horizontal = hor;
-            j.row = this.x;
-            j.col = this.y;
-            j.cordinates = this.getCords();
+            if (this.x > x || this.x + this.length - 1 < x) {
+                return false;
+            }
+            hit = hit | (1 << (x - this.x));
+            return true;
+        } else {
+            if (this.x != x) {
+                return false;
+            }
+            if (this.y > y || this.y + this.length - 1 < y) {
+                return false;
+            }
+            hit = hit | (1 << (y - this.y));
             return true;
         }
-       
-        public Point[] getCords(){
-            if(!j.isDestroyed) return null;
-            Point[] cordinates = new Point[length];
-            if(hor) for(int i = 0; i<length; i++) cordinates[i] = new Point(x+i, y);
-            else for(int i = 0; i<length; i++) cordinates[i] = new Point(x,y+i);
-            return cordinates;
+    }
+
+    public boolean isDestroyed() {
+        for (int i = 0; i < length; i++) {
+            if ((hit & (1 << i)) == 0) {
+                return false;
+            }
         }
-            
+        j.isDestroyed = true;
+        j.horizontal = hor;
+        j.row = this.x;
+        j.col = this.y;
+        j.cordinates = this.getCords();
+        return true;
+    }
+
+    public Point[] getCords() {
+        if (!j.isDestroyed) {
+            return null;
+        }
+        Point[] cordinates = new Point[length];
+        if (hor) {
+            for (int i = 0; i < length; i++) {
+                cordinates[i] = new Point(x + i, y);
+            }
+        } else {
+            for (int i = 0; i < length; i++) {
+                cordinates[i] = new Point(x, y + i);
+            }
+        }
+        return cordinates;
+    }
+
 }
