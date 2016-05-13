@@ -46,6 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
 import login.Login;
+import rest.BattleshipJerseyClient;
 
 /**
  *
@@ -89,7 +90,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private final ReentrantLock games_lock = new ReentrantLock();
     private final ReentrantLock login_lock = new ReentrantLock();
 
-    public BattleshipServerRMI(final int runningThreads, final int threadPoolMax) throws RemoteException {
+    public BattleshipServerRMI() throws RemoteException {
     }
 
     public static void main(String args[]) {
@@ -107,8 +108,11 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             /* export the registry from the same JVM */
             LocateRegistry.createRegistry(Args.port);
 
+            /* set the REST address to be used */
+            BattleshipJerseyClient.BASE_URI = Args.game_address;
+            
             /* Load the service */
-            BattleshipServerRMI server = new BattleshipServerRMI(Args.threads_running, Args.threads_max);
+            BattleshipServerRMI server = new BattleshipServerRMI();
 
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(new SecurityManager());
@@ -118,7 +122,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             }
 
             /* Print the basic information about the server */
-            new PrettyPrint(Args.ip, Args.port).showMenu();
+            new PrettyPrint(Args.ip, Args.port, Args.game_address).showMenu();
 
             String registration = "rmi://" + Args.registry() + "/Battleship";
             System.out.println("Using registry : " + registration);
@@ -130,7 +134,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             bg = new BattleGame(index, sessions);
 
             /* initiate the timer to check for dead clients */
-            deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 10000, 10000);
+            deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 90000, 90000);
 
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
@@ -165,8 +169,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             }
             System.out.println("User : " + user + (loginOK ? " has logged in." : " failed to login."));
             client.loginstatus(loginOK);
-            Player p = new Player(user);
-            p.initShips();
+            Player p = client.getPlayer();
+            p.setName(user);
             client.setPlayer(p);
             /* replace old entry in client mapping */
             index.keySet().stream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
@@ -332,6 +336,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void requestFreeLobbies(IClientListener client) throws RemoteException {
+        System.out.println(client.getPlayer().getName() + " requesting free lobbies.");
         FutureBasic.getFreeLobbys(client);
     }
 
@@ -358,6 +363,11 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public void joinLobby(IClientListener cliet, int lobbyID, final int playerID) throws RemoteException {
         FutureBasic.joinLobby(cliet, lobbyID, playerID);
+    }
+
+    @Override
+    public void requestAllLobbies(IClientListener client) throws RemoteException {
+        FutureBasic.getLobbys(client);
     }
 
     private static class DeadTimerMaintenance extends TimerTask {

@@ -49,10 +49,11 @@ public class GetFreeLobbys extends GetAbstract {
         rest.close();
         HashMap<String, Lobby> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
         ArrayList<String> freeLobbys = new ArrayList<>();
-        fromServer.values().stream().forEach((l) -> {
+        fromServer.values().parallelStream().forEach((l) -> {
             freeLobbys.add(Integer.toString(l.getLobbyid()) + ":" + l.getDefender().getPlayername());
         });
         try {
+            System.out.println("Sending free lobbies to client.");
             client.setFreeLobbies(freeLobbys);
         } catch (RemoteException ex) {
             Logger.getLogger(GetFreeLobbys.class.getName()).log(Level.SEVERE, null, ex);

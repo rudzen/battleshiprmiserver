@@ -39,16 +39,14 @@ public class BattleshipServerRMIHelper {
         /* configure arrays for easy access, 0 = variable name, 1 = description */
         final String[] VAR_ADDRESS = {"address", "Set the RMI registry address (hostname)."};
         final String[] VAR_PORT = {"port", "Set the RMI registry port."};
-        final String[] VAR_TMAX = {"threads_running", "Limit for amount of background threads that should be running."};
-        final String[] VAR_TRUN = {"threads_max", "Limit for the maximum of availble threads in queue for threadpool."};
+        final String[] VAR_REST = {"rest_address", "The address to use for the REST game server."};
 
         final MainArgsHandler argsHandler = MainArgsHandler.getHandler();
 
         final Interval<Integer> ZERO_OR_ONE = new GenericInterval<>(0, 1);
         argsHandler.permitVariable(VAR_ADDRESS[0], ZERO_OR_ONE, VAR_ADDRESS[1]);
         argsHandler.permitVariable(VAR_PORT[0], ZERO_OR_ONE, VAR_PORT[1]);
-        argsHandler.permitVariable(VAR_TMAX[0], ZERO_OR_ONE, VAR_TMAX[1]);
-        argsHandler.permitVariable(VAR_TRUN[0], ZERO_OR_ONE, VAR_TRUN[1]);
+        argsHandler.permitVariable(VAR_REST[0], ZERO_OR_ONE, VAR_REST[1]);
 
         try {
             argsHandler.processMainArgs(args);
@@ -77,27 +75,12 @@ public class BattleshipServerRMIHelper {
                 }
             }
 
-            argsReceived = argsHandler.getValuesFromVariable(VAR_TMAX[0]);
+            argsReceived = argsHandler.getValuesFromVariable(VAR_REST[0]);
             if (!argsReceived.isEmpty()) {
                 try {
-                    Args.threads_max = Integer.parseInt(argsReceived.get(0));
-                    if (Args.threads_max <= 25) {
-                        Args.threads_max = 25;
-                    }
+                    Args.game_address = argsReceived.get(0);
                 } catch (NumberFormatException nfe) {
-                    throw new IllegalArgumentException(VAR_TMAX[0] + " must be an Integer.");
-                }
-            }
-
-            argsReceived = argsHandler.getValuesFromVariable(VAR_TRUN[0]);
-            if (!argsReceived.isEmpty()) {
-                try {
-                    Args.threads_running = Integer.parseInt(argsReceived.get(0));
-                    if (Args.threads_running <= 25) {
-                        Args.threads_running = 25;
-                    }
-                } catch (NumberFormatException nfe) {
-                    throw new IllegalArgumentException(VAR_TRUN[0] + " must be an Integer.");
+                    throw new IllegalArgumentException(VAR_REST[0] + " must be an Integer.");
                 }
             }
 

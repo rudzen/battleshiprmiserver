@@ -53,12 +53,14 @@ public final class PrettyPrint {
     private int pos;
     private String title;
     private String registry;
+    private String rest;
 
     private final ArrayList<String> menu = new ArrayList<>(41);
 
-    public PrettyPrint(final String registry, final int port) {
+    public PrettyPrint(final String registry, final int port, final String rest_address) {
         this.registry = registry;
         this.port = port;
+        this.rest = rest_address;
         pos = getTop(-1);
         pos = getStatus(pos);
         pos = getButtom(pos);
@@ -103,6 +105,7 @@ public final class PrettyPrint {
         menu.add(++p, makeSingleBordered("Server Local IP          : " + ((IP != null) ? IP : "<No NIC detected.>")));
         menu.add(++p, makeSingleBordered("RMI Registry             : " + registry));
         menu.add(++p, makeSingleBordered("Port                     : " + Integer.toString(port)));
+        menu.add(++p, makeSingleBordered("REST Game Server         : " + rest));
         menu.add(++p, makeSingleBordered("Clients Connected        : " + "N/A"));
         return p;
     }

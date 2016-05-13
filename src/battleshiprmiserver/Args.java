@@ -31,18 +31,16 @@ public final class Args {
     
     public static String ip;
     public static int port;
-    public static int threads_max;
-    public static int threads_running;
-
+    public static String game_address;
+    
     static {
         ip = "localhost";
         port = 6769;
-        threads_running = 5;
-        threads_max = 5;
+        game_address = "http://104.46.52.169:8080/BattleshipREST/test/";
     }
     
     public static String all() {
-        return "Args{" + "ip=" + ip + ", port=" + port + ", threads_max=" + threads_max + ", threads_running=" + threads_running + '}';
+        return "Args{" + "ip=" + ip + ", port=" + port + ", game_address=" + game_address + '}';
     }
     
     public static String registry() {

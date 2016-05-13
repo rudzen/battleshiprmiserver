@@ -224,4 +224,6 @@ public interface IBattleShip extends Remote {
 
     void joinLobby(IClientListener cliet, int lobbyID, final int playerID) throws RemoteException;
     
+    void requestAllLobbies(IClientListener client) throws RemoteException;
+    
 }

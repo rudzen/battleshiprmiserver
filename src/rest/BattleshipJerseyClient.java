@@ -41,10 +41,10 @@ import javax.ws.rs.client.WebTarget;
  */
 public class BattleshipJerseyClient {
 
-    private WebTarget webTarget;
-    private Client client;
-    private static final String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test/";
-    //private static final String BASE_URI = "http://localhost:8080/BattleshipREST/test";
+    private final WebTarget webTarget;
+    private final Client client;
+//    private static final String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test/";
+    public static String BASE_URI = "http://localhost:8080/BattleshipREST/test";
 
     public BattleshipJerseyClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
