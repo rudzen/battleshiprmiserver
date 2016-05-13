@@ -47,9 +47,7 @@ public final class Login {
             Service service = Service.create(new URL(WSDL), qname);
             Brugeradmin ba = service.getPort(Brugeradmin.class);
 
-            Bruger bruger = ba.hentBruger(userName, password);
-            if (bruger != null) {
-                bruger = null;
+            if (ba.hentBruger(userName, password) != null) {
                 ba = null;
                 service = null;
                 qname = null;

@@ -39,7 +39,7 @@ public final class PrettyPrint {
     private final int MAX_LEN = 78;
     private final int MAX_HEI = 20;
 
-    private final String dot = "^";
+    private final String dot = "\u00AA";
 
     private final String SEP = replicate(dot, MAX_LEN);
 
