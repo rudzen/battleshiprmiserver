@@ -95,11 +95,10 @@ public class Player implements Serializable {
             }
             s.setLocation(p);
         });
-        
     }
 
     public void setShip(final int index, final Ship ship) {
-        ships.set(index, ship);
+        ships.set(index, new Ship(ship));
     }
 
     public Ship getShip(final int index) {

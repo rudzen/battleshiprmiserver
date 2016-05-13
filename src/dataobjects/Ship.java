@@ -160,6 +160,23 @@ public class Ship implements Serializable {
         }
     }
 
+    public Ship(final Ship ship) {
+        this.endX = ship.endX;
+        this.endY = ship.endY;
+        this.hasUpgrade = ship.hasUpgrade;
+        this.hits = ship.hits;
+        this.horizontal = ship.horizontal;
+        this.isPlaced = ship.isPlaced;
+        this.length = ship.length;
+        this.life = ship.life;
+        this.location = ship.location;
+        this.startX = ship.startX;
+        this.startY = ship.startY;
+        this.upgrades = ship.upgrades;
+        this.type = ship.type;
+    }
+    
+    
     /* upgrade helper functions */
     /**
      * Adds an upgrade to the ship (if bought by the player)
