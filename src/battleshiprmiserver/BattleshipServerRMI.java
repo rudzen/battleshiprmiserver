@@ -78,7 +78,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private static final ConcurrentHashMap<Integer, IClientListener> id_index = new ConcurrentHashMap<>();
 
     /* timer to check for dead clients */
-    private static Timer deadTimer = new Timer(true);
+    private Timer deadTimer = new Timer(true);
 
     /* to keep track of how many clients there are connected. */
     private final AtomicInteger clientCount = new AtomicInteger(0);
@@ -91,6 +91,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private final ReentrantLock login_lock = new ReentrantLock();
 
     public BattleshipServerRMI() throws RemoteException {
+        /* initiate the timer to check for dead clients */
+        deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 90000, 90000);
     }
 
     public static void main(String args[]) {
@@ -110,7 +112,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             /* set the REST address to be used */
             BattleshipJerseyClient.BASE_URI = Args.game_address;
-            
+
             /* Load the service */
             BattleshipServerRMI server = new BattleshipServerRMI();
 
@@ -133,9 +135,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             /* configure battlegame object */
             bg = new BattleGame(index, sessions);
 
-            /* initiate the timer to check for dead clients */
-            deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 90000, 90000);
-
         } catch (RemoteException re) {
             System.err.println("Remote Error - " + re);
         } catch (Exception e) {
@@ -147,8 +146,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         clientCount.set(index.size());
         System.out.println("Clients connected : " + clientCount.get());
     }
-    
-    
+
     /**
      * The login function does just that.<br>
      *
@@ -364,7 +362,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         FutureBasic.getLobbys(client);
     }
 
-    private static class DeadTimerMaintenance extends TimerTask {
+    private class DeadTimerMaintenance extends TimerTask {
 
         @Override
         public void run() {
@@ -400,6 +398,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 }
                 System.out.println("Maintenance : Removed " + count + " sessions.");
             }
+            updateUser();
         }
     }
 
