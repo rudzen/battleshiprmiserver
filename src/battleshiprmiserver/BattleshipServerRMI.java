@@ -143,6 +143,12 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         }
     }
 
+    public void updateUser() {
+        clientCount.set(index.size());
+        System.out.println("Clients connected : " + clientCount.get());
+    }
+    
+    
     /**
      * The login function does just that.<br>
      *
@@ -222,27 +228,15 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
             }
         }.run();
-        System.out.println(clientCount.incrementAndGet() + " number of clients registered");
+        updateUser();
         return index.contains(clientInterface);
     }
 
     @Override
     public boolean removeClient(IClientListener clientInterface, String playerName, String sessionID) throws RemoteException {
         System.out.println("Disconnected manually -> " + playerName);
-        new Runnable() {
-            @Override
-            public void run() {
-
-                /* if the player is indexed (might not be?! :) */
-                if (index.containsKey(playerName)) {
-                    index.remove(playerName);
-                }
-                if (sessionID != null && sessionID.length() > 0) {
-
-                }
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        }.run();
+        index.remove(playerName);
+        updateUser();
         return false;
     }
 
@@ -341,8 +335,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void requestLobbyID(IClientListener client) throws RemoteException {
-
+    public void requestLobbyID(IClientListener client, int playerID) throws RemoteException {
+        FutureBasic.newLobby(client, playerID);
     }
 
     @Override

@@ -43,8 +43,8 @@ public class BattleshipJerseyLogin {
 
     private final WebTarget webTarget;
     private final Client client;
-    private static String BASE_URI = "http://localhost:8080/BattleshipREST/test";
-    //private static final String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test/";
+    //private static String BASE_URI = "http://localhost:8080/BattleshipREST/test";
+    private static String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test/";
 
     public BattleshipJerseyLogin() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

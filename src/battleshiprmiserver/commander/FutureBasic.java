@@ -32,6 +32,7 @@ import battleshiprmiserver.commander.tasks.GetMoves;
 import battleshiprmiserver.commander.tasks.GetPlayer;
 import battleshiprmiserver.commander.tasks.GetPlayerID;
 import battleshiprmiserver.commander.tasks.JoinLobby;
+import battleshiprmiserver.commander.tasks.NewLobby;
 import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
 import interfaces.IClientListener;
@@ -140,6 +141,10 @@ public class FutureBasic {
     
     public static void login(final IClientListener client, final String u, final String p) {
         POOL.submit(new LoginTask(client, u, p));
+    }
+    
+    public static void newLobby(final IClientListener client, final int playerID) {
+        POOL.submit(new NewLobby(client, playerID));
     }
     
 }
