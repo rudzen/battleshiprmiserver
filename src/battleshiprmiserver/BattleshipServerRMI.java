@@ -375,6 +375,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                         players.remove(s);
                     }
                 }
+                if (index.size() != clientCount.get()) {
+                    updateUser();
+                }
                 System.out.println("Maintenance : Removed " + count + " clients from index.");
 
                 count = 0;
@@ -394,7 +397,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 }
                 System.out.println("Maintenance : Removed " + count + " sessions.");
             }
-            updateUser();
         }
     }
 
