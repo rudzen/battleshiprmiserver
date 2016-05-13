@@ -144,7 +144,7 @@ public class FutureBasic {
     }
     
     public static void newLobby(final IClientListener client, final int playerID) {
-        POOL.submit(new NewLobby(client, playerID));
+        POOL.submit(new NewLobby(client, 1));
     }
     
 }

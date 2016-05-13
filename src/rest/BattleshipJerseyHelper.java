@@ -29,6 +29,7 @@ import dataobjects.Ship;
 import dataobjects.Upgrades;
 import game.GameSession;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import rest.entities.Board;
 import rest.entities.Lobby;
@@ -52,9 +53,9 @@ public final class BattleshipJerseyHelper {
         final String[] r = new String[4];
 
         r[0] = shipTypeToString(ship.getType());
-        r[1] = Integer.toString(ship.getLocStart().x);
-        r[2] = Integer.toString(ship.getLocStart().y);
-        r[3] = Boolean.toString(ship.getDirection() == Ship.DIRECTION.HORIZONTAL);
+        r[1] = Integer.toString(ship.getStartX());
+        r[2] = Integer.toString(ship.getStartY());
+        r[3] = Boolean.toString(ship.isHorizontal());
         return r;
     }
 
@@ -64,15 +65,17 @@ public final class BattleshipJerseyHelper {
      * @param ships The ship array to convert.
      * @return
      */
-    public static String[] shipsToString(final Ship[] ships) {
-        if (ships.length > 0) {
-            final String[] r = new String[ships.length << 2];
+    public static String[] shipsToString(final ArrayList<Ship> ships) {
+        if (!ships.isEmpty()) {
+            final String[] r = new String[ships.size() << 2];
             int posR = 0;
             for (final Ship s : ships) {
                 r[posR++] = shipTypeToString(s.getType());
-                r[posR++] = Integer.toString(s.getLocStart().x);
-                r[posR++] = Integer.toString(s.getLocStart().y);
-                r[posR++] = Boolean.toString(s.getDirection() == Ship.DIRECTION.HORIZONTAL);
+                r[posR++] = Integer.toString(s.getStartX());
+                System.out.println("Ship parsed StartX : " + r[posR - 1] + " is " + s.getStartX());
+                r[posR++] = Integer.toString(s.getStartY());
+                System.out.println("Ship parsed StartY : " + r[posR - 1] + " is " + s.getStartY());
+                r[posR++] = Boolean.toString(s.isHorizontal());
             }
             return r;
         }
@@ -140,8 +143,9 @@ public final class BattleshipJerseyHelper {
         start.x = Integer.valueOf(tmp[1]);
         tmp = tokenizer.nextToken().split("=");
         start.y = Integer.valueOf(tmp[1]);
-        s.setLocStart(start);
-
+        s.setStartX(start.x);
+        s.setStartY(start.y);
+        // TODO : Finish
         return s;
     }
 
@@ -159,21 +163,25 @@ public final class BattleshipJerseyHelper {
         p.initShips(); // this is just so there wont be a NPE at some point!
 
         /* set up the upgrades for the ships */
-        Ship[] ships = p.getShips();
-        for (Ship ship : ships) {
+        ArrayList<Ship> ships = p.getShips();
+        ships.parallelStream().map((ship) -> {
             if (restPlayer.getArmor() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.ARMOR, restPlayer.getArmor());
             }
+            return ship;
+        }).map((ship) -> {
             if (restPlayer.getDecoy() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.DECOY, restPlayer.getDecoy());
             }
+            return ship;
+        }).map((ship) -> {
             if (restPlayer.getWeapon() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.POWER, restPlayer.getWeapon());
             }
-            if (restPlayer.getSonar() > 0) {
-                ship.addUpgrade(Upgrades.UPGRADES.SONAR, restPlayer.getSonar());
-            }
-        }
+            return ship;
+        }).filter((ship) -> (restPlayer.getSonar() > 0)).forEach((ship) -> {
+            ship.addUpgrade(Upgrades.UPGRADES.SONAR, restPlayer.getSonar());
+        });
         p.setShips(ships);
 
         p.setId(restPlayer.getPlayerid());

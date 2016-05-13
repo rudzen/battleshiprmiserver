@@ -38,6 +38,7 @@ public class CreatePlayer extends GetAbstract {
     @Override
     public void run() {
         String s = rest.createPlayer(Double.toHexString(Math.random() * 10));
+        rest.close();
     }
     
 }

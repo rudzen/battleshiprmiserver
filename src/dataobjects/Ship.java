@@ -37,25 +37,20 @@ import java.io.Serializable;
  */
 public class Ship implements Serializable {
 
-    private static final long serialVersionUID = -5311711410232026986L;
+    private static final long serialVersionUID = 1L;
 
-        /**
-     * The type of possible ship types. Patrol = 2 length Destroyer & Submarine
-     * = 3 length Cruiser = 4 length Carrier = 5 length
+
+    /**
+     * The type of possible ship types.<br>
+     * Patrol = 2 length<br>
+     * Destroyer, Submarine = 3 length<br>
+     * Cruiser = 4 length<br>
+     * Carrier = 5 length
      */
     public enum TYPE {
         PATROL, DESTROYER, SUBMARINE, CRUISER, CARRIER
     }
 
-    /**
-     * The possible directions for the ship<br>
-     * HORIZONTAL = right-left<br>
-     * VERTICAL = up-down
-     */
-    public enum DIRECTION {
-        HORIZONTAL, VERTICAL;
-    }
-    
     /**
      * The ship type
      */
@@ -64,7 +59,7 @@ public class Ship implements Serializable {
     /**
      * The ship direction
      */
-    private DIRECTION direction;
+    private boolean horizontal;
 
     /**
      * The upgrades for the ship.
@@ -74,8 +69,10 @@ public class Ship implements Serializable {
     /**
      * Points for ship location locStart = start locEnd = end
      */
-    private Point locStart;
-    private Point locEnd;
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
 
     /**
      * The length of the ship
@@ -105,7 +102,7 @@ public class Ship implements Serializable {
     /**
      * Is the ship placed on the board?
      */
-    private boolean isPlaced = false;
+    private boolean isPlaced;
 
     /**
      * Default constructor.
@@ -119,18 +116,25 @@ public class Ship implements Serializable {
      * @param x The X start location
      * @param y The Y start location
      * @param type The type of the ship
-     * @param direction The direction of placement
+     * @param horizontal The direction of placement
      */
-    public Ship(final int x, final int y, final TYPE type, final DIRECTION direction) {
-        locStart = new Point(x, y);
+    public Ship(final int x, final int y, final TYPE type, final boolean horizontal) {
+        startX = x;
+        startY = y;
         length = getLen(type);
         location = new Point[length];
         for (int i = 0; i < length; i++) {
             location[i] = new Point(0, 0);
         }
-        locEnd = setEnd(locStart, length, direction);
+        if (horizontal) {
+            endX = x + length;
+            endY = y;
+        } else {
+            endX = x;
+            endY = y + length;
+        }
         this.type = type;
-        this.direction = direction;
+        this.horizontal = horizontal;
         life = length;
         hits = new int[length];
         upgrades = new Upgrades(); // just to make sure, java is picky with it's serialization!
@@ -142,11 +146,11 @@ public class Ship implements Serializable {
      * @param x The X start location
      * @param y The Y start location
      * @param type The type of the ship
-     * @param direction The placement direction
+     * @param horizontal The placement direction
      * @param upgrades The upgrades for the ship.
      */
-    public Ship(final int x, final int y, final TYPE type, final DIRECTION direction, final Upgrades upgrades) {
-        this(x, y, type, direction);
+    public Ship(final int x, final int y, final TYPE type, final boolean horizontal, final Upgrades upgrades) {
+        this(x, y, type, horizontal);
         hasUpgrade = upgrades.hasUpgrades();
         if (hasUpgrade) {
             this.upgrades = new Upgrades(upgrades);
@@ -187,18 +191,6 @@ public class Ship implements Serializable {
      */
     public boolean isDead() {
         return life == 0;
-    }
-
-    /**
-     * Set the end specified by the start and the type combined with direction.
-     *
-     * @param start The start PPoint object containing the start coordinates
-     * @param length the length
-     * @param direction The direction of the ship
-     * @return The end PPoint object
-     */
-    public static Point setEnd(final Point start, final int length, final DIRECTION direction) {
-        return (direction == DIRECTION.HORIZONTAL) ? new Point(start.x + length, start.y) : new Point(start.x, start.y + length);
     }
 
     /**
@@ -243,12 +235,11 @@ public class Ship implements Serializable {
     public void addLocation(int x, int y, int pos) {
         location[pos] = new Point(x, y);
     }
-    
+
     public Point getLocation(int pos) {
         return location[pos];
     }
-    
-    
+
     /* getters & setters */
     public int getLife() {
         return life;
@@ -258,20 +249,36 @@ public class Ship implements Serializable {
         this.life = life;
     }
 
-    public Point getLocStart() {
-        return locStart;
+    public int getStartX() {
+        return startX;
     }
 
-    public void setLocStart(Point locStart) {
-        this.locStart = locStart;
+    public void setStartX(int startX) {
+        this.startX = startX;
     }
 
-    public Point getLocEnd() {
-        return locEnd;
+    public int getStartY() {
+        return startY;
     }
 
-    public void setLocEnd(Point locEnd) {
-        this.locEnd = locEnd;
+    public void setStartY(int startY) {
+        this.startY = startY;
+    }
+
+    public int getEndX() {
+        return endX;
+    }
+
+    public void setEndX(int endX) {
+        this.endX = endX;
+    }
+
+    public int getEndY() {
+        return endY;
+    }
+
+    public void setEndY(int endY) {
+        this.endY = endY;
     }
 
     public TYPE getType() {
@@ -280,14 +287,6 @@ public class Ship implements Serializable {
 
     public void setType(TYPE type) {
         this.type = type;
-    }
-
-    public DIRECTION getDirection() {
-        return direction;
-    }
-
-    public void setDirection(DIRECTION direction) {
-        this.direction = direction;
     }
 
     public int getLength() {
@@ -314,11 +313,6 @@ public class Ship implements Serializable {
         this.upgrades = upgrades;
     }
 
-    @Override
-    public String toString() {
-        return "Ship{" + "type=" + type + ", direction=" + direction + ", upgrades=" + upgrades + ", locStart=" + locStart + ", locEnd=" + locEnd + ", length=" + length + ", life=" + life + ", hasUpgrade=" + hasUpgrade + ", hits=" + hits + ", isPlaced=" + isPlaced + '}';
-    }
-
     public boolean isPlaced() {
         return isPlaced;
     }
@@ -334,5 +328,25 @@ public class Ship implements Serializable {
     public void setLocation(Point[] location) {
         this.location = location;
     }
-    
+
+    public int[] getHits() {
+        return hits;
+    }
+
+    public void setHits(int[] hits) {
+        this.hits = hits;
+    }
+
+    public boolean isHorizontal() {
+        return horizontal;
+    }
+
+    public void setHorizontal(boolean horizontal) {
+        this.horizontal = horizontal;
+    }
+
+    @Override
+    public String toString() {
+        return "Ship{" + "type=" + type + ", horizontal=" + horizontal + ", upgrades=" + upgrades + ", startX=" + startX + ", startY=" + startY + ", endX=" + endX + ", endY=" + endY + ", length=" + length + ", life=" + life + ", hasUpgrade=" + hasUpgrade + ", hits=" + hits + ", location=" + location + ", isPlaced=" + isPlaced + '}';
+    }
 }

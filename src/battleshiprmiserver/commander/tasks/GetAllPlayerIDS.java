@@ -46,6 +46,7 @@ public class GetAllPlayerIDS extends GetAbstract {
     @Override
     public void run() {
         final String s = rest.getPlayerIds();
+        rest.close();
         if (s != null) {
             HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
             try {

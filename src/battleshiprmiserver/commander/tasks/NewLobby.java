@@ -46,7 +46,10 @@ public class NewLobby extends GetAbstract {
 
     @Override
     public void run() {
-        final String s = rest.newLobby(Integer.toString(playerID));
+        System.out.println("Attempting to run newLobby()");
+        final String s = rest.newLobby(Integer.toString(playerID), "2");
+        rest.close();
+        System.out.println("NewLobby response : " + s);
         Lobby l = new Gson().fromJson(s, Lobby.class);
         try {
             client.setLobbyID(l.getLobbyid());

@@ -28,6 +28,7 @@ import rest.BattleshipJerseyHelper;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -51,9 +52,11 @@ public class DeployBoard extends GetAbstract implements Runnable {
     public void run() {
         try {
             BattleshipJerseyClient restClient = new BattleshipJerseyClient();
+            final String[] jSonShips = BattleshipJerseyHelper.shipsToString(player.getShips());
             final String response = restClient.deployBoard(Integer.toString(lobbyID), Integer.toString(player.getId()), BattleshipJerseyHelper.shipsToString(player.getShips()));
             restClient.close();
             System.out.println(player.getName() + " board deploy response : " + response);
+            System.out.println(player.getName() + " json board = " + Arrays.toString(jSonShips));
             try {
                 if (response.equals("succes")) {
                     client.showMessage("Ships deployed.", "Server message", JOptionPane.INFORMATION_MESSAGE);

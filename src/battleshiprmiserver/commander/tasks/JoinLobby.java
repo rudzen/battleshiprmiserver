@@ -49,6 +49,7 @@ public class JoinLobby extends GetAbstract {
     @Override
     public void run() {
         final String s = rest.joinLobby(Integer.toString(lobbyID), Integer.toString(playerID));
+        rest.close();
         try {
             if (s.contains("error")) {
                 client.showMessage("Unable to join lobby with id : " + Integer.toString(lobbyID), "Lobby join failed.", JOptionPane.ERROR_MESSAGE);
