@@ -95,7 +95,7 @@ public abstract class BattleGameAbstract {
 
     protected ArrayList<String> getFreePlayerNames() {
         final ArrayList<String> list = new ArrayList<>();
-        sessions.values().stream().filter((gs) -> (!gs.isFull())).forEach((gs) -> {
+        sessions.values().parallelStream().filter((gs) -> (!gs.isFull())).forEach((gs) -> {
             list.add(gs.getPlayerOne().getName());
         });
         return list;
@@ -104,7 +104,7 @@ public abstract class BattleGameAbstract {
     protected void endOldSessions() {
 
         final long now = System.currentTimeMillis();
-        sessions.values().stream().filter((gs) -> (now - gs.getTimeCreated() > TIME_LIMIT)).forEach((gs) -> {
+        sessions.values().parallelStream().filter((gs) -> (now - gs.getTimeCreated() > TIME_LIMIT)).forEach((gs) -> {
             try {
                 gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
                 gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);

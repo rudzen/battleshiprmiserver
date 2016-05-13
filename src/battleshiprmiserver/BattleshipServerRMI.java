@@ -177,7 +177,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             p.setName(user);
             client.setPlayer(p);
             /* replace old entry in client mapping */
-            index.keySet().stream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
+            index.keySet().parallelStream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
                 index.remove(s);
                 return s;
             }).forEach((_item) -> {
@@ -271,10 +271,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void pong(final IClientListener client, final long time) throws RemoteException {
-    }
-
-    @Override
     public void deployShips(final IClientListener client, final int lobbyID, final Player player) throws RemoteException {
         System.out.println(player + " -> deployShips() :\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
         FutureBasic.deployBoard(client, lobbyID, player);
@@ -344,7 +340,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void requestAllPlayerIDs(IClientListener client) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FutureBasic.getAllPlayerIDs(client);
     }
 
     @Override

@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Thread to deploy board on server.
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public class DeployBoard extends GetAbstract implements Runnable {
@@ -53,7 +53,7 @@ public class DeployBoard extends GetAbstract implements Runnable {
             BattleshipJerseyClient restClient = new BattleshipJerseyClient();
             final String response = restClient.deployBoard(Integer.toString(lobbyID), Integer.toString(player.getId()), BattleshipJerseyHelper.shipsToString(player.getShips()));
             restClient.close();
-            System.out.println("Response : " + response);
+            System.out.println(player.getName() + " board deploy response : " + response);
             try {
                 if (response.equals("succes")) {
                     client.showMessage("Ships deployed.", "Server message", JOptionPane.INFORMATION_MESSAGE);

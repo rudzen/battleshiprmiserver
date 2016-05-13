@@ -100,7 +100,7 @@ public class BattleGame extends BattleGameAbstract {
         new Runnable() {
             @Override
             public void run() {
-                sessions.keySet().stream().filter((s) -> (sessions.get(s).getClientOne() == null && sessions.get(s).getClientTwo() == null)).forEach((s) -> {
+                sessions.keySet().parallelStream().filter((s) -> (sessions.get(s).getClientOne() == null && sessions.get(s).getClientTwo() == null)).forEach((s) -> {
                     sessions.remove(s);
                 });
             }

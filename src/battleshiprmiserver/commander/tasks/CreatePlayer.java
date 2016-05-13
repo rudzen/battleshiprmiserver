@@ -23,47 +23,21 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import com.google.gson.Gson;
 import interfaces.IClientListener;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import rest.entities.Lobby;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class JoinLobby extends GetAbstract {
+public class CreatePlayer extends GetAbstract {
 
-    private final int lobbyID;
-    private final int playerID;
-
-    public JoinLobby(final IClientListener client, final int lobbyID, final int playerID) {
+    public CreatePlayer(IClientListener client) {
         super(client);
-        this.lobbyID = lobbyID;
-        this.playerID = playerID;
     }
 
     @Override
     public void run() {
-        final String s = rest.joinLobby(Integer.toString(lobbyID), Integer.toString(playerID));
-        try {
-            if (s.contains("error")) {
-                client.showMessage("Unable to join lobby with id : " + Integer.toString(lobbyID), "Lobby join failed.", JOptionPane.ERROR_MESSAGE);
-                client.canPlay(false);
-                client.setLobbyID(-1);
-            } else {
-                Lobby l = new Gson().fromJson(s, Lobby.class);
-                client.showMessage("Lobby joined. New lobby id is " + Integer.toString(l.getLobbyid()), "Lobby joined", JOptionPane.INFORMATION_MESSAGE);
-                client.setLobbyID(l.getLobbyid());
-            }
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(JoinLobby.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        String s = rest.createPlayer(Double.toHexString(Math.random() * 10));
     }
-
+    
 }

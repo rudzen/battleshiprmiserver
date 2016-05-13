@@ -25,7 +25,6 @@ package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
 import interfaces.IClientListener;
-import java.awt.Point;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +62,17 @@ public class FireShot extends GetAbstract {
                 client.shotFired(f.getFire().x, f.getFire().y, true);
                 client.showMessage("Shot fired OK at " + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
             } else if (f.getStatus().equals("destroyed")) {
-                // rework this
+                // figure out which ship was destroyed
+                int shipIndex = -1;
+                for (int i = 0; i < f.getShips().size(); i++) {
+                    if (f.getShips().get(i).isDestroyed) {
+                        if (f.getShips().get(i).cordinates.length != 3) {
+                            // it's not 3 len, so we can determin from the name alone..
+                        } else {
+                            // it's 3 len, so check coordinates if last hit is among them..
+                        }
+                    }
+                }
                 client.shotFired(f.getFire().x, f.getFire().y, true);
                 client.shipSunk(0, false);
                 client.showMessage("You have sunk the ship!" + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);

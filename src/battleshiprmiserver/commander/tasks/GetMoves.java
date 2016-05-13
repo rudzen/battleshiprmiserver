@@ -53,7 +53,7 @@ public class GetMoves extends GetAbstract {
         rest.close();
         ArrayList<Point> fromServer = new Gson().fromJson(s, new TypeToken<ArrayList<Point>>() {}.getType());
         int[][] board = new int[10][10];
-        fromServer.stream().forEach((p) -> {
+        fromServer.parallelStream().forEach((p) -> {
             board[p.x][p.y] = 1;
         });
         try {

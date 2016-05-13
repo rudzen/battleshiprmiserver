@@ -37,7 +37,7 @@ public class ShipList extends ArrayList<Ship>{
     
     public String getJSON(){
         ArrayList<JSONShip> r = new ArrayList<>();
-        this.stream().forEach((ship) -> {
+        this.parallelStream().forEach((ship) -> {
             r.add(ship.j);
         });
         return "\"ships\":"+new Gson().toJson(r);
