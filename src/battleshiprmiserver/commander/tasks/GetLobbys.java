@@ -39,13 +39,16 @@ import rest.entities.Lobby;
  */
 public class GetLobbys extends GetAbstract implements Runnable {
 
-    public GetLobbys(final IClientListener client) {
+    private final int playerID;
+    
+    public GetLobbys(final IClientListener client, final int playerID) {
         super(client);
+        this.playerID = playerID;
     }
 
     @Override
     public void run() {
-        final String s = rest.getLobbies();
+        final String s = rest.getLobbies(Integer.toString(playerID));
         rest.close();
         Gson g = new Gson();
         HashMap<String, Lobby> fromServer = g.fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());

@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -56,18 +57,26 @@ public class LoginTask implements Runnable {
     public void run() {
         DatabaseJerseyClient rest = new DatabaseJerseyClient();
         String s = rest.loginBA(u, p);
+        System.out.println("Login response : " + s);
         try {
-            if (s.equals("1")) {
-                /* server returns "1" if the player was created */
-                Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(rest.login(u, p), rest.entities.Player.class));
-                client.setPlayer(p1);
-                client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
-            } else if (s.contains(wrong)) {
+            if (s.contains(wrong)) {
                 /* wrong password answer from server, let the client know */
                 client.showMessage(wrong, login, JOptionPane.ERROR_MESSAGE);
+            } else if (s.contains("com.mysql.jdbc.exceptions.jdbc4.MySQL")) {
+                /* sql exception */
+                @SuppressWarnings("ThrowableResultIgnored")
+                SQLException se = new Gson().fromJson(s, SQLException.class);
+                client.showMessage("SQL Error : " + se.getMessage(), login, JOptionPane.ERROR_MESSAGE);
+            } else if (s.equals("1")) {
+                /* server returns "1" if the player was created */
+                s = rest.loginBA(u, p);
+                Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
+                client.setPlayer(p1);
+                client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             } else {
-                /* most likely an exception of some sort. */
-                client.showMessage("Unknown error", login, JOptionPane.ERROR_MESSAGE);
+                Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
+                client.setPlayer(p1);
+                client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(LoginTask.class.getName()).log(Level.SEVERE, null, ex);

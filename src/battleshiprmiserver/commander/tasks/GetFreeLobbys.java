@@ -39,13 +39,16 @@ import rest.entities.Lobby;
  */
 public class GetFreeLobbys extends GetAbstract {
     
-    public GetFreeLobbys(final IClientListener client) {
+    private final int playerID;
+    
+    public GetFreeLobbys(final IClientListener client, final int playerID) {
         super(client);
+        this.playerID = playerID;
     }
 
     @Override
     public void run() {
-        final String s = rest.getFreeLobbies();
+        final String s = rest.getFreeLobbies(Integer.toString(playerID));
         rest.close();
         HashMap<String, Lobby> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
         ArrayList<String> freeLobbys = new ArrayList<>();

@@ -87,18 +87,20 @@ public class FutureBasic {
      * Pool submiter for: getFreeLobbys
      *
      * @param client The client interface calling the command
+     * @param playerID The player ID requesting the lobbies
      */
-    public static void getFreeLobbys(final IClientListener client) {
-        POOL.submit(new GetFreeLobbys(client));
+    public static void getFreeLobbys(final IClientListener client, final int playerID) {
+        POOL.submit(new GetFreeLobbys(client, playerID));
     }
 
     /**
      * Pool submiter for: getLobbys
      *
      * @param client The client interface calling the command
+     * @param playerID The player ID requesting the lobbies
      */
-    public static void getLobbys(final IClientListener client) {
-        POOL.submit(new GetLobbys(client));
+    public static void getLobbys(final IClientListener client, final int playerID) {
+        POOL.submit(new GetLobbys(client, playerID));
     }
 
     public static void getPlayer() {

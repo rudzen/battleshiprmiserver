@@ -45,7 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
-import login.Login;
 import rest.BattleshipJerseyClient;
 
 /**
@@ -204,6 +203,11 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                         System.out.println("User updated to index : " + playerName);
                         index.get(playerName).showMessage("You have been unregistered in the server index.", "Server notification", JOptionPane.WARNING_MESSAGE);
                         clientInterface.showMessage("You have been updated in the server index", "Server notification", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (index.containsValue(clientInterface)) {
+                        /* get the key and kill it */
+                        index.keySet().parallelStream().filter((key) -> (index.get(key).equals(clientInterface))).forEach((key) -> {
+                            index.remove(key);
+                        });
                     } else {
                         System.out.println("User added to index : " + playerName);
                         clientInterface.showMessage("You have been added to the server index", "Server notification", JOptionPane.INFORMATION_MESSAGE);
@@ -216,11 +220,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     gs.setGameSessionID(ID);
                     sessions.put(ID, gs);
                     clientInterface.updateSessionID(ID);
-                    try {
-                        FutureBasic.getLobbys(clientInterface);
-                    } catch (Exception ex) {
-                        Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                 } catch (final RemoteException re) {
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, "Client could not be reached {0}", clientInterface);
                     Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, re);
@@ -321,14 +320,14 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void requestOtherPlayer(IClientListener client) throws RemoteException {
-        FutureBasic.getLobbys(client);
+    public void requestOtherPlayers(final IClientListener client, final int playerID) throws RemoteException {
+        FutureBasic.getLobbys(client, playerID);
     }
 
     @Override
-    public void requestFreeLobbies(IClientListener client) throws RemoteException {
+    public void requestFreeLobbies(final IClientListener client, final int playerID) throws RemoteException {
         System.out.println(client.getPlayer().getName() + " requesting free lobbies.");
-        FutureBasic.getFreeLobbys(client);
+        FutureBasic.getFreeLobbys(client, playerID);
     }
 
     @Override
@@ -357,8 +356,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void requestAllLobbies(IClientListener client) throws RemoteException {
-        FutureBasic.getLobbys(client);
+    public void requestAllLobbies(IClientListener client, int playerID) throws RemoteException {
+        FutureBasic.getLobbys(client, playerID);
     }
 
     private class DeadTimerMaintenance extends TimerTask {
