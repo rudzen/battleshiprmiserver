@@ -37,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import interfaces.IClientListener;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.RMISocketFactory;
 import java.util.Arrays;
 import java.util.Timer;
@@ -90,6 +91,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private final ReentrantLock login_lock = new ReentrantLock();
 
     public BattleshipServerRMI() throws RemoteException {
+        super(Registry.REGISTRY_PORT);
+        
         /* initiate the timer to check for dead clients */
         deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 90000, 90000);
     }
@@ -162,7 +165,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 //        }
 
         FutureBasic.login(client, user, pw);
-        
 
 //        if (login_lock.isLocked()) {
 //            client.showMessage("Queued for login", "Login information", JOptionPane.WARNING_MESSAGE);
