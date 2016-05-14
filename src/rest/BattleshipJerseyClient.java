@@ -26,6 +26,7 @@ package rest;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import org.glassfish.jersey.client.ClientProperties;
 
 /**
  * Jersey REST client generated for REST resource:GenericResource [res]<br>

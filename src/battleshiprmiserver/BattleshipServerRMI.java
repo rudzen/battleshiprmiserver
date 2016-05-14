@@ -156,39 +156,42 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
      * @throws RemoteException
      */
     @Override
-    public void login(String user, String pw, IClientListener client) throws RemoteException {
+    public void login(final IClientListener client, final String user, final String pw) throws RemoteException {
         System.out.println("Attempted login by : " + user);
 //        for (;;) {
 //            FutureBasic.login(client, Double.toString(Math.random()), pw);
 //        }
 
-        if (login_lock.isLocked()) {
-            client.showMessage("Queued for login", "Login information", JOptionPane.WARNING_MESSAGE);
-        }
-        try {
-            login_lock.lock();
-            boolean loginOK = Login.loginBA(user, pw, client);
-            if (loginOK) {
-                // proceed to secondary login
-            }
-            System.out.println("User : " + user + (loginOK ? " has logged in." : " failed to login."));
-            client.loginstatus(loginOK);
-            Player p = client.getPlayer();
-            p.setName(user);
-            client.setPlayer(p);
-            /* replace old entry in client mapping */
-            index.keySet().parallelStream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
-                index.remove(s);
-                return s;
-            }).forEach((_item) -> {
-                index.put(user, client);
-            });
-            players.put(user, p);
-        } catch (final RemoteException re) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, re);
-        } finally {
-            login_lock.unlock();
-        }
+        FutureBasic.login(client, user, pw);
+        
+
+//        if (login_lock.isLocked()) {
+//            client.showMessage("Queued for login", "Login information", JOptionPane.WARNING_MESSAGE);
+//        }
+//        try {
+//            login_lock.lock();
+//            boolean loginOK = Login.loginBA(user, pw, client);
+//            if (loginOK) {
+//                // proceed to secondary login
+//            }
+//            System.out.println("User : " + user + (loginOK ? " has logged in." : " failed to login."));
+//            client.loginstatus(loginOK);
+//            Player p = client.getPlayer();
+//            p.setName(user);
+//            client.setPlayer(p);
+//            /* replace old entry in client mapping */
+//            index.keySet().parallelStream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
+//                index.remove(s);
+//                return s;
+//            }).forEach((_item) -> {
+//                index.put(user, client);
+//            });
+//            players.put(user, p);
+//        } catch (final RemoteException re) {
+//            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, re);
+//        } finally {
+//            login_lock.unlock();
+//        }
     }
 
     @Override

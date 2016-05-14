@@ -29,34 +29,53 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.xml.ws.Response;
+import org.glassfish.jersey.client.ClientProperties;
+import rest.BattleshipJerseyClient;
 import rest.entities.Lobby;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class NewLobby extends GetAbstract {
+public class NewLobby implements Runnable {
 
     private final int playerID;
+    private final IClientListener client;
     
     public NewLobby(final IClientListener client, final int playerID) {
-        super(client);
+        this.client = client;
         this.playerID = playerID;
     }
 
     @Override
     public void run() {
-        System.out.println("Attempting to run newLobby()");
-        final String s = rest.newLobby(Integer.toString(playerID), "2");
-        rest.close();
+        Client rest = ClientBuilder.newClient();
+        rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
+        //javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=1").request(MediaType.APPLICATION_JSON).put(Entity.json(null));
+        javax.ws.rs.core.Response res = rest.target(BattleshipJerseyClient.BASE_URI + "res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
+        String s = res.readEntity(String.class);
         System.out.println("NewLobby response : " + s);
-        Lobby l = new Gson().fromJson(s, Lobby.class);
-        try {
-            client.setLobbyID(l.getLobbyid());
-            client.showMessage("Lobby with ID " + Integer.toString(l.getLobbyid()) + " created.", "New lobby created", JOptionPane.INFORMATION_MESSAGE);
-        } catch (RemoteException ex) {
-            Logger.getLogger(NewLobby.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        
+        
+        
+//        System.out.println("Attempting to run newLobby()");
+//        final String s = rest.newLobby(Integer.toString(playerID), "2");
+//        rest.close();
+//        System.out.println("NewLobby response : " + s);
+//        Lobby l = new Gson().fromJson(s, Lobby.class);
+//        try {
+//            client.setLobbyID(l.getLobbyid());
+//            client.showMessage("Lobby with ID " + Integer.toString(l.getLobbyid()) + " created.", "New lobby created", JOptionPane.INFORMATION_MESSAGE);
+//        } catch (RemoteException ex) {
+//            Logger.getLogger(NewLobby.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
 }

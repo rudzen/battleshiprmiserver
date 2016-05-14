@@ -21,10 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package battleshiprmiserver.commander;
+package battleshiprmiserver.commander.tasks;
 
+import com.google.gson.Gson;
+import dataobjects.Player;
 import interfaces.IClientListener;
-import rest.BattleshipJerseyLogin;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import rest.BattleshipJerseyHelper;
+import rest.DatabaseJerseyClient;
 
 /**
  *
@@ -33,20 +40,40 @@ import rest.BattleshipJerseyLogin;
 public class LoginTask implements Runnable {
 
     private final IClientListener client;
-    private final BattleshipJerseyLogin rest = new BattleshipJerseyLogin();
     private final String u;
     private final String p;
-    
+
+    private static final String wrong = "Wrong password";
+    private static final String login = "Login";
+
     public LoginTask(IClientListener client, final String u, final String p) {
         this.client = client;
         this.u = u;
         this.p = p;
     }
-    
+
     @Override
     public void run() {
-        final String s = rest.login(u, p);
-        System.out.println(s);
+        DatabaseJerseyClient rest = new DatabaseJerseyClient();
+        String s = rest.loginBA(u, p);
+        try {
+            if (s.equals("1")) {
+                /* server returns "1" if the player was created */
+                Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(rest.login(u, p), rest.entities.Player.class));
+                client.setPlayer(p1);
+                client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
+            } else if (s.contains(wrong)) {
+                /* wrong password answer from server, let the client know */
+                client.showMessage(wrong, login, JOptionPane.ERROR_MESSAGE);
+            } else {
+                /* most likely an exception of some sort. */
+                client.showMessage("Unknown error", login, JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(LoginTask.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            rest.close();
+        }
     }
-    
+
 }

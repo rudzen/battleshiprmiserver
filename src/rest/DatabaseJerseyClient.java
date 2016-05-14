@@ -31,7 +31,7 @@ import javax.ws.rs.client.WebTarget;
  * Jersey REST client generated for REST resource:DatabaseREST [database]<br>
  * USAGE:
  * <pre>
- *        BattleshipJerseyLogin client = new BattleshipJerseyLogin();
+ *        DatabaseJerseyClient client = new DatabaseJerseyClient();
  *        Object response = client.XXX(...);
  *        // do whatever with response
  *        client.close();
@@ -39,14 +39,14 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class BattleshipJerseyLogin {
+public class DatabaseJerseyClient {
 
     private final WebTarget webTarget;
     private final Client client;
-    //private static String BASE_URI = "http://localhost:8080/BattleshipREST/test";
-    private static String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test/";
+    private static final String BASE_URI = "http://localhost:8080/BattleshipREST/test";
+    //public static String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test";
 
-    public BattleshipJerseyLogin() {
+    public DatabaseJerseyClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("database");
     }
@@ -61,6 +61,12 @@ public class BattleshipJerseyLogin {
         return webTarget.path(java.text.MessageFormat.format("update/playerid={0}/weapon={1}/point={2}", new Object[]{id, weapon, point})).request().put(null, String.class);
     }
 
+    public String loginCreate(String id, String password) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("login/create/playerid={0}/password={1}", new Object[]{id, password}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
+    }
+
     public String login(String id, String password) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("login/playerid={0}/password={1}", new Object[]{id, password}));
@@ -69,6 +75,12 @@ public class BattleshipJerseyLogin {
 
     public String updateDecoy(String id, String decoy, String point) throws ClientErrorException {
         return webTarget.path(java.text.MessageFormat.format("update/playerid={0}/decoy={1}/point={2}", new Object[]{id, decoy, point})).request().put(null, String.class);
+    }
+
+    public String loginBA(String id, String password) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("login/BA/playerid={0}/password={1}", new Object[]{id, password}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
     public String incrementDecoy(String id) throws ClientErrorException {

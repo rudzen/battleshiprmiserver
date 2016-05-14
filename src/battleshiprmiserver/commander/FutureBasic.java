@@ -23,6 +23,7 @@
  */
 package battleshiprmiserver.commander;
 
+import battleshiprmiserver.commander.tasks.LoginTask;
 import battleshiprmiserver.commander.tasks.DeployBoard;
 import battleshiprmiserver.commander.tasks.FireShot;
 import battleshiprmiserver.commander.tasks.GetAllPlayerIDS;
@@ -36,6 +37,7 @@ import battleshiprmiserver.commander.tasks.NewLobby;
 import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
 import interfaces.IClientListener;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -99,16 +101,14 @@ public class FutureBasic {
         POOL.submit(new GetLobbys(client));
     }
 
-    
     public static void getPlayer() {
         POOL.submit(new GetPlayer());
     }
-    
+
     public static void getPlayerID(final IClientListener client, final String name) {
         POOL.submit(new GetPlayerID(client, name));
     }
-    
-    
+
     /**
      * Pool submiter for: getMoves
      *
@@ -119,12 +119,10 @@ public class FutureBasic {
     public static void getMoves(final IClientListener client, final int lobbyID, final int playerID) {
         POOL.submit(new GetMoves(client, lobbyID, playerID));
     }
-    
+
     public static void joinLobby(final IClientListener client, final int lobbyID, final int playerID) {
         POOL.submit(new JoinLobby(client, lobbyID, playerID));
     }
-    
-    
 
     /**
      * Pool submiter for: Wait
@@ -137,14 +135,16 @@ public class FutureBasic {
         POOL.submit(new Wait(client, lobbyID, playerID));
     }
 
-    
-    
     public static void login(final IClientListener client, final String u, final String p) {
         POOL.submit(new LoginTask(client, u, p));
     }
-    
+
     public static void newLobby(final IClientListener client, final int playerID) {
-        POOL.submit(new NewLobby(client, 1));
+//        Random rnd = new Random();
+//        for (;;) {
+//            POOL.submit(new NewLobby(client, rnd.nextInt(4)));
+//        }
+        POOL.submit(new NewLobby(client, playerID));
     }
-    
+
 }
