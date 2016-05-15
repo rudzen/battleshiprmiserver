@@ -59,8 +59,7 @@ public class GetPlayerID extends GetAbstract implements Runnable {
                 client.showMessage("Unable to get player from database", "Error", JOptionPane.ERROR);
             } else {
                 rest.entities.Player p = new Gson().fromJson(s, rest.entities.Player.class);
-                Player newPlayer = BattleshipJerseyHelper.restPlayerToLocal(p);
-                client.setPlayer(newPlayer);
+                client.setPlayer(BattleshipJerseyHelper.restPlayerToLocal(p), true);
                 client.showMessage("Player information updated.", "Server message", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (RemoteException ex) {

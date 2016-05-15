@@ -272,7 +272,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public boolean logout(String player) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(player + " attempted to log out, not supported yet!! :)");
+        return true;
     }
 
     @Override
@@ -282,13 +283,21 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void requestPlayers(String player) throws RemoteException {
-        index.get(player).setPlayer(players.get(player));
-    }
+    public void updatePlayer(IClientListener client, Player player) throws RemoteException {
+        /* this functionality is NOT allowed to be run by multiple users at the same time!!!! */
+        try {
+            games_lock.lock();
+            index.keySet().parallelStream().filter((s) -> (index.get(s).equals(client))).map((s) -> {
+                index.remove(s);
+                return s;
+            }).forEach((_item) -> {
+                index.put(player.getName(), client);
+            });
+        } catch (final Exception e) {
 
-    @Override
-    public void updatePlayer(String newPlayer) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        } finally {
+            games_lock.unlock();
+        }
     }
 
     @Override
@@ -296,6 +305,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         new Runnable() {
             @Override
             public void run() {
+                System.out.println("Player : " + origin + " is sending public RMI message");
                 bg.getPlayers().keySet().parallelStream().filter((s) -> (!s.equals(origin))).forEach((s) -> {
                     try {
                         bg.getPlayers().get(s).showMessage(message, title, modal);
@@ -309,32 +319,40 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public boolean updatePlayerObject(String seesionID, Player playerObject) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Player : " + playerObject.getName() + " is attempting to update player (session) (not supported yet).");
+        return true;
     }
 
     @Override
     public String requestSessionID(String currentSessionID, Player playerObject) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Player : " + playerObject.getName() + " is attempting session ID retrieval (not supported yet).");
+        if (index.containsKey(playerObject.getName())) {
+            return bg.updateSessionID(playerObject, index.get(playerObject.getName()));
+        }
+        return "";
     }
 
     @Override
     public boolean messageOpponent(String title, String message) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Attempt to message opp : " + title + ":" + message + " (not supported yet).");
+        return true;
     }
 
     @Override
     public void requestOtherPlayers(final IClientListener client, final int playerID) throws RemoteException {
+        System.out.println("Player : " + client.getPlayer().getName() + " requesting other players.");
         FutureBasic.getLobbys(client, playerID);
     }
 
     @Override
     public void requestFreeLobbies(final IClientListener client, final int playerID) throws RemoteException {
-        System.out.println(client.getPlayer().getName() + " requesting free lobbies.");
+        System.out.println("Player : " + client.getPlayer().getName() + " requesting free lobbies.");
         FutureBasic.getFreeLobbys(client, playerID);
     }
 
     @Override
     public void requestLobbyID(IClientListener client, int playerID) throws RemoteException {
+        System.out.println("Player (ID) : " + playerID + " is requesting lobby ID");
         FutureBasic.newLobby(client, playerID);
     }
 
@@ -345,6 +363,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void requestAllPlayerIDs(IClientListener client) throws RemoteException {
+        System.out.println("Player : " + client.getPlayer().getName() + " is requesting all player IDs");
         FutureBasic.getAllPlayerIDs(client);
     }
 

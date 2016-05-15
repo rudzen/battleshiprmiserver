@@ -71,11 +71,11 @@ public class LoginTask implements Runnable {
                 /* server returns "1" if the player was created */
                 s = rest.loginBA(u, p);
                 Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
-                client.setPlayer(p1);
+                client.setPlayer(p1, true);
                 client.showMessage("Player created and Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
-                client.setPlayer(p1);
+                client.setPlayer(p1, true);
                 client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (RemoteException ex) {
