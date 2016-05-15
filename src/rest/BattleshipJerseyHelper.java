@@ -82,6 +82,24 @@ public final class BattleshipJerseyHelper {
         return null;
     }
 
+    public static Board shipsToBoard(final int lobbyID, final Player player) {
+        Lobby l = new Lobby(lobbyID, playerToRestPlayer(player));
+        return new Board(l, l.getDefender());
+    }
+    
+    private static rest.entities.Player playerToRestPlayer(final Player player) {
+        rest.entities.Player p = new rest.entities.Player();
+        p.setArmor(player.getShip(0).getUpgrades().getArmor());
+        p.setDecoy(player.getShip(0).getUpgrades().getDecoy());
+        p.setPlayerid(player.getId());
+        p.setPlayername(player.getName());
+        p.setSonar(player.getShip(0).getUpgrades().getSonar());
+        p.setWeapon(player.getShip(0).getUpgrades().getPower());
+        return p;
+    }
+    
+    
+    
     /**
      * Converts an IShip.TYPE to string based name
      *

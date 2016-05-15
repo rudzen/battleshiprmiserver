@@ -24,7 +24,7 @@
 package battleshiprmiserver.commander;
 
 import battleshiprmiserver.commander.tasks.LoginTask;
-import battleshiprmiserver.commander.tasks.DeployBoard;
+import battleshiprmiserver.commander.tasks.DeployShips;
 import battleshiprmiserver.commander.tasks.FireShot;
 import battleshiprmiserver.commander.tasks.GetAllPlayerIDS;
 import battleshiprmiserver.commander.tasks.GetFreeLobbys;
@@ -48,16 +48,27 @@ public class FutureBasic {
 
     private static final ExecutorService POOL = Executors.newCachedThreadPool();
 
+//    /**
+//     * Pool submiter for:<br>
+//     * deployBoard
+//     *
+//     * @param client The client interface calling the command
+//     * @param lobbyID The lobbyID to deploy in
+//     * @param player The player object deploying
+//     */
+//    public static void deployBoard(final IClientListener client, final int lobbyID, final Player player) {
+//        POOL.submit(new DeployBoard(client, player, lobbyID));
+//    }
+    
+    
     /**
-     * Pool submiter for:<br>
-     * deployBoard
-     *
-     * @param client The client interface calling the command
-     * @param lobbyID The lobbyID to deploy in
-     * @param player The player object deploying
+     * Deploys ships
+     * @param client the client
+     * @param lobbyID the lobbyID to deploy in
+     * @param player The player who is deploying
      */
-    public static void deployBoard(final IClientListener client, final int lobbyID, final Player player) {
-        POOL.submit(new DeployBoard(client, player, lobbyID));
+    public static void deployShips(final IClientListener client, final int lobbyID, final Player player) {
+        POOL.submit(new DeployShips(client, lobbyID, player));
     }
 
     /**

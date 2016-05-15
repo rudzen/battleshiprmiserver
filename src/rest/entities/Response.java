@@ -21,29 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package battleshiprmiserver.infostuff;
+package rest.entities;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.Serializable;
 
 /**
- * Listens to port xxxx for information retrieval client to connect. It just
- * sits there waiting.
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public final class InfoSlaveTCP {
+public class Response implements Serializable {
 
-    public static void tcpListen() {
-        ServerSocket info;
-        Socket client = null;
-        try {
-            info = new ServerSocket(7011);
-            client = info.accept();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
+    private static final long serialVersionUID = 1L;
+
+    public String name;
+    public Integer l;
+    public Integer x;
+    public Integer y;
+    public Boolean h;
 
 }

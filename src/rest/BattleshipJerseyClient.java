@@ -43,14 +43,13 @@ public class BattleshipJerseyClient {
 
     private final WebTarget webTarget;
     private final Client client;
-//    public static String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test/";
-    public static String BASE_URI = "http://localhost:8080/BattleshipREST/test";
+    public static final String BASE_URI = "http://104.46.52.169:8080/BattleshipREST/test";
+    //public static String BASE_URI = "http://localhost:8080/BattleshipREST/test";
 
     public BattleshipJerseyClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("res");
     }
-
 
     public String newLobbyWithOpponent(String playerid, String opponentid) throws ClientErrorException {
         return webTarget.path(java.text.MessageFormat.format("new/lobby/playerid={0}/opponent={1}", new Object[]{playerid, opponentid})).request().put(null, String.class);
@@ -148,11 +147,19 @@ public class BattleshipJerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(String.class);
     }
 
+    public String deployShips(String lobbyid, String playerid, String ships) throws ClientErrorException {
+        final String s = java.text.MessageFormat.format("deploy_ships/{0}/{1}/{2}", new Object[]{lobbyid, playerid, ships});
+        System.out.println("deployShips() url : " + s);
+        return webTarget.path(java.text.MessageFormat.format("deploy_ships/{0}/{1}/{2}", new Object[]{lobbyid, playerid, ships})).request().put(null, String.class);
+    }
+
     public void close() {
         client.close();
     }
 
     public String deployBoard(String lobbyid, String playerid, String... data) { // String type1, String x1, String y1, String horizontal1, String type2, String x2, String y2, String horizontal2, String type3, String x3, String y3, String horizontal3, String type4, String x4, String y4, String horizontal4, String type5, String x5, String y5, String horizontal5) throws ClientErrorException {
+        final String s = java.text.MessageFormat.format("deploy_board/lobbyid={0}/playerid={1}/ship1={2}/x={3}/y={4}/horizontal={5}/ship2={6}/x={7}/y={8}/horizontal={9}/ship3={10}/x={11}/y={12}/horizontal={13}/ship4={14}/x={15}/y={16}/horizontal={17}/ship5={18}/x={19}/y={20}/horizontal={21}", new Object[]{lobbyid, playerid, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19]});
+        System.out.println("Deployment String : " + s);
         return webTarget.path(java.text.MessageFormat.format("deploy_board/lobbyid={0}/playerid={1}/ship1={2}/x={3}/y={4}/horizontal={5}/ship2={6}/x={7}/y={8}/horizontal={9}/ship3={10}/x={11}/y={12}/horizontal={13}/ship4={14}/x={15}/y={16}/horizontal={17}/ship5={18}/x={19}/y={20}/horizontal={21}", new Object[]{lobbyid, playerid, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19]})).request().put(null, String.class);
     }
 

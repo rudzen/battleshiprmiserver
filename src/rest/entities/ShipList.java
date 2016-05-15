@@ -7,7 +7,6 @@ package rest.entities;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
-import rest.entities.JSONShip;
 
 /**
  *
@@ -21,6 +20,7 @@ public class ShipList extends ArrayList<Ship>{
     public final static int[] shiplengths = {
         5, 4, 3, 3, 2
     };
+    private static final long serialVersionUID = 1L;
     protected boolean deployed = false;
     
     public ShipList(){

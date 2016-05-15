@@ -31,12 +31,19 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientProperties;
 import rest.BattleshipJerseyHelper;
 import rest.DatabaseJerseyClient;
 
 /**
+ * Login thread for RMI klient using REST interface.<br>
+ * If the user does not exist, user is created and will still be send back.
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class LoginTask implements Runnable {
 
@@ -55,9 +62,15 @@ public class LoginTask implements Runnable {
 
     @Override
     public void run() {
-        DatabaseJerseyClient rest = new DatabaseJerseyClient();
-        String s = rest.loginBA(u, p);
-        System.out.println("Login response : " + s);
+        Client rest = ClientBuilder.newClient();
+        rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
+        Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=" + u + "/password=" + p).request(MediaType.APPLICATION_JSON).get();
+        String s = res.readEntity(String.class);
+        //System.out.println(s);
+
+        //DatabaseJerseyClient rest = new DatabaseJerseyClient();
+        //String s = rest.loginBA(u, p);
+        //System.out.println("Login response : " + s);
         try {
             if (s.contains(wrong)) {
                 /* wrong password answer from server, let the client know */
@@ -69,13 +82,15 @@ public class LoginTask implements Runnable {
                 client.showMessage("SQL Error : " + se.getMessage(), login, JOptionPane.ERROR_MESSAGE);
             } else if (s.equals("1")) {
                 /* server returns "1" if the player was created */
-                s = rest.loginBA(u, p);
+                res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=s144868/password=xxx").request(MediaType.APPLICATION_JSON).get();
+                s = res.readEntity(String.class);
+                //s = rest.loginBA(u, p);
                 Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
-                client.setPlayer(p1, true);
+                client.setPlayer(p1, false);
                 client.showMessage("Player created and Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
-                client.setPlayer(p1, true);
+                client.setPlayer(p1, false);
                 client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (RemoteException ex) {

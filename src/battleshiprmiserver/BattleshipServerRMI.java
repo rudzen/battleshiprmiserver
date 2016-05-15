@@ -114,7 +114,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             LocateRegistry.createRegistry(Args.port);
 
             /* set the REST address to be used */
-            BattleshipJerseyClient.BASE_URI = Args.game_address;
+            //BattleshipJerseyClient.BASE_URI = Args.game_address;
 
             /* Load the service */
             BattleshipServerRMI server = new BattleshipServerRMI();
@@ -278,8 +278,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     @Override
     public void deployShips(final IClientListener client, final int lobbyID, final Player player) throws RemoteException {
-        System.out.println(player + " -> deployShips() :\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
-        FutureBasic.deployBoard(client, lobbyID, player);
+        //System.out.println(player + " -> deployShips() :\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
+        FutureBasic.deployShips(client, lobbyID, player);
     }
 
     @Override

@@ -26,6 +26,7 @@ package dataobjects;
 import dataobjects.Upgrades.UPGRADES;
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Basic ship class, it defines what ship type it is, and what else there is to
@@ -39,7 +40,10 @@ public class Ship implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
+    public final static String[] shipnames = {
+        "Aircraft carrier", "Battleship", "Submarine", "Destroyer", "Patrol boat"
+    };
+    
     /**
      * The type of possible ship types.<br>
      * Patrol = 2 length<br>
@@ -237,15 +241,15 @@ public class Ship implements Serializable {
      */
     public String getShipType() {
         if (type == TYPE.CARRIER) {
-            return "Carrier";
+            return shipnames[0];
         } else if (type == TYPE.DESTROYER) {
-            return "Destroyer";
+            return shipnames[1];
         } else if (type == TYPE.SUBMARINE) {
-            return "Submarine";
+            return shipnames[2];
         } else if (type == TYPE.CRUISER) {
-            return "Cruiser";
+            return shipnames[3];
         } else { // patrol boat
-            return "Patrol boat";
+            return shipnames[4];
         }
     }
 
@@ -364,6 +368,6 @@ public class Ship implements Serializable {
 
     @Override
     public String toString() {
-        return "Ship{" + "type=" + type + ", horizontal=" + horizontal + ", upgrades=" + upgrades + ", startX=" + startX + ", startY=" + startY + ", endX=" + endX + ", endY=" + endY + ", length=" + length + ", life=" + life + ", hasUpgrade=" + hasUpgrade + ", hits=" + hits + ", location=" + location + ", isPlaced=" + isPlaced + '}';
+        return "Ship{" + "type=" + type + ", horizontal=" + horizontal + ", upgrades=" + upgrades + ", startX=" + startX + ", startY=" + startY + ", endX=" + endX + ", endY=" + endY + ", length=" + length + ", life=" + life + ", hasUpgrade=" + hasUpgrade + ", hits=" + Arrays.toString(hits) + ", location=" + Arrays.toString(location) + ", isPlaced=" + isPlaced + '}';
     }
 }

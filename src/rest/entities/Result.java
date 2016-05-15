@@ -21,12 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package battleshiprmiserver.infostuff;
+package rest.entities;
 
 /**
- * Echo back to client.
+ *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class EchoCorba {
+public class Result {
+
+    public Boolean succes;
+    public Boolean ready;
     
 }
