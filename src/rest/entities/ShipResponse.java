@@ -29,7 +29,7 @@ import java.io.Serializable;
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class Response implements Serializable {
+public class ShipResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class Response implements Serializable {
     public Integer y;
     public Boolean h;
 
-    public Response() {
+    public ShipResponse() {
         
     }
     

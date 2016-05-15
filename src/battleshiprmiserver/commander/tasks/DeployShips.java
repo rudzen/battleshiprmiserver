@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import dataobjects.Player;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -36,11 +35,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientProperties;
-import rest.BattleshipJerseyClient;
-import rest.entities.Response;
+import rest.entities.ShipResponse;
 import rest.entities.Result;
-import rest.entities.Ship;
-import rest.entities.ShipList;
 
 /**
  *
@@ -60,25 +56,25 @@ public class DeployShips extends GetAbstract {
     @Override
     public void run() {
         final Gson g = new Gson();
-        final Response[] sl = new Response[5];
+        final ShipResponse[] sl = new ShipResponse[5];
         int pos = 0;
 
-        Response r;
+        ShipResponse r;
         for (dataobjects.Ship pShip : player.getShips()) {
-            sl[pos] = new Response();
+            sl[pos] = new ShipResponse();
             sl[pos].name = pShip.getShipType();
-            sl[pos].h = pShip.isHorizontal();
             sl[pos].l = pShip.getLength();
             sl[pos].x = pShip.getStartX();
-            sl[pos++].y = pShip.getStartY();
+            sl[pos].y = pShip.getStartY();
+            sl[pos++].h = pShip.isHorizontal();
         }
         
         Client rest = ClientBuilder.newClient();
-        rest.property(ClientProperties.JSON_PROCESSING_FEATURE_DISABLE, true);
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        //javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=1").request(MediaType.APPLICATION_JSON).put(Entity.json(null));
-        String responseJSon = g.toJson(sl, Response[].class);
-        final String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon;
+        String responseJSon = g.toJson(sl, ShipResponse[].class);
+        String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon;
+        //final String thething = "http://localhost:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon;
+        //thething = thething.replace(" ", "%20");
         System.out.println("deploy() url " + thething);
         javax.ws.rs.core.Response res = rest.target(thething).request(MediaType.APPLICATION_JSON).put(Entity.json(null));
         String response = res.readEntity(String.class);
@@ -89,7 +85,7 @@ public class DeployShips extends GetAbstract {
 
 //        final String s = rest.deployShips(Integer.toString(lobbyID), Integer.toString(player.getId()), g.toJson(sl));
 //        rest.close();
-//        Result r = g.fromJson(s, Result.class);
+//        Result result = g.fromJson(s, Result.class);
 
         try {
             if (result.succes) {

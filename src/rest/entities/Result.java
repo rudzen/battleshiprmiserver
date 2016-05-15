@@ -27,14 +27,14 @@ import java.io.Serializable;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class Result implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Boolean succes;
-    public Boolean ready;
+    public boolean succes;
+    public boolean ready;
 
     public Result() {
     }

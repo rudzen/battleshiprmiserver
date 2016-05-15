@@ -98,8 +98,6 @@ public final class BattleshipJerseyHelper {
         return p;
     }
     
-    
-    
     /**
      * Converts an IShip.TYPE to string based name
      *
@@ -107,13 +105,13 @@ public final class BattleshipJerseyHelper {
      * @return The name of the ship based on the type
      */
     private static String shipTypeToString(Ship.TYPE t) {
-        if (t == Ship.TYPE.CARRIER) {
+        if (t == Ship.TYPE.AIRCRAFT_CARRIER) {
             return "0";
-        } else if (t == Ship.TYPE.CRUISER) {
+        } else if (t == Ship.TYPE.BATTLESHIP) {
             return "1";
-        } else if (t == Ship.TYPE.DESTROYER) {
-            return "2";
         } else if (t == Ship.TYPE.SUBMARINE) {
+            return "2";
+        } else if (t == Ship.TYPE.DESTROYER) {
             return "3";
         } else {
             return "4";
@@ -128,15 +126,15 @@ public final class BattleshipJerseyHelper {
      */
     private static Ship.TYPE shipStringToType(final String type) {
         if (type.endsWith("0")) {
-            return Ship.TYPE.CARRIER;
+            return Ship.TYPE.AIRCRAFT_CARRIER;
         } else if (type.endsWith("1")) {
-            return Ship.TYPE.CRUISER;
+            return Ship.TYPE.BATTLESHIP;
         } else if (type.endsWith("2")) {
-            return Ship.TYPE.DESTROYER;
-        } else if (type.endsWith("3")) {
             return Ship.TYPE.SUBMARINE;
+        } else if (type.endsWith("3")) {
+            return Ship.TYPE.DESTROYER;
         } else if (type.endsWith("4")) {
-            return Ship.TYPE.PATROL;
+            return Ship.TYPE.PATROL_BOAT;
         }
         return null;
     }
