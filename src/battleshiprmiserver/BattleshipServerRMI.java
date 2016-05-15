@@ -40,6 +40,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RMISocketFactory;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
@@ -92,7 +93,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     public BattleshipServerRMI() throws RemoteException {
         super(Registry.REGISTRY_PORT);
-        
+
         /* initiate the timer to check for dead clients */
         deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 90000, 90000);
     }
@@ -295,7 +296,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         new Runnable() {
             @Override
             public void run() {
-                bg.getPlayers().keySet().stream().filter((s) -> (!s.equals(origin))).forEach((s) -> {
+                bg.getPlayers().keySet().parallelStream().filter((s) -> (!s.equals(origin))).forEach((s) -> {
                     try {
                         bg.getPlayers().get(s).showMessage(message, title, modal);
                     } catch (RemoteException ex) {
@@ -348,8 +349,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void wait(IClientListener client) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void wait(IClientListener client, int lobbyID, int playerID) throws RemoteException {
+        FutureBasic.wait(client, lobbyID, playerID);
     }
 
     @Override
@@ -360,6 +361,23 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public void requestAllLobbies(IClientListener client, int playerID) throws RemoteException {
         FutureBasic.getLobbys(client, playerID);
+    }
+
+    @Override
+    public void debug_CreateLobbies(IClientListener client, int amount) throws RemoteException {
+        games_lock.lock();
+        System.out.println("DEBUG: Creating " + amount + " lobbies. (DEBUG FUNCTIONALITY IS NOW LOCKED!)");
+        Random rnd = new Random();
+        try {
+            for (int i = 0; i < 1000; i++) {
+                FutureBasic.newLobby(client, rnd.nextInt(3));
+            }
+        } catch (Exception e) {
+
+        } finally {
+            games_lock.unlock();
+        }
+
     }
 
     private class DeadTimerMaintenance extends TimerTask {

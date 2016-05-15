@@ -37,7 +37,6 @@ import battleshiprmiserver.commander.tasks.NewLobby;
 import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
 import interfaces.IClientListener;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

@@ -27,15 +27,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import interfaces.IClientListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import rest.entities.Lobby;
 
 /**
- *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * Get all playerID's from the REST server and pass them back to the RMI client.
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class GetAllPlayerIDS extends GetAbstract {
 
@@ -48,10 +48,17 @@ public class GetAllPlayerIDS extends GetAbstract {
         final String s = rest.getPlayerIds();
         rest.close();
         if (s != null) {
-            HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
+            HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, rest.entities.Player>>() {}.getType());
             try {
                 if (!fromServer.isEmpty()) {
-                    client.showMessage("All player ids :\n" + fromServer.toString(), "Server message", JOptionPane.INFORMATION_MESSAGE);
+                    final ArrayList<String> toClient = new ArrayList<>();
+                    fromServer.keySet().stream().forEach((l) -> {
+                        toClient.add(l + ":" + fromServer.get(l).getPlayername());
+                    });
+                    client.playerList(toClient);
+                    fromServer.clear();
+                    toClient.clear();
+                    //client.showMessage("All player ids :\n" + fromServer.toString(), "Server message", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     client.showMessage("No player IDs found", "Server message", JOptionPane.ERROR_MESSAGE);
                 }

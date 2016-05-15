@@ -50,10 +50,10 @@ public class GetFreeLobbys extends GetAbstract {
     public void run() {
         final String s = rest.getFreeLobbies(Integer.toString(playerID));
         rest.close();
-        HashMap<String, Lobby> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, Lobby>>() {}.getType());
+        HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, rest.entities.Player>>() {}.getType());
         ArrayList<String> freeLobbys = new ArrayList<>();
-        fromServer.values().parallelStream().forEach((l) -> {
-            freeLobbys.add(Integer.toString(l.getLobbyid()) + ":" + l.getDefender().getPlayername());
+        fromServer.keySet().stream().forEach((key) -> {
+            freeLobbys.add(key + ":" + fromServer.get(key).getPlayername());
         });
         try {
             System.out.println("Sending free lobbies to client.");
