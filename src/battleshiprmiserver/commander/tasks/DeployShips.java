@@ -33,7 +33,10 @@ import javax.swing.JOptionPane;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import rest.entities.ShipResponse;
 import rest.entities.Result;
@@ -59,7 +62,6 @@ public class DeployShips extends GetAbstract {
         final ShipResponse[] sl = new ShipResponse[5];
         int pos = 0;
 
-        ShipResponse r;
         for (dataobjects.Ship pShip : player.getShips()) {
             sl[pos] = new ShipResponse();
             sl[pos].name = pShip.getShipType();
@@ -68,31 +70,26 @@ public class DeployShips extends GetAbstract {
             sl[pos].y = pShip.getStartY();
             sl[pos++].h = pShip.isHorizontal();
         }
+        String responseJSon = g.toJson(sl, ShipResponse[].class);
         
         Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        String responseJSon = g.toJson(sl, ShipResponse[].class);
-        String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon;
-        //final String thething = "http://localhost:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon;
-        //thething = thething.replace(" ", "%20");
+        String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon.replace("\"", "%22").replace(" ", "%20");
+
         System.out.println("deploy() url " + thething);
-        javax.ws.rs.core.Response res = rest.target(thething).request(MediaType.APPLICATION_JSON).put(Entity.json(null));
+        System.out.println(thething.charAt(96));
+        javax.ws.rs.core.Response res = rest.target(thething).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
         String response = res.readEntity(String.class);
         Result result = g.fromJson(response, Result.class);
         System.out.println("deploy() res " + response);
         res.close();
-        rest.close();
-
-//        final String s = rest.deployShips(Integer.toString(lobbyID), Integer.toString(player.getId()), g.toJson(sl));
-//        rest.close();
-//        Result result = g.fromJson(s, Result.class);
-
+        rest.close();        
+        
         try {
             if (result.succes) {
-                client.deployed(true, "Opponent");
-                client.showMessage("Ships deployed correctly", "Server message", JOptionPane.INFORMATION_MESSAGE);
+                client.deployed(result.succes, result.ready, "Opponent");
             } else {
-                client.deployed(false, "Fail");
+                client.deployed(result.succes, result.ready, "");
                 client.showMessage("Failed to deploy correctly", "Server message", JOptionPane.ERROR_MESSAGE);
             }
         } catch (RemoteException ex) {

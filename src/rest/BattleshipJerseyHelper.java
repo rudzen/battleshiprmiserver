@@ -29,8 +29,12 @@ import dataobjects.Ship;
 import dataobjects.Upgrades;
 import game.GameSession;
 import java.awt.Point;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import rest.entities.Board;
 import rest.entities.Lobby;
 
@@ -86,7 +90,7 @@ public final class BattleshipJerseyHelper {
         Lobby l = new Lobby(lobbyID, playerToRestPlayer(player));
         return new Board(l, l.getDefender());
     }
-    
+
     private static rest.entities.Player playerToRestPlayer(final Player player) {
         rest.entities.Player p = new rest.entities.Player();
         p.setArmor(player.getShip(0).getUpgrades().getArmor());
@@ -97,7 +101,7 @@ public final class BattleshipJerseyHelper {
         p.setWeapon(player.getShip(0).getUpgrades().getPower());
         return p;
     }
-    
+
     /**
      * Converts an IShip.TYPE to string based name
      *
@@ -327,6 +331,15 @@ public final class BattleshipJerseyHelper {
             }
         }
         return board;
+    }
+
+    public static StringBuilder urlEncode(final StringBuilder sb, final String s) {
+        try {
+            sb.append(URLEncoder.encode(s, "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(BattleshipJerseyHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sb;
     }
 
 }

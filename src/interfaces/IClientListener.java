@@ -27,6 +27,7 @@ import dataobjects.Player;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import rest.entities.Result;
 
 /**
  * Server -> Client callback interface. These are the methods being called on
@@ -186,10 +187,11 @@ public interface IClientListener extends Remote {
     
     /**
      * Let the client know how the deployment went, and send the opponent if OK.
-     * @param wasOK True if the deploy went well.
-     * @param opponent The opponent player name and ID (ID:Name), used for name information. Empty if deployment failed.
+     * @param sucess Was the deployment ok?
+     * @param ready Is the game ready to be played now?
+     * @param opponent The opponent player name and ID (ID:Name), used for name information.
      * @throws RemoteException 
      */
-    void deployed(boolean wasOK, String opponent) throws RemoteException;
+    void deployed(boolean sucess, boolean ready, String opponent) throws RemoteException;
     
 }
