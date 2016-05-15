@@ -9,12 +9,17 @@ import java.io.Serializable;
 
 public class Board implements Serializable {
 
-    private static final long serialVersionUID = 1726828769918459444L;
+    private static final long serialVersionUID = 1L;
 
-    private final int lobbyid;
-    private final int playerid;
-    private final int[][] hits = new int[10][10];
 
+    private int lobbyid;
+    private int playerid;
+    private int[][] hits = new int[10][10];
+
+    public Board() {
+        
+    }
+    
     public Board(Lobby lobby, Player player) {
         this.lobbyid = lobby.getLobbyid();
         this.playerid = player.getPlayerid();

@@ -66,9 +66,6 @@
 //            rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
 //            //javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=1").request(MediaType.APPLICATION_JSON).put(Entity.json(null));
 //            
-//
-//            
-//
 //            javax.ws.rs.core.Response res = rest.target(BattleshipJerseyClient.BASE_URI + "res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
 //            Lobby l = new Gson().fromJson(res.readEntity(String.class), Lobby.class);
 //            res.close();

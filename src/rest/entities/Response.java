@@ -39,4 +39,8 @@ public class Response implements Serializable {
     public Integer y;
     public Boolean h;
 
+    public Response() {
+        
+    }
+    
 }

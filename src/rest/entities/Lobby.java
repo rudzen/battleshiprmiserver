@@ -13,7 +13,7 @@ public class Lobby implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer lobbyid;
+    private Integer lobbyid;
     private Player attacker;
     private Player defender;
     private Board attackerBoard;
@@ -22,6 +22,11 @@ public class Lobby implements Serializable {
     public ArrayList<Point> moves = new ArrayList<>();
     public ArrayList<String> chat = new ArrayList<>();
 
+    
+    public Lobby() {
+        
+    }
+    
     public Lobby(Integer lobbyid, Player defender) {
         this.lobbyid = lobbyid;
         this.defender = defender;

@@ -24,12 +24,15 @@
 package rest.entities;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class JSONShip {
+public class JSONShip implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public String shipname;
     public Integer length, row, col;
@@ -37,6 +40,10 @@ public class JSONShip {
     public boolean isDestroyed = false;
     public Point[] cordinates;
 
+    public JSONShip() {
+        
+    }
+    
     public JSONShip(String name, int length) {
         this.shipname = name;
         this.length = length;

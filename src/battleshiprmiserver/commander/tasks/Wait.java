@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 
 /**
  * Shadow of the rest servers wait...
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class Wait extends GetAbstract {
 

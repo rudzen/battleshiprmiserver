@@ -56,6 +56,7 @@ public class FireShot extends GetAbstract {
         rest.close();
         Fire f = new Gson().fromJson(s, Fire.class);
         try {
+            client.canPlay(false);
             if (f.getStatus().equals("error")) {
                 client.showMessage(f.getError() + "\n" + f.getFire().toString(), "Shot fired", JOptionPane.ERROR_MESSAGE);
             } else if (f.getStatus().equals("hit")) {

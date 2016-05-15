@@ -5,11 +5,15 @@
  */
 package rest.entities;
 
+import java.io.Serializable;
+
 /**
  *
  * @author root
  */
-public class RedirectURL {
+public class RedirectURL implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public String url;
     public int numberOfUsers;

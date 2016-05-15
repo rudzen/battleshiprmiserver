@@ -16,14 +16,19 @@ import java.util.ArrayList;
 public class Fire implements Serializable {
 
     public static final String ERROR = "error";
+    private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 5984944541713491612L;
     private int player;
     private Point fire;
     private String status;
     private String error;
     private ArrayList<JSONShip> ships;
 
+    
+    public Fire() {
+        
+    }
+    
     /**
      *
      * @param player

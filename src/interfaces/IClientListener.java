@@ -183,4 +183,13 @@ public interface IClientListener extends Remote {
      */
     void setLobbyID(int lobbyID) throws RemoteException;
 
+    
+    /**
+     * Let the client know how the deployment went, and send the opponent if OK.
+     * @param wasOK True if the deploy went well.
+     * @param opponent The opponent player name and ID (ID:Name), used for name information. Empty if deployment failed.
+     * @throws RemoteException 
+     */
+    void deployed(boolean wasOK, String opponent) throws RemoteException;
+    
 }

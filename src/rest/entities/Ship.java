@@ -24,18 +24,28 @@
 package rest.entities;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 /**
  *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
-public class Ship {
+public class Ship implements Serializable {
 
-    String name;
-    int length, x, y, hit = 0;
+    private static final long serialVersionUID = 1L;
+
+    public String name;
+    public int length;
+    public int x;
+    public int y;
+    public int hit;
     boolean hor;
     JSONShip j;
 
+    public Ship() {
+        
+    }
+    
     public Ship(String name, int length, int x, int y, boolean hor) {
         this.name = name;
         this.length = length;
@@ -53,7 +63,7 @@ public class Ship {
             if (this.x > x || this.x + this.length - 1 < x) {
                 return false;
             }
-            hit = hit | (1 << (x - this.x));
+            hit |= (1 << (x - this.x));
             return true;
         } else {
             if (this.x != x) {
@@ -62,7 +72,7 @@ public class Ship {
             if (this.y > y || this.y + this.length - 1 < y) {
                 return false;
             }
-            hit = hit | (1 << (y - this.y));
+            hit |= (1 << (y - this.y));
             return true;
         }
     }

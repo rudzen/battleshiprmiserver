@@ -59,27 +59,31 @@ public class DeployShips extends GetAbstract {
 
     @Override
     public void run() {
-        Gson g = new Gson();
-        ArrayList<Response> sl = new ArrayList<>();
+        final Gson g = new Gson();
+        final Response[] sl = new Response[5];
+        int pos = 0;
 
         Response r;
         for (dataobjects.Ship pShip : player.getShips()) {
-            r = new Response();
-            r.h = pShip.isHorizontal();
-            r.l = pShip.getLength();
-            r.x = pShip.getStartX();
-            r.y = pShip.getStartY();
-            sl.add(r);
+            sl[pos] = new Response();
+            sl[pos].name = pShip.getShipType();
+            sl[pos].h = pShip.isHorizontal();
+            sl[pos].l = pShip.getLength();
+            sl[pos].x = pShip.getStartX();
+            sl[pos++].y = pShip.getStartY();
         }
         
         Client rest = ClientBuilder.newClient();
+        rest.property(ClientProperties.JSON_PROCESSING_FEATURE_DISABLE, true);
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
         //javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=1").request(MediaType.APPLICATION_JSON).put(Entity.json(null));
-        final String thething = BattleshipJerseyClient.BASE_URI + "res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + g.toJson(sl);
+        String responseJSon = g.toJson(sl, Response[].class);
+        final String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon;
         System.out.println("deploy() url " + thething);
-        javax.ws.rs.core.Response res = rest.target(thething).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
-        Result result = g.fromJson(res.readEntity(String.class), Result.class);
-        System.out.println("deploy() res " + res.readEntity(String.class));
+        javax.ws.rs.core.Response res = rest.target(thething).request(MediaType.APPLICATION_JSON).put(Entity.json(null));
+        String response = res.readEntity(String.class);
+        Result result = g.fromJson(response, Result.class);
+        System.out.println("deploy() res " + response);
         res.close();
         rest.close();
 
@@ -89,8 +93,10 @@ public class DeployShips extends GetAbstract {
 
         try {
             if (result.succes) {
+                client.deployed(true, "Opponent");
                 client.showMessage("Ships deployed correctly", "Server message", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                client.deployed(false, "Fail");
                 client.showMessage("Failed to deploy correctly", "Server message", JOptionPane.ERROR_MESSAGE);
             }
         } catch (RemoteException ex) {
