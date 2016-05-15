@@ -36,8 +36,8 @@ public final class Args {
     static {
         ip = "localhost";
         port = 6769;
-        game_address = "http://localhost:8080/BattleshipREST/test/";
-        //game_address = "http://104.46.52.169:8080/BattleshipREST/test/";
+        //game_address = "http://localhost:8080/BattleshipREST/test/";
+        game_address = "http://104.46.52.169:8080/BattleshipREST/test/";
     }
     
     public static String all() {
