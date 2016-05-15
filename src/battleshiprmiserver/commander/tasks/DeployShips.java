@@ -71,7 +71,7 @@ public class DeployShips extends GetAbstract {
             sl[pos++].h = pShip.isHorizontal();
         }
         String responseJSon = g.toJson(sl, ShipResponse[].class);
-        
+
         Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
         String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon.replace("\"", "%22").replace(" ", "%20");
@@ -83,15 +83,10 @@ public class DeployShips extends GetAbstract {
         Result result = g.fromJson(response, Result.class);
         System.out.println("deploy() res " + response);
         res.close();
-        rest.close();        
-        
+        rest.close();
+
         try {
-            if (result.succes) {
-                client.deployed(result.succes, result.ready, "Opponent");
-            } else {
-                client.deployed(result.succes, result.ready, "");
-                client.showMessage("Failed to deploy correctly", "Server message", JOptionPane.ERROR_MESSAGE);
-            }
+            client.deployed(result.succes, result.ready, "Opponent");
         } catch (RemoteException ex) {
             Logger.getLogger(DeployShips.class.getName()).log(Level.SEVERE, null, ex);
         }
