@@ -333,6 +333,10 @@ public final class BattleshipJerseyHelper {
         return board;
     }
 
+    public static String fixString(final String s) {
+        return s.replace("\"", "%22").replace(" ", "%20");
+    }
+    
     public static StringBuilder urlEncode(final StringBuilder sb, final String s) {
         try {
             sb.append(URLEncoder.encode(s, "UTF-8"));

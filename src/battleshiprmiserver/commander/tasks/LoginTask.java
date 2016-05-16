@@ -64,7 +64,7 @@ public class LoginTask implements Runnable {
         Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
         //Response res = rest.target("http://localhost:8080/BattleshipREST/test/database/login/BA/playerid=" + u + "/password=" + p).request(MediaType.APPLICATION_JSON).get();
-        Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=" + u + "/password=" + p).request(MediaType.APPLICATION_JSON).get();
+        Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=" + BattleshipJerseyHelper.fixString(u) + "/password=" + BattleshipJerseyHelper.fixString(p)).request(MediaType.APPLICATION_JSON).get();
         String s = res.readEntity(String.class);
         //System.out.println(s);
 

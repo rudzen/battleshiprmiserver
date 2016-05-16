@@ -38,6 +38,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
+import rest.BattleshipJerseyHelper;
 import rest.entities.ShipResponse;
 import rest.entities.Result;
 
@@ -74,19 +75,20 @@ public class DeployShips extends GetAbstract {
 
         Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + responseJSon.replace("\"", "%22").replace(" ", "%20");
+        String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + BattleshipJerseyHelper.fixString(responseJSon);
 
         System.out.println("deploy() url " + thething);
         System.out.println(thething.charAt(96));
         javax.ws.rs.core.Response res = rest.target(thething).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
         String response = res.readEntity(String.class);
         Result result = g.fromJson(response, Result.class);
-        System.out.println("deploy() res " + response);
+        System.out.println("deploy() res " + result.succes + " : " + result.ready);
         res.close();
         rest.close();
 
         try {
             client.deployed(result.succes, result.ready, "Opponent");
+            client.canPlay(result.ready);
         } catch (RemoteException ex) {
             Logger.getLogger(DeployShips.class.getName()).log(Level.SEVERE, null, ex);
         }

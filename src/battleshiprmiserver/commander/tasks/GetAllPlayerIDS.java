@@ -58,7 +58,6 @@ public class GetAllPlayerIDS extends GetAbstract {
                     client.playerList(toClient);
                     fromServer.clear();
                     toClient.clear();
-                    //client.showMessage("All player ids :\n" + fromServer.toString(), "Server message", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     client.showMessage("No player IDs found", "Server message", JOptionPane.ERROR_MESSAGE);
                 }
