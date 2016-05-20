@@ -24,11 +24,14 @@
 package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
-import interfaces.IClientListener;
+
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import interfaces.IClientListener;
 import rest.entities.Fire;
 
 /**
@@ -42,7 +45,7 @@ public class FireShot extends GetAbstract {
     private final int x;
     private final int y;
 
-    public FireShot(IClientListener client, final int lobbyID, final int playerID, final int x, final int y) {
+    public FireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) {
         super(client);
         this.lobbyID = lobbyID;
         this.playerID = playerID;
@@ -54,17 +57,17 @@ public class FireShot extends GetAbstract {
     public void run() {
         final String s = rest.shoot(Integer.toString(lobbyID), Integer.toString(playerID), Integer.toString(x), Integer.toString(y));
         rest.close();
-        Fire f = new Gson().fromJson(s, Fire.class);
+        final Fire f = new Gson().fromJson(s, Fire.class);
         try {
             client.canPlay(false);
-            if (f.getStatus().equals("error")) {
-                client.showMessage(f.getError() + "\n" + f.getFire().toString(), "Shot fired", JOptionPane.ERROR_MESSAGE);
-            } else if (f.getStatus().equals("hit")) {
+            if ("error".equals(f.getStatus())) {
+                client.showMessage(f.getError() + "\n" + f.getFire(), "Shot fired", JOptionPane.ERROR_MESSAGE);
+            } else if ("hit".equals(f.getStatus())) {
                 client.shotFired(f.getFire().x, f.getFire().y, true);
-                client.showMessage("Shot fired OK at " + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
-            } else if (f.getStatus().equals("destroyed")) {
+                client.showMessage("Shot fired OK at " + f.getFire(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
+            } else if ("destroyed".equals(f.getStatus())) {
                 // figure out which ship was destroyed
-                int shipIndex = -1;
+                final int shipIndex = -1;
                 for (int i = 0; i < f.getShips().size(); i++) {
                     if (f.getShips().get(i).isDestroyed) {
                         if (f.getShips().get(i).cordinates.length != 3) {
@@ -76,9 +79,9 @@ public class FireShot extends GetAbstract {
                 }
                 client.shotFired(f.getFire().x, f.getFire().y, true);
                 client.shipSunk(0, false);
-                client.showMessage("You have sunk the ship!" + f.getFire().toString(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
+                client.showMessage("You have sunk the ship!" + f.getFire(), "Shot fired", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(FireShot.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

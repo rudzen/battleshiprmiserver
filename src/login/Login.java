@@ -23,11 +23,9 @@
  */
 package login;
 
-import interfaces.IClientListener;
-import java.net.URL;
 import java.rmi.RemoteException;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
+
+import interfaces.IClientListener;
 
 /**
  * Simple SOAP login system.....
@@ -41,7 +39,7 @@ public final class Login {
     private final static String WSDL = "http://javabog.dk:9901/brugeradmin?wsdl";
     
     public static boolean loginBA(final String userName, final String password, final IClientListener client) throws RemoteException {
-
+/*
         try {
             QName qname = new QName(ADDRESS, IMPL);
             Service service = Service.create(new URL(WSDL), qname);
@@ -56,6 +54,7 @@ public final class Login {
         } catch (Exception e) {
             client.showMessage("Kan ikke forbinde til bruger database.", "LoginBA()", 0);
         }
+*/
         return false;
     }
     
@@ -64,7 +63,7 @@ public final class Login {
     }
     
 
-    private static boolean slowEquals(byte[] a, byte[] b) {
+    private static boolean slowEquals(final byte[] a, final byte[] b) {
         int diff = a.length ^ b.length;
         for (int i = 0; i < a.length && i < b.length; i++) {
             diff |= a[i] ^ b[i];

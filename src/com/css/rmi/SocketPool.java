@@ -26,23 +26,26 @@ import java.util.LinkedList;
  */
 public  class SocketPool {
     private final LinkedList<Socket> socketList = new LinkedList<>();
-    
-    public synchronized Socket getSocket() throws InterruptedIOException {
-        try {
-            while (socketList.isEmpty()) {
-                this.wait();
+
+    public Socket getSocket() throws InterruptedIOException {
+        synchronized (this) {
+            try {
+                while (socketList.isEmpty()) {
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                throw new InterruptedIOException();
             }
+
+            return socketList.removeFirst();
         }
-        catch (InterruptedException e) {
-            throw new InterruptedIOException();
-        }
-        
-        return (Socket) socketList.removeFirst();
     }
-    
-    public synchronized void addSocket(Socket socket) {
-        socketList.add(socket);
-        this.notifyAll();
+
+    public void addSocket(final Socket socket) {
+        synchronized (this) {
+            socketList.add(socket);
+            notifyAll();
+        }
     }
 }
     

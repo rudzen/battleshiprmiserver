@@ -115,10 +115,10 @@ public final class IntervalComparator<T extends Comparable<T>> implements
 	 * <var>o1</var> is a greater interval than <var>o2</var>.
 	 */
 	@Override
-	public int compare(Interval<T> o1, Interval<T> o2) {
+	public int compare(final Interval<T> o1, final Interval<T> o2) {
 
 		// Compare the lower endpoints first
-		int lowerComparison = this.lowerEndpointValueCompare(o1, o2);
+		final int lowerComparison = lowerEndpointValueCompare(o1, o2);
 		if (lowerComparison != 0) {
 			// One lower endpoint is lesser than the other, so return the
 			// result of the comparison
@@ -126,7 +126,7 @@ public final class IntervalComparator<T extends Comparable<T>> implements
 		}
 		// Lower endpoints are equivalent, so it comes down to a comparison of
 		// the upper endpoints
-		return this.upperEndpointValueCompare(o1, o2);
+		return upperEndpointValueCompare(o1, o2);
 	}
 
 	/**
@@ -167,14 +167,14 @@ public final class IntervalComparator<T extends Comparable<T>> implements
 	 * interval has a comparatively greater value than that of the second
 	 * interval.
 	 */
-	int lowerEndpointValueCompare(Interval<T> first, Interval<T> second) {
-		T alpha = first.getLowerEndpoint();
-		T beta = second.getLowerEndpoint();
+	int lowerEndpointValueCompare(final Interval<T> first, final Interval<T> second) {
+		final T alpha = first.getLowerEndpoint();
+		final T beta = second.getLowerEndpoint();
 		if (alpha == null) {
 			// alpha is as low as it gets
 			// beta is either equal if it is also null, or larger otherwise
 			// so alpha is either equal (return 0) or smaller (return -1)
-			return (beta == null ? 0 : -1);
+			return beta == null ? 0 : -1;
 		}
 		// alpha has an actual value
 		if (beta == null) {
@@ -182,7 +182,7 @@ public final class IntervalComparator<T extends Comparable<T>> implements
 			return +1;
 		}
 		// Both alpha and beta have actual values so compare them
-		int valueComparison = alpha.compareTo(beta);
+		final int valueComparison = alpha.compareTo(beta);
 		if (valueComparison == 0) {
 			// Lower endpoint values are the same, so it comes down to the mode
 			// of the lower endpoints
@@ -236,14 +236,14 @@ public final class IntervalComparator<T extends Comparable<T>> implements
 	 * of the second interval; or a positive value if the first interval has an
 	 * upper endpoint comparatively greater than that of the second interval.
 	 */
-	int upperEndpointValueCompare(Interval<T> first, Interval<T> second) {
-		T alpha = first.getUpperEndpoint();
-		T beta = second.getUpperEndpoint();
+	int upperEndpointValueCompare(final Interval<T> first, final Interval<T> second) {
+		final T alpha = first.getUpperEndpoint();
+		final T beta = second.getUpperEndpoint();
 		if (alpha == null) {
 			// alpha is as high as it gets
 			// beta is either equal if it is also null, or smaller otherwise
 			// so alpha is either equal (return 0) or larger (return +1)
-			return (beta == null ? 0 : +1);
+			return beta == null ? 0 : +1;
 		}
 		// alpha has an actual value
 		if (beta == null) {
@@ -251,7 +251,7 @@ public final class IntervalComparator<T extends Comparable<T>> implements
 			return -1;
 		}
 		// both alpha and beta have actual values so let compareTo handle it
-		int valueComparison = alpha.compareTo(beta);
+		final int valueComparison = alpha.compareTo(beta);
 		if (valueComparison == 0) {
 			// Upper endpoint values are the same, so it comes down to the mode
 			// of the lower endpoints

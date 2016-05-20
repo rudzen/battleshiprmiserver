@@ -62,7 +62,7 @@ public class BattleshipServerRMIHelper {
             argsReceived = argsHandler.getValuesFromVariable(VAR_PORT[0]);
             if (!argsReceived.isEmpty()) {
                 try {
-                    int val = Integer.parseInt(argsReceived.get(0));
+                    final int val = Integer.parseInt(argsReceived.get(0));
                     if (val > 1024 && val <= 65536) {
                         Args.port = val;
                     } else {
@@ -70,7 +70,7 @@ public class BattleshipServerRMIHelper {
                         throw new IllegalArgumentException("Invalid range : " + Integer.toString(val) + ", only between 1024 and 65536 is allowed.");
                     }
 
-                } catch (NumberFormatException nfe) {
+                } catch (final NumberFormatException nfe) {
                     throw new IllegalArgumentException("Invalid port : only integers allowed.");
                 }
             }
@@ -79,7 +79,7 @@ public class BattleshipServerRMIHelper {
             if (!argsReceived.isEmpty()) {
                 try {
                     Args.game_address = argsReceived.get(0);
-                } catch (NumberFormatException nfe) {
+                } catch (final NumberFormatException nfe) {
                     throw new IllegalArgumentException(VAR_REST[0] + " must be an Integer.");
                 }
             }

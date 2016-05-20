@@ -56,12 +56,12 @@ public class JoinLobby extends GetAbstract {
                 client.canPlay(false);
                 client.setLobbyID(-1);
             } else {
-                Lobby l = new Gson().fromJson(s, Lobby.class);
+                final Lobby l = new Gson().fromJson(s, Lobby.class);
                 client.showMessage("Lobby joined. New lobby id is " + Integer.toString(l.getLobbyid()), "Lobby joined", JOptionPane.INFORMATION_MESSAGE);
                 client.setLobbyID(l.getLobbyid());
             }
 
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(JoinLobby.class.getName()).log(Level.SEVERE, null, ex);
         }
 

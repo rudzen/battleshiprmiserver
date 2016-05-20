@@ -23,14 +23,16 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import rest.BattleshipJerseyHelper;
 import com.google.gson.Gson;
-import dataobjects.Player;
-import interfaces.IClientListener;
+
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import interfaces.IClientListener;
+import rest.BattleshipJerseyHelper;
 
 /**
  *
@@ -55,14 +57,14 @@ public class GetPlayerID extends GetAbstract implements Runnable {
         final String s = rest.getPlayer(name);
         rest.close();
         try {
-            if (s.equals("\"error\":\"player not found\"")) {
+            if ("\"error\":\"player not found\"".equals(s)) {
                 client.showMessage("Unable to get player from database", "Error", JOptionPane.ERROR);
             } else {
-                rest.entities.Player p = new Gson().fromJson(s, rest.entities.Player.class);
+                final rest.entities.Player p = new Gson().fromJson(s, rest.entities.Player.class);
                 client.setPlayer(BattleshipJerseyHelper.restPlayerToLocal(p), true);
                 client.showMessage("Player information updated.", "Server message", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(GetPlayerID.class.getName()).log(Level.SEVERE, null, ex);
         }
 

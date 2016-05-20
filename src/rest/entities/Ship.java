@@ -46,7 +46,7 @@ public class Ship implements Serializable {
         
     }
     
-    public Ship(String name, int length, int x, int y, boolean hor) {
+    public Ship(final String name, final int length, final int x, final int y, final boolean hor) {
         this.name = name;
         this.length = length;
         this.x = x;
@@ -55,39 +55,39 @@ public class Ship implements Serializable {
         j = new JSONShip(name, length);
     }
 
-    public boolean fire(int x, int y) {
+    public boolean fire(final int x, final int y) {
         if (hor) {
             if (this.y != y) {
                 return false;
             }
-            if (this.x > x || this.x + this.length - 1 < x) {
+            if (this.x > x || this.x + length - 1 < x) {
                 return false;
             }
-            hit |= (1 << (x - this.x));
+            hit |= 1 << x - this.x;
             return true;
         } else {
             if (this.x != x) {
                 return false;
             }
-            if (this.y > y || this.y + this.length - 1 < y) {
+            if (this.y > y || this.y + length - 1 < y) {
                 return false;
             }
-            hit |= (1 << (y - this.y));
+            hit |= 1 << y - this.y;
             return true;
         }
     }
 
     public boolean isDestroyed() {
         for (int i = 0; i < length; i++) {
-            if ((hit & (1 << i)) == 0) {
+            if ((hit & 1 << i) == 0) {
                 return false;
             }
         }
         j.isDestroyed = true;
         j.horizontal = hor;
-        j.row = this.x;
-        j.col = this.y;
-        j.cordinates = this.getCords();
+        j.row = x;
+        j.col = y;
+        j.cordinates = getCords();
         return true;
     }
 
@@ -95,7 +95,7 @@ public class Ship implements Serializable {
         if (!j.isDestroyed) {
             return null;
         }
-        Point[] cordinates = new Point[length];
+        final Point[] cordinates = new Point[length];
         if (hor) {
             for (int i = 0; i < length; i++) {
                 cordinates[i] = new Point(x + i, y);

@@ -24,18 +24,22 @@
 package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
-import dataobjects.Player;
-import interfaces.IClientListener;
+
+import org.glassfish.jersey.client.ClientProperties;
+
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.glassfish.jersey.client.ClientProperties;
+
+import dataobjects.Player;
+import interfaces.IClientListener;
 import rest.BattleshipJerseyHelper;
 
 /**
@@ -53,7 +57,7 @@ public class LoginTask implements Runnable {
     private static final String wrong = "Wrong password";
     private static final String login = "Login";
 
-    public LoginTask(IClientListener client, final String u, final String p) {
+    public LoginTask(final IClientListener client, final String u, final String p) {
         this.client = client;
         this.u = u;
         this.p = p;
@@ -61,7 +65,7 @@ public class LoginTask implements Runnable {
 
     @Override
     public void run() {
-        Client rest = ClientBuilder.newClient();
+        final Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
         //Response res = rest.target("http://localhost:8080/BattleshipREST/test/database/login/BA/playerid=" + u + "/password=" + p).request(MediaType.APPLICATION_JSON).get();
         Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=" + BattleshipJerseyHelper.fixString(u) + "/password=" + BattleshipJerseyHelper.fixString(p)).request(MediaType.APPLICATION_JSON).get();
@@ -77,23 +81,23 @@ public class LoginTask implements Runnable {
                 client.showMessage(wrong, login, JOptionPane.ERROR_MESSAGE);
             } else if (s.contains("com.mysql.jdbc.exceptions.jdbc4.MySQL")) {
                 /* sql exception */
-                @SuppressWarnings("ThrowableResultIgnored")
+                @SuppressWarnings("ThrowableResultIgnored") final
                 SQLException se = new Gson().fromJson(s, SQLException.class);
                 client.showMessage("SQL Error : " + se.getMessage(), login, JOptionPane.ERROR_MESSAGE);
-            } else if (s.equals("1")) {
+            } else if ("1".equals(s)) {
                 /* server returns "1" if the player was created */
                 res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=s144868/password=xxx").request(MediaType.APPLICATION_JSON).get();
                 s = res.readEntity(String.class);
                 //s = rest.loginBA(u, p);
-                Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
+                final Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
                 client.setPlayer(p1, false);
                 client.showMessage("Player created and Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
+                final Player p1 = BattleshipJerseyHelper.restPlayerToLocal(new Gson().fromJson(s, rest.entities.Player.class));
                 client.setPlayer(p1, false);
                 client.showMessage("Logged in as (ID : NAME) " + Integer.toString(p1.getId()) + " : " + p1.getName(), login, JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(LoginTask.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             rest.close();

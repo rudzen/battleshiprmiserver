@@ -41,14 +41,14 @@ public class MD5OutputStream extends FilterOutputStream {
     /**
      * MD5 context
      */
-    private MD5 md5;
+    private final MD5 md5;
 
     /**
      * Creates MD5OutputStream
      *
      * @param out	The output stream
      */
-    public MD5OutputStream(OutputStream out) {
+    public MD5OutputStream(final OutputStream out) {
         super(out);
 
         md5 = new MD5();
@@ -59,7 +59,8 @@ public class MD5OutputStream extends FilterOutputStream {
      *
      * @see java.io.FilterOutputStream
      */
-    public void write(int b) throws IOException {
+    @Override
+    public void write(final int b) throws IOException {
         out.write(b);
         md5.Update((byte) b);
     }
@@ -69,7 +70,8 @@ public class MD5OutputStream extends FilterOutputStream {
      *
      * @see java.io.FilterOutputStream
      */
-    public void write(byte b[], int off, int len) throws IOException {
+    @Override
+    public void write(final byte[] b, final int off, final int len) throws IOException {
         out.write(b, off, len);
         md5.Update(b, off, len);
     }
@@ -93,11 +95,11 @@ public class MD5OutputStream extends FilterOutputStream {
      * here.
    *
      */
-    public static void main(String[] arg) {
+    public static void main(final String[] arg) {
         try {
-            MD5OutputStream out = new MD5OutputStream(new com.twmacinta.io.NullOutputStream());
-            InputStream in = new BufferedInputStream(new FileInputStream(arg[0]));
-            byte[] buf = new byte[65536];
+            final MD5OutputStream out = new MD5OutputStream(new com.twmacinta.io.NullOutputStream());
+            final InputStream in = new BufferedInputStream(new FileInputStream(arg[0]));
+            final byte[] buf = new byte[65536];
             int num_read;
             long total_read = 0;
             while ((num_read = in.read(buf)) != -1) {
@@ -107,7 +109,7 @@ public class MD5OutputStream extends FilterOutputStream {
             System.out.println(MD5.asHex(out.hash()) + "  " + arg[0]);
             in.close();
             out.close();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }

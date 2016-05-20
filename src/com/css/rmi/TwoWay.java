@@ -75,14 +75,14 @@ public class TwoWay {
      * @param address The four bytes of an IP address.
      * @return The corresponding string (a.b.c.d format).
      */
-    public static String getAddressString(byte[] address) {
-        return ((int) address[0] & 0xff) + "."
-                + ((int) address[1] & 0xff) + "."
-                + ((int) address[2] & 0xff) + "."
-                + ((int) address[3] & 0xff);
+    public static String getAddressString(final byte[] address) {
+        return (address[0] & 0xff) + "."
+                + (address[1] & 0xff) + "."
+                + (address[2] & 0xff) + "."
+                + (address[3] & 0xff);
     }
 
-    public static String getOpcodeName(int opcode) {
+    public static String getOpcodeName(final int opcode) {
         return opcodeNames[opcode];
     }
 }

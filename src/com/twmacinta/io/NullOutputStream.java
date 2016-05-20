@@ -31,28 +31,33 @@ public class NullOutputStream extends OutputStream {
   public NullOutputStream() {
   }
 
+  @Override
   public void close() {
-    this.closed = true;
+    closed = true;
   }
 
+  @Override
   public void flush() throws IOException {
-    if (this.closed) _throwClosed();
+    if (closed) _throwClosed();
   }
 
   private void _throwClosed() throws IOException {
     throw new IOException("This OutputStream has been closed");
   }
 
-  public void write(byte[] b) throws IOException {
-    if (this.closed) _throwClosed();
+  @Override
+  public void write(final byte[] b) throws IOException {
+    if (closed) _throwClosed();
   }
 
-  public void write(byte[] b, int offset, int len) throws IOException {
-    if (this.closed) _throwClosed();
+  @Override
+  public void write(final byte[] b, final int offset, final int len) throws IOException {
+    if (closed) _throwClosed();
   }
 
-  public void write(int b) throws IOException {
-    if (this.closed) _throwClosed();
+  @Override
+  public void write(final int b) throws IOException {
+    if (closed) _throwClosed();
   }
 
 }

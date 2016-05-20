@@ -9,54 +9,54 @@ package args.intervals;
 
 
 /**
- * A concrete implementation of an <code>Interval</code> over any naturally
+ * A concrete implementation of an {@code Interval} over any naturally
  * ordered type.
  * <p>
- * Each <code>GenericInterval</code> contains a lower endpoint value and an
+ * Each {@code GenericInterval} contains a lower endpoint value and an
  * upper endpoint value such that the result of
- * <code>upper.compareTo(lower)</code> must be zero or greater. In other words,
+ * {@code upper.compareTo(lower)} must be zero or greater. In other words,
  * the upper endpoint must be equal to or greater than the lower endpoint
  * according to the natural ordering of the interval basis type.</p>
  * <p>
- * For example, if an <code>GenericInterval&lt;Integer&gt;</code> object (an
+ * For example, if an {@code GenericInterval&lt;Integer&gt;} object (an
  * interval of integers) has a lower endpoint value of zero then its upper
  * endpoint value must be zero or greater. If an
- * <code>GenericInterval&lt;Character&gt;</code> (an interval of character
- * values) had a lower endpoint value of <code>'a'</code> then its upper
- * endpoint value would have to be <code>'a'</code> or <code>'b'</code> or any
- * other character which causes <code>upper.compareTo(lower)</code> to return
+ * {@code GenericInterval&lt;Character&gt;} (an interval of character
+ * values) had a lower endpoint value of {@code 'a'} then its upper
+ * endpoint value would have to be <code>'a'</code> or {@code 'b'} or any
+ * other character which causes {@code upper.compareTo(lower)} to return
  * zero or greater.</p>
  * <p>
- * If an endpoint is <code>null</code> then it means that the endpoint is
+ * If an endpoint is {@code null} then it means that the endpoint is
  * unbounded and there is no limit to what is included in that direction. So a
- * <code>null</code> lower endpoint means that the lower endpoint is unbounded
+ * {@code null} lower endpoint means that the lower endpoint is unbounded
  * and the interval includes every value which is less than the upper endpoint
- * value; a <code>null</code> upper endpoint means that the upper endpoint is
+ * value; a {@code null} upper endpoint means that the upper endpoint is
  * unbounded and the interval includes every value greater than the lower
- * endpoint value; and if both endpoints are <code>null</code> then all values
+ * endpoint value; and if both endpoints are {@code null} then all values
  * are included in this interval. In effect, a lower endpoint of
- * <code>null</code> equates to a lower endpoint having the value negative
- * infinity, and an upper endpoint of <code>null</code> equates to an upper
- * endpoint having the value positive infinity. Note that <code>null</code>
+ * {@code null} equates to a lower endpoint having the value negative
+ * infinity, and an upper endpoint of {@code null} equates to an upper
+ * endpoint having the value positive infinity. Note that {@code null}
  * itself is <strong>never</strong> included in an interval, as
- * <code>null</code> represents the lack of a value. Be aware that
- * <code>null</code> endpoints will allow any value of the permitted type,
- * including values such as <code>Double.NaN</code> (which is supposed to
+ * {@code null} represents the lack of a value. Be aware that
+ * {@code null} endpoints will allow any value of the permitted type,
+ * including values such as {@code Double.NaN} (which is supposed to
  * represent a non-value value).</p>
  * <p>
  * Also note that a type constant which is intended to represent infinity, such
- * as <code>Double.POSITIVE_INFINITY</code>, is just another numeric value so
- * far as the <code>Comparable</code> interface is concerned, and is therefore
+ * as {@code Double.POSITIVE_INFINITY}, is just another numeric value so
+ * far as the {@code Comparable} interface is concerned, and is therefore
  * just another member of the naturally ordered set Double so far as
- * <code>Interval&lt;Double&gt;</code> is concerned. Specifying such a value for
- * an endpoint is not the same as specifying <code>null</code> because
- * <code>null</code> will admit any value belonging to the interval basis type,
- * whereas a pseudo-infinite value such as <code>Double.POSITIVE_INFINITY</code>
+ * {@code Interval&lt;Double&gt;} is concerned. Specifying such a value for
+ * an endpoint is not the same as specifying {@code null} because
+ * {@code null} will admit any value belonging to the interval basis type,
+ * whereas a pseudo-infinite value such as {@code Double.POSITIVE_INFINITY}
  * will exclude any values which are beyond it in the natural order of the basis
- * type. For example, <code>Double.NaN</code> is considered greater than
- * <code>Double.NEGATIVE_INFINITY</code> and also greater than
- * <code>Double.POSITIVE_INFINITY</code> according to the <code>compareTo</code>
- * method of <code>Double</code>.</p>
+ * type. For example, {@code Double.NaN} is considered greater than
+ * {@code Double.NEGATIVE_INFINITY} and also greater than
+ * <code>Double.POSITIVE_INFINITY</code> according to the {@code compareTo}
+ * method of {@code Double}.</p>
  * <p>
  * An interval can include zero, one or both of its endpoint values. This is
  * specified by the mode of each endpoint.
@@ -64,40 +64,40 @@ package args.intervals;
  * endpoint value itself is included in the interval, while
  * {@link Interval.EndpointMode#OPEN EndpointMode.OPEN} means that the endpoint
  * value itself is not included in the interval. For instance, an
- * <code>Interval&lt;Double&gt;</code> might have a lower endpoint value of zero
- * and a lower endpoint mode of <code>EndpointMode.OPEN</code> which means that
+ * {@code Interval&lt;Double&gt;} might have a lower endpoint value of zero
+ * and a lower endpoint mode of {@code EndpointMode.OPEN} which means that
  * zero is the lower limit of the interval but is not included in the interval.
  * The endpoint mode is irrelevant for a null endpoint.</p>
  * <p>
- * <strong>Warning:</strong> Because an <code>Interval</code> relies on the
- * <code>Comparable</code> interface, everything depends on the result returned
- * by the <code>compareTo</code> method. So be aware that a <code>Double</code>
- * object with value <code>-0.0</code> (negative zero) is considered by
- * compareTo to be less in value than a <code>Double</code> object with value
- * <code>0.0</code> (positive zero) even though almost all applications would
+ * <strong>Warning:</strong> Because an {@code Interval} relies on the
+ * {@code Comparable} interface, everything depends on the result returned
+ * by the <code>compareTo</code> method. So be aware that a {@code Double}
+ * object with value {@code -0.0} (negative zero) is considered by
+ * compareTo to be less in value than a {@code Double} object with value
+ * {@code 0.0} (positive zero) even though almost all applications would
  * consider these two values to be identical. Be careful not to allow a negative
  * zero to be used as an endpoint value without understanding that it will be
  * treated differently.</p>
  * <p>
- * Objects of type <code>GenericInterval</code> cannot be mutated, but it is
+ * Objects of type {@code GenericInterval} cannot be mutated, but it is
  * only safe to consider them truly immutable if they are based on an immutable
- * type. So a <code>GenericInterval&lt;String&gt;</code> is truly immutable
- * because neither the <code>GenericInterval</code> nor the <code>String</code>
+ * type. So a {@code GenericInterval&lt;String&gt;} is truly immutable
+ * because neither the <code>GenericInterval</code> nor the {@code String}
  * objects acting as endpoints can be mutated. But a
- * <code>GenericInterval&lt;Date&gt;</code> cannot be considered immutable
- * because even though the <code>GenericInterval</code> cannot be mutated, the
- * <code>Date</code> objects acting as endpoints can be mutated. This also means
- * that a <code>GenericInterval</code> of a mutable type cannot be guaranteed to
+ * {@code GenericInterval&lt;Date&gt;} cannot be considered immutable
+ * because even though the {@code GenericInterval} cannot be mutated, the
+ * {@code Date} objects acting as endpoints can be mutated. This also means
+ * that a {@code GenericInterval} of a mutable type cannot be guaranteed to
  * maintain the order of its endpoints, so the lower endpoint may suddenly be
  * mutated to have a greater value than the upper endpoint. For this reason it
- * is strongly recommended that <code>GenericInterval</code> is only used with
- * immutable types. If a <code>GenericInterval</code> is created over a mutable
- * type, then both the <code>GenericInterval</code> and its endpoint objects
+ * is strongly recommended that {@code GenericInterval} is only used with
+ * immutable types. If a {@code GenericInterval} is created over a mutable
+ * type, then both the {@code GenericInterval} and its endpoint objects
  * must be kept safe, and must not be shared.</p>
  *
  * @author Bobulous <http://www.bobulous.org.uk/>
- * @param <T> the basis type of this <code>GenericInterval</code>. The basis
- * type must implement <code>Comparable&lt;T&gt;</code> so that each instance of
+ * @param <T> the basis type of this {@code GenericInterval}. The basis
+ * type must implement {@code Comparable&lt;T&gt;} so that each instance of
  * the type can be compared with other instances of the same type, thus being a
  * type which has a natural order.
  * @see Interval
@@ -111,44 +111,44 @@ public final class GenericInterval<T extends Comparable<T>> implements
 	private final EndpointMode lowerMode, upperMode;
 
 	/**
-	 * Constructs a closed <code>GenericInterval</code> with the specified
+	 * Constructs a closed {@code GenericInterval} with the specified
 	 * endpoint values.
 	 * <p>
 	 * Because this is a closed interval, both endpoint values will be included
 	 * within the interval.</p>
 	 *
 	 * @param lowerEndpoint the value of the lower endpoint of this interval, or
-	 * <code>null</code> if the lower endpoint of this interval is unbounded.
+	 * {@code null} if the lower endpoint of this interval is unbounded.
 	 * @param upperEndpoint the value of the upper endpoint of this interval, or
-	 * <code>null</code> if the upper endpoint of this interval is unbounded.
+	 * {@code null} if the upper endpoint of this interval is unbounded.
 	 * The effective value of this upper endpoint must not be lower than the
 	 * effective value of the lower endpoint.
 	 * @throws IllegalArgumentException if the effective value of the upper
 	 * endpoint is less than the effective value of the lower endpoint.
 	 */
-	public GenericInterval(T lowerEndpoint, T upperEndpoint) {
+	public GenericInterval(final T lowerEndpoint, final T upperEndpoint) {
 		this(EndpointMode.CLOSED, lowerEndpoint, upperEndpoint,
 				EndpointMode.CLOSED);
 	}
 
 	/**
-	 * Constructs a <code>GenericInterval</code> with the specified endpoint
+	 * Constructs a {@code GenericInterval} with the specified endpoint
 	 * values and endpoint modes.
 	 *
 	 * @param lowerMode the endpoint mode of the lower endpoint.
 	 * @param lowerEndpoint the value of the lower endpoint of this interval, or
-	 * <code>null</code> if the lower endpoint of this interval is unbounded.
+	 * {@code null} if the lower endpoint of this interval is unbounded.
 	 * @param upperEndpoint the value of the upper endpoint of this interval, or
-	 * <code>null</code> if the upper endpoint of this interval is unbounded.
+	 * {@code null} if the upper endpoint of this interval is unbounded.
 	 * The effective value of this upper endpoint must not be lower than the
 	 * effective value of the lower endpoint.
 	 * @param upperMode the endpoint mode of the upper endpoint.
 	 * @throws IllegalArgumentException if the effective value of the upper
 	 * endpoint is less than the effective value of the lower endpoint.
 	 */
-	public GenericInterval(EndpointMode lowerMode, T lowerEndpoint,
-			T upperEndpoint,
-			EndpointMode upperMode) {
+	public GenericInterval(final EndpointMode lowerMode, final T lowerEndpoint,
+						   final T upperEndpoint,
+						   final EndpointMode upperMode) {
 		if (lowerEndpoint != null) {
 			// Bounded below
 			if (upperEndpoint != null) {
@@ -170,22 +170,22 @@ public final class GenericInterval<T extends Comparable<T>> implements
 
 	@Override
 	public T getLowerEndpoint() {
-		return this.lowerEndpoint;
+		return lowerEndpoint;
 	}
 
 	@Override
 	public T getUpperEndpoint() {
-		return this.upperEndpoint;
+		return upperEndpoint;
 	}
 
 	@Override
 	public EndpointMode getLowerEndpointMode() {
-		return this.lowerMode;
+		return lowerMode;
 	}
 
 	@Override
 	public EndpointMode getUpperEndpointMode() {
-		return this.upperMode;
+		return upperMode;
 	}
 
 	/**
@@ -202,8 +202,8 @@ public final class GenericInterval<T extends Comparable<T>> implements
 	 * specified value from being a member of this interval; false otherwise.
 	 * @see upperEndpointAdmits
 	 */
-	private boolean lowerEndpointAdmits(T value) {
-		if (this.lowerEndpoint == null) {
+	private boolean lowerEndpointAdmits(final T value) {
+		if (lowerEndpoint == null) {
 			// A null lower endpoint allows all values
 			return true;
 		}
@@ -212,12 +212,12 @@ public final class GenericInterval<T extends Comparable<T>> implements
 			// because the lower endpoint is not null
 			return false;
 		}
-		if (this.lowerMode.equals(EndpointMode.CLOSED)) {
+		if (lowerMode.equals(EndpointMode.CLOSED)) {
 			// A closed lower endpoint allows values equal to or greater than itself
-			return (this.lowerEndpoint.compareTo(value) <= 0);
+			return lowerEndpoint.compareTo(value) <= 0;
 		}
 		// An open lower endpoint only allows values greater than itself
-		return (this.lowerEndpoint.compareTo(value) < 0);
+		return lowerEndpoint.compareTo(value) < 0;
 	}
 
 	/**
@@ -234,8 +234,8 @@ public final class GenericInterval<T extends Comparable<T>> implements
 	 * specified value from being a member of this interval; false otherwise.
 	 * @see upperEndpointAdmits
 	 */
-	private boolean upperEndpointAdmits(T value) {
-		if (this.upperEndpoint == null) {
+	private boolean upperEndpointAdmits(final T value) {
+		if (upperEndpoint == null) {
 			// A null endpoint forbids no value from membership of the interval
 			return true;
 		}
@@ -244,30 +244,30 @@ public final class GenericInterval<T extends Comparable<T>> implements
 			// because the upper endpoint is not null
 			return false;
 		}
-		if (this.upperMode.equals(EndpointMode.CLOSED)) {
-			return (this.upperEndpoint.compareTo(value) >= 0);
+		if (upperMode.equals(EndpointMode.CLOSED)) {
+			return upperEndpoint.compareTo(value) >= 0;
 		}
-		return (this.upperEndpoint.compareTo(value) > 0);
+		return upperEndpoint.compareTo(value) > 0;
 
 	}
 
 	@Override
-	public boolean includes(T value) {
+	public boolean includes(final T value) {
 		if (value == null) {
 			throw new NullPointerException("Cannot pass a null value to "
 					+ "includes(T).");
 		}
-		return (this.lowerEndpointAdmits(value) && this.upperEndpointAdmits(
-				value));
+		return lowerEndpointAdmits(value) && upperEndpointAdmits(
+				value);
 	}
 
 	@Override
-	public boolean includes(Interval<T> interval) {
+	public boolean includes(final Interval<T> interval) {
 		if (interval == null) {
 			throw new NullPointerException("Cannot pass a null interval to "
 					+ "includes(Interval<T>).");
 		}
-		if (this.lowerEndpoint == null && this.upperEndpoint == null) {
+		if (lowerEndpoint == null && upperEndpoint == null) {
 			// An infinite interval contains all possible values, regardless of
 			// the mode of its endpoints.
 			return true;
@@ -275,37 +275,37 @@ public final class GenericInterval<T extends Comparable<T>> implements
 
 		boolean lowerAdmitted = false, upperAdmitted = false;
 
-		if (this.lowerEndpoint == null) {
+		if (lowerEndpoint == null) {
 			lowerAdmitted = true;  // null endpoint admits all whatever its mode
 		} else if (interval.getLowerEndpoint() == null) {
 			// lowerAdmitted = false;
-		} else if (this.lowerEndpoint.compareTo(interval.getLowerEndpoint()) < 0) {
+		} else if (lowerEndpoint.compareTo(interval.getLowerEndpoint()) < 0) {
 			lowerAdmitted = true;
-		} else if (this.lowerEndpoint.compareTo(interval.getLowerEndpoint())
+		} else if (lowerEndpoint.compareTo(interval.getLowerEndpoint())
 				== 0) {
-			if (this.lowerMode.equals(EndpointMode.CLOSED)) {
+			if (lowerMode.equals(EndpointMode.CLOSED)) {
 				lowerAdmitted = true;
 			} else if (interval.getLowerEndpointMode().equals(EndpointMode.OPEN)) {
 				lowerAdmitted = true;
 			}
 		}
 
-		if (this.upperEndpoint == null) {
+		if (upperEndpoint == null) {
 			upperAdmitted = true;  // null endpoint admits all whatever its mode
 		} else if (interval.getUpperEndpoint() == null) {
 			// upperAdmitted = false;
-		} else if (this.upperEndpoint.compareTo(interval.getUpperEndpoint()) > 0) {
+		} else if (upperEndpoint.compareTo(interval.getUpperEndpoint()) > 0) {
 			upperAdmitted = true;
-		} else if (this.upperEndpoint.compareTo(interval.getUpperEndpoint())
+		} else if (upperEndpoint.compareTo(interval.getUpperEndpoint())
 				== 0) {
-			if (this.upperMode.equals(EndpointMode.CLOSED)) {
+			if (upperMode.equals(EndpointMode.CLOSED)) {
 				upperAdmitted = true;
 			} else if (interval.getUpperEndpointMode().equals(EndpointMode.OPEN)) {
 				upperAdmitted = true;
 			}
 		}
 
-		return (lowerAdmitted && upperAdmitted);
+		return lowerAdmitted && upperAdmitted;
 	}
 
 	/**
@@ -314,13 +314,13 @@ public final class GenericInterval<T extends Comparable<T>> implements
 	 * @param lower the lower endpoint.
 	 * @param upper the upper endpoint.
 	 * @return a negative integer if either lower or upper endpoint is
-	 * <code>null</code>, or if the value of the lower endpoint is lesser than
+	 * {@code null}, or if the value of the lower endpoint is lesser than
 	 * the value of the upper endpoint; zero if both values are non-null and
 	 * identical; a positive integer if both values are non-null and the lower
 	 * endpoint value is greater than the upper endpoint value.
 	 */
 	@SuppressWarnings("unused")
-	private int endpointValuesLowerUpperCompare(T lower, T upper) {
+	private int endpointValuesLowerUpperCompare(final T lower, final T upper) {
 		if (lower == null || upper == null) {
 			return -1;
 		}
@@ -328,20 +328,20 @@ public final class GenericInterval<T extends Comparable<T>> implements
 	}
 
 	/**
-	 * Returns a <code>String</code> which represents the <code>Interval</code>
+	 * Returns a <code>String</code> which represents the {@code Interval}
 	 * using mathematical notation.
 	 * <p>
-	 * For example, a closed <code>Integer</code> interval might produce
-	 * <samp>"[0, 1]"</samp> while an open <code>Double</code> interval might
+	 * For example, a closed {@code Integer} interval might produce
+	 * <samp>"[0, 1]"</samp> while an open {@code Double} interval might
 	 * produce <samp>"(0.0, 1.0)"</samp>, and a left-closed, right-open
-	 * <code>String</code> interval might produce <samp>"[a, b)"</samp>. A
+	 * {@code String} interval might produce <samp>"[a, b)"</samp>. A
 	 * square bracket represents a closed endpoint; a parenthesis represents an
-	 * open endpoint. A <code>null</code> lower endpoint value is replaced with
-	 * negative infinity; a <code>null</code> upper endpoint value is replaced
-	 * with positive infinity. This method calls the <code>toString</code>
-	 * method on each endpoint of this <code>Interval</code>, so the output of
-	 * this method may be meaningless if this <code>Interval</code> is based on
-	 * a type whose <code>toString</code> method does not output the actual
+	 * open endpoint. A {@code null} lower endpoint value is replaced with
+	 * negative infinity; a {@code null} upper endpoint value is replaced
+	 * with positive infinity. This method calls the {@code toString}
+	 * method on each endpoint of this {@code Interval}, so the output of
+	 * this method may be meaningless if this {@code Interval} is based on
+	 * a type whose {@code toString} method does not output the actual
 	 * value of the endpoint objects.</p>
 	 * <p>
 	 * Be warned that if the endpoint values contain commas the output of this
@@ -352,30 +352,30 @@ public final class GenericInterval<T extends Comparable<T>> implements
 	 * <samp>"[There is, so it is said, a comma in here somewhere, Victor said
 	 * so]"</samp></p>
 	 *
-	 * @return a <code>String</code> which represents this
-	 * <code>GenericInterval</code> in mathematical notation.
+	 * @return a {@code String} which represents this
+	 * {@code GenericInterval} in mathematical notation.
 	 */
 	public String inMathematicalNotation() {
-		StringBuilder sb = new StringBuilder();
-		if (this.lowerMode.equals(EndpointMode.CLOSED)) {
+		final StringBuilder sb = new StringBuilder();
+		if (lowerMode.equals(EndpointMode.CLOSED)) {
 			sb.append("[");
 		} else {
 			sb.append("(");
 		}
-		if (this.lowerEndpoint == null) {
+		if (lowerEndpoint == null) {
 			sb.append("−∞");
 		} else {
-			sb.append(this.lowerEndpoint.toString());
+			sb.append(lowerEndpoint);
 		}
 
 		sb.append(", ");
 
-		if (this.upperEndpoint == null) {
+		if (upperEndpoint == null) {
 			sb.append("+∞");
 		} else {
-			sb.append(this.upperEndpoint.toString());
+			sb.append(upperEndpoint);
 		}
-		if (this.upperMode.equals(EndpointMode.CLOSED)) {
+		if (upperMode.equals(EndpointMode.CLOSED)) {
 			sb.append("]");
 		} else {
 			sb.append(")");
@@ -386,41 +386,41 @@ public final class GenericInterval<T extends Comparable<T>> implements
 
 	@Override
 	public String toString() {
-		return "GenericInterval " + this.inMathematicalNotation();
+		return "GenericInterval " + inMathematicalNotation();
 	}
 
 	/**
-	 * Returns true if both objects are <code>GenericInterval</code> instances
+	 * Returns true if both objects are {@code GenericInterval} instances
 	 * with identical basis types, endpoint values and (for non-null values)
 	 * endpoint modes.
 	 * <p>
 	 * Note that the mode of a null endpoint is irrelevant. Because
-	 * <code>null</code> represents infinity in an endpoint value, the mode is
-	 * meaningless. So two lower endpoints with a value of <code>null</code> are
+	 * {@code null} represents infinity in an endpoint value, the mode is
+	 * meaningless. So two lower endpoints with a value of {@code null} are
 	 * considered equal regardless of mode, and two upper endpoints with a value
-	 * of <code>null</code> are considered equal regardless of mode.</p>
+	 * of {@code null} are considered equal regardless of mode.</p>
 	 * <p>
-	 * <strong>Warning:</strong> two <code>GenericInterval</code> objects with
+	 * <strong>Warning:</strong> two {@code GenericInterval} objects with
 	 * different basis types will be declared equal if all endpoints are
-	 * <code>null</code>, because it is not possible to determine the basis type
-	 * from a <code>null</code> object. Be aware of this if your code will
-	 * compare <code>GenericInterval</code> objects of different basis
+	 * {@code null}, because it is not possible to determine the basis type
+	 * from a {@code null} object. Be aware of this if your code will
+	 * compare {@code GenericInterval} objects of different basis
 	 * types.</p>
 	 *
 	 * @param obj the object to be compared for equality with this
-	 * <code>GenericInterval</code>.
-	 * @return <code>true</code> if both objects are
-	 * <code>GenericInterval</code> objects with identical types, values and
-	 * endpoint modes; <code>false</code> otherwise.
+	 * {@code GenericInterval}.
+	 * @return {@code true} if both objects are
+	 * {@code GenericInterval} objects with identical types, values and
+	 * endpoint modes; {@code false} otherwise.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == null || !(obj instanceof Interval)) {
 			System.out.println("Wrong object type!");
 			return false;
 		}
-		Interval<?> that = (Interval<?>) obj;
-		if (this.lowerEndpoint == null) {
+		final Interval<?> that = (Interval<?>) obj;
+		if (lowerEndpoint == null) {
 			if (that.getLowerEndpoint() != null) {
 				// This lower is null but other lower is not null
 				return false;
@@ -433,17 +433,17 @@ public final class GenericInterval<T extends Comparable<T>> implements
 				return false;
 			}
 			// Neither lower endpoint is null, so compare values and modes
-			if (!this.lowerEndpoint.equals(that.getLowerEndpoint())) {
+			if (!lowerEndpoint.equals(that.getLowerEndpoint())) {
 				// Lower values are not equal
 				return false;
 			}
-			if (!this.lowerMode.equals(that.getLowerEndpointMode())) {
+			if (!lowerMode.equals(that.getLowerEndpointMode())) {
 				// Lower modes are not equal (and values are not null)
 				return false;
 			}
 		}
 
-		if (this.upperEndpoint == null) {
+		if (upperEndpoint == null) {
 			if (that.getUpperEndpoint() != null) {
 				// This upper is null but other upper is not null
 				return false;
@@ -456,11 +456,11 @@ public final class GenericInterval<T extends Comparable<T>> implements
 				return false;
 			}
 			// Neither upper endpoint is null, so compare values and modes
-			if (!this.upperEndpoint.equals(that.getUpperEndpoint())) {
+			if (!upperEndpoint.equals(that.getUpperEndpoint())) {
 				// Upper values are not equal
 				return false;
 			}
-			if (!this.upperMode.equals(that.getUpperEndpointMode())) {
+			if (!upperMode.equals(that.getUpperEndpointMode())) {
 				// Upper modes are not equal (and values are not null)
 				return false;
 			}
@@ -471,25 +471,25 @@ public final class GenericInterval<T extends Comparable<T>> implements
 
 	/**
 	 * Calculates a hash based on the values of this
-	 * <code>GenericInterval</code>. Note that this method relies on there being
-	 * a valid implementation of <code>hashCode</code> in the basis type (such
-	 * as <code>Integer</code> or <code>String</code>). If the basis type does
-	 * not correctly implement <code>hashCode</code> then the result returned by
+	 * {@code GenericInterval}. Note that this method relies on there being
+	 * a valid implementation of {@code hashCode} in the basis type (such
+	 * as <code>Integer</code> or {@code String}). If the basis type does
+	 * not correctly implement {@code hashCode} then the result returned by
 	 * this method cannot be considered reliable.
 	 *
-	 * @return an <code>int</code> value based on the values of this
-	 * <code>GenericInterval</code>.
+	 * @return an {@code int} value based on the values of this
+	 * {@code GenericInterval}.
 	 */
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		hash = 79 * hash + (this.lowerEndpoint != null ? this.lowerEndpoint.
+		hash = 79 * hash + (lowerEndpoint != null ? lowerEndpoint.
 				hashCode() : 0);
-		hash = 79 * hash + (this.upperEndpoint != null ? this.upperEndpoint.
+		hash = 79 * hash + (upperEndpoint != null ? upperEndpoint.
 				hashCode() : 0);
-		hash = 79 * hash + (this.lowerMode != null ? this.lowerMode.hashCode()
+		hash = 79 * hash + (lowerMode != null ? lowerMode.hashCode()
 				: 0);
-		hash = 79 * hash + (this.upperMode != null ? this.upperMode.hashCode()
+		hash = 79 * hash + (upperMode != null ? upperMode.hashCode()
 				: 0);
 		return hash;
 	}

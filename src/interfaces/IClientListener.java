@@ -27,7 +27,6 @@ import dataobjects.Player;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import rest.entities.Result;
 
 /**
  * Server -> Client callback interface. These are the methods being called on

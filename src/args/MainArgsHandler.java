@@ -1,6 +1,5 @@
 package args;
 
-import args.intervals.Interval;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +9,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import args.intervals.Interval;
 
 /**
  * Processes command-line arguments supplied to a Java application's
@@ -90,7 +91,7 @@ public final class MainArgsHandler {
 	 * calling them at the wrong time will lead to an IllegalStateException
 	 * being thrown.
 	 */
-	private static enum Status {
+	private enum Status {
 
 		/**
 		 * Pre-processing state, before processMainArgs has been called.
@@ -128,25 +129,25 @@ public final class MainArgsHandler {
 		 */
 		boolean forTestUseOnly;
 
-		public Flag(String name, String usageDescription, boolean testUseOnly) {
+		public Flag(final String name, final String usageDescription, final boolean testUseOnly) {
 			this.name = name;
 			this.usageDescription = usageDescription;
-			this.forTestUseOnly = testUseOnly;
+			forTestUseOnly = testUseOnly;
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (!(obj instanceof Flag)) {
 				return false;
 			}
-			Flag that = (Flag) obj;
-			return this.name.equals(that.name);
+			final Flag that = (Flag) obj;
+			return name.equals(that.name);
 		}
 
 		@Override
 		public int hashCode() {
 			int hash = 7;
-			hash = 47 * hash + (this.name != null ? this.name.hashCode() : 0);
+			hash = 47 * hash + (name != null ? name.hashCode() : 0);
 			return hash;
 		}
 	}
@@ -181,27 +182,27 @@ public final class MainArgsHandler {
 		 */
 		boolean forTestUseOnly;
 
-		public Variable(String name,
-				Interval<Integer> permittedCountInterval,
-				String usageDescription, Pattern valuePattern,
-				boolean testUseOnly) {
+		public Variable(final String name,
+						final Interval<Integer> permittedCountInterval,
+						final String usageDescription, final Pattern valuePattern,
+						final boolean testUseOnly) {
 			this.name = name;
 			this.permittedCountInterval = permittedCountInterval;
 			this.usageDescription = usageDescription;
 			this.valuePattern = valuePattern;
-			this.forTestUseOnly = testUseOnly;
+			forTestUseOnly = testUseOnly;
 		}
 
 		/* The command-line variable name is the primary and sole key, so this
 		 equals method considers only the variable name when judging equality.
 		 */
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (!(obj instanceof Variable)) {
 				return false;
 			}
-			Variable that = (Variable) obj;
-			return this.name.equals(that.name);
+			final Variable that = (Variable) obj;
+			return name.equals(that.name);
 		}
 
 		/* The command-line variable name is the primary and sole key, so this
@@ -211,7 +212,7 @@ public final class MainArgsHandler {
 		@Override
 		public int hashCode() {
 			int hash = 7;
-			hash = 83 * hash + (this.name != null ? this.name.hashCode() : 0);
+			hash = 83 * hash + (name != null ? name.hashCode() : 0);
 			return hash;
 		}
 	}
@@ -258,12 +259,12 @@ public final class MainArgsHandler {
 			"([a-z](?:-[a-z]|[a-z])*)");
 
 	private MainArgsHandler() {
-		this.objectStatus = MainArgsHandler.Status.PREPRO;
+		objectStatus = MainArgsHandler.Status.PREPRO;
 //		this.permittedFlagSet = new HashSet<String>();
 //		this.permittedVariableNameCounts =
 //				new HashMap<String, Interval<Integer>>();
-		this.permittedFlags = new HashMap<>();
-		this.permittedVariables = new HashMap<>();
+		permittedFlags = new HashMap<>();
+		permittedVariables = new HashMap<>();
 	}
 
 	/**
@@ -298,8 +299,8 @@ public final class MainArgsHandler {
 	 * @return true if the specified string would be a valid name for a flag or
 	 * variable.
 	 */
-	private boolean validName(String name) {
-		return this.NAME_PATTERN.matcher(name).matches();
+	private boolean validName(final String name) {
+		return NAME_PATTERN.matcher(name).matches();
 	}
 
 	/**
@@ -321,8 +322,8 @@ public final class MainArgsHandler {
 	 * @throws IllegalArgumentException if this method is provided with a flag
 	 * name which does not fit the permitted pattern.
 	 */
-	public void permitFlag(String flagName) {
-		this.permitFlag(flagName, null, false);
+	public void permitFlag(final String flagName) {
+		permitFlag(flagName, null, false);
 	}
 
 	/**
@@ -348,8 +349,8 @@ public final class MainArgsHandler {
 	 * @throws IllegalArgumentException if this method is provided with a flag
 	 * name which does not fit the permitted pattern.
 	 */
-	public void permitFlag(String flagName, String usageDescription) {
-		this.permitFlag(flagName, usageDescription, false);
+	public void permitFlag(final String flagName, final String usageDescription) {
+		permitFlag(flagName, usageDescription, false);
 	}
 
 	/**
@@ -367,30 +368,30 @@ public final class MainArgsHandler {
 	 * @throws IllegalArgumentException if this method is provided with a flag
 	 * name which does not fit the permitted pattern.
 	 */
-	public void permitTestFlag(String flagName) {
-		this.permitFlag(flagName, null, true);
+	public void permitTestFlag(final String flagName) {
+		permitFlag(flagName, null, true);
 	}
 
-	private void permitFlag(String flagName, String usageDescription,
-			boolean testUseOnly) {
-		if (this.objectStatus != Status.PREPRO) {
+	private void permitFlag(final String flagName, final String usageDescription,
+							final boolean testUseOnly) {
+		if (objectStatus != Status.PREPRO) {
 			throw new IllegalStateException("Cannot add to the set of "
 					+ "permitted flag names once processing of main arguments "
 					+ "has already begun.");
 		}
-		if (!this.validName(flagName)) {
+		if (!validName(flagName)) {
 			throw new IllegalArgumentException("Cannot permit flag with name ["
 					+ flagName + "] because this name does not fit the "
 					+ "accepted pattern.");
 		}
-		if (this.permittedVariables.containsKey(flagName)
-				|| this.permittedFlags.containsKey(flagName)) {
+		if (permittedVariables.containsKey(flagName)
+				|| permittedFlags.containsKey(flagName)) {
 			throw new IllegalArgumentException("Cannot permit flag with name ["
 					+ flagName + "] because this is already a permitted flag "
 					+ "or a permitted or required variable name.");
 		}
-		Flag newFlag = new Flag(flagName, usageDescription, testUseOnly);
-		this.permittedFlags.put(flagName, newFlag);
+		final Flag newFlag = new Flag(flagName, usageDescription, testUseOnly);
+		permittedFlags.put(flagName, newFlag);
 	}
 
 	/**
@@ -420,9 +421,9 @@ public final class MainArgsHandler {
 	 * for its lower endpoint, or a value of less than one for its upper
 	 * endpoint.
 	 */
-	public void permitVariable(String variableName,
-			Interval<Integer> permittedCountInterval) {
-		this.permitVariable(variableName, permittedCountInterval, null, null,
+	public void permitVariable(final String variableName,
+							   final Interval<Integer> permittedCountInterval) {
+		permitVariable(variableName, permittedCountInterval, null, null,
 				false);
 	}
 
@@ -457,9 +458,9 @@ public final class MainArgsHandler {
 	 * for its lower endpoint, or a value of less than one for its upper
 	 * endpoint.
 	 */
-	public void permitVariable(String variableName,
-			Interval<Integer> permittedCountInterval, String usageDescription) {
-		this.permitVariable(variableName, permittedCountInterval,
+	public void permitVariable(final String variableName,
+							   final Interval<Integer> permittedCountInterval, final String usageDescription) {
+		permitVariable(variableName, permittedCountInterval,
 				usageDescription, null, false);
 	}
 
@@ -498,10 +499,10 @@ public final class MainArgsHandler {
 	 * for its lower endpoint, or a value of less than one for its upper
 	 * endpoint.
 	 */
-	public void permitVariable(String variableName,
-			Interval<Integer> permittedCountInterval, String usageDescription,
-			Pattern valuePattern) {
-		this.permitVariable(variableName, permittedCountInterval,
+	public void permitVariable(final String variableName,
+							   final Interval<Integer> permittedCountInterval, final String usageDescription,
+							   final Pattern valuePattern) {
+		permitVariable(variableName, permittedCountInterval,
 				usageDescription, valuePattern, false);
 	}
 
@@ -528,14 +529,14 @@ public final class MainArgsHandler {
 	 * provided interval has a non-zero value for its lower endpoint, or a value
 	 * of less than one for its upper endpoint.
 	 */
-	public void permitTestVariable(String variableName,
-			Interval<Integer> permittedCountInterval) {
+	public void permitTestVariable(final String variableName,
+								   final Interval<Integer> permittedCountInterval) {
 		if (permittedCountInterval.getLowerEndpoint() != 0) {
 			throw new IllegalArgumentException("The lower endpoint of the "
 					+ "permitted count interval for a test variable must be "
 					+ "zero, because a test variable must be optional.");
 		}
-		this.permitVariable(variableName, permittedCountInterval, null, null,
+		permitVariable(variableName, permittedCountInterval, null, null,
 				true);
 	}
 
@@ -567,14 +568,14 @@ public final class MainArgsHandler {
 	 * provided interval has a non-zero value for its lower endpoint, or a value
 	 * of less than one for its upper endpoint.
 	 */
-	public void permitTestVariable(String variableName,
-			Interval<Integer> permittedCountInterval, Pattern valuePattern) {
+	public void permitTestVariable(final String variableName,
+								   final Interval<Integer> permittedCountInterval, final Pattern valuePattern) {
 		if (permittedCountInterval.getLowerEndpoint() != 0) {
 			throw new IllegalArgumentException("The lower endpoint of the "
 					+ "permitted count interval for a test variable must be "
 					+ "zero, because a test variable must be optional.");
 		}
-		this.permitVariable(variableName, permittedCountInterval, null,
+		permitVariable(variableName, permittedCountInterval, null,
 				valuePattern,
 				true);
 	}
@@ -602,10 +603,10 @@ public final class MainArgsHandler {
 	 * the usage description text for the Java application; <code>false</code>
 	 * otherwise.
 	 */
-	private void permitVariable(String variableName,
-			Interval<Integer> permittedCountInterval, String usageDescription,
-			Pattern valuePattern, boolean testUseOnly) {
-		if (this.objectStatus != Status.PREPRO) {
+	private void permitVariable(final String variableName,
+								final Interval<Integer> permittedCountInterval, final String usageDescription,
+								final Pattern valuePattern, final boolean testUseOnly) {
+		if (objectStatus != Status.PREPRO) {
 			throw new IllegalStateException("Cannot add to the list of "
 					+ "permitted variables once processing of main arguments "
 					+ "has already begun.");
@@ -620,22 +621,22 @@ public final class MainArgsHandler {
 			throw new IllegalArgumentException("Cannot specify a maximum "
 					+ "variable count of less than one.");
 		}
-		if (!this.validName(variableName)) {
+		if (!validName(variableName)) {
 			throw new IllegalArgumentException("Cannot permit variable with "
 					+ "name [" + variableName + "] because this name does not "
 					+ "fit the accepted pattern.");
 		}
-		if (this.permittedFlags.containsKey(variableName)
-				|| this.permittedVariables.containsKey(variableName)) {
+		if (permittedFlags.containsKey(variableName)
+				|| permittedVariables.containsKey(variableName)) {
 			throw new IllegalArgumentException("Cannot permit variable with "
 					+ "name [" + variableName + "] because this is already a "
 					+ "permitted flag name or permitted or required variable "
 					+ "name.");
 		}
-		Variable newVariable
+		final Variable newVariable
 				= new Variable(variableName, permittedCountInterval,
 						usageDescription, valuePattern, testUseOnly);
-		this.permittedVariables.put(variableName, newVariable);
+		permittedVariables.put(variableName, newVariable);
 	}
 
 	/**
@@ -657,48 +658,48 @@ public final class MainArgsHandler {
 	 * which is a flag not found in the set of permitted flag names, or which is
 	 * a variable not found in the set of permitted variable names.
 	 */
-	public void processMainArgs(String[] args) {
+	public void processMainArgs(final String[] args) {
 		Objects.requireNonNull(args, "The args parameter cannot be null.");
-		if (this.objectStatus != Status.PREPRO) {
+		if (objectStatus != Status.PREPRO) {
 			throw new IllegalStateException("Cannot process main arguments "
 					+ "twice.");
 		}
-		this.objectStatus = Status.PROCESSING; //switch to processing state
+		objectStatus = Status.PROCESSING; //switch to processing state
 
 		// Dice the command-line arguments up into a set of flags and a set of
 		// variables.
-		this.diceArgs(args);
+		diceArgs(args);
 
 		// Check that variable counts are all within permitted intervals.
-		this.checkVariableCounts();
+		checkVariableCounts();
 
-		this.objectStatus = Status.POPRO; //switch to post-processing state
+		objectStatus = Status.POPRO; //switch to post-processing state
 	}
 
 	/* 
 	 * Gather the command-line arguments into a set of flag names and a Map
 	 * which maps each variable name to a List of value strings.
 	 */
-	private void diceArgs(String[] args) {
-		this.commandLineFlagSet = new HashSet<>();
-		this.commandLineVariableValues = new HashMap<>();
-		Pattern nameValuePattern = Pattern.compile(
-				"^--" + this.NAME_PATTERN.pattern() + "(?:=(.+))?$");
-		for (String arg : args) {
-			Matcher nameValueMatcher = nameValuePattern.matcher(arg);
+	private void diceArgs(final String[] args) {
+		commandLineFlagSet = new HashSet<>();
+		commandLineVariableValues = new HashMap<>();
+		final Pattern nameValuePattern = Pattern.compile(
+				"^--" + NAME_PATTERN.pattern() + "(?:=(.+))?$");
+		for (final String arg : args) {
+			final Matcher nameValueMatcher = nameValuePattern.matcher(arg);
 			if (nameValueMatcher.matches()) {
-				int groupCount = nameValueMatcher.groupCount();
+				final int groupCount = nameValueMatcher.groupCount();
 				if (groupCount != 2) {
 					throw new RuntimeException("Regex pattern should return "
 							+ "two subcapture groups, but another quantity "
 							+ "was found.");
 				}
-				String key = nameValueMatcher.group(1);
-				String value = nameValueMatcher.group(2);
+				final String key = nameValueMatcher.group(1);
+				final String value = nameValueMatcher.group(2);
 				if (value == null) {
 					// No value was found by the regex matcher, so treat this as
 					// a simple command-line flag.
-					if (!this.permittedFlags.containsKey(key)) {
+					if (!permittedFlags.containsKey(key)) {
 						// This flag name does not appear in the list of
 						// permitted flag names specified by the client.
 						throw new IllegalArgumentException("Command-line flag ["
@@ -721,7 +722,7 @@ public final class MainArgsHandler {
 					// A value was found by the regex matcher, so treat this as
 					// a command-line variable which maps a variable-name to a
 					// value.
-					if (!this.permittedVariables.containsKey(key)) {
+					if (!permittedVariables.containsKey(key)) {
 						// This flag name does not appear in the list of
 						// permitted flag names specified by the client.
 						throw new IllegalArgumentException("Command-line "
@@ -730,9 +731,9 @@ public final class MainArgsHandler {
 					}
 					// Check that the supplied value satisfies the regex Pattern
 					// specified (if any) for this command-line variable.
-					if (this.permittedVariables.get(key).valuePattern != null) {
-						Matcher valueMatcher
-								= this.permittedVariables.get(key).valuePattern.
+					if (permittedVariables.get(key).valuePattern != null) {
+						final Matcher valueMatcher
+								= permittedVariables.get(key).valuePattern.
 								matcher(value);
 						if (!valueMatcher.matches()) {
 							throw new IllegalArgumentException(
@@ -741,10 +742,10 @@ public final class MainArgsHandler {
 									+ "\".");
 						}
 					}
-					if (this.commandLineVariableValues.containsKey(key)) {
+					if (commandLineVariableValues.containsKey(key)) {
 						// Mapping already exists, so there must be other values
 						// already assigned to this variable argument.
-						List<String> valueList = this.commandLineVariableValues.
+						final List<String> valueList = commandLineVariableValues.
 								get(key);
 						// A list of values already exists, so add this
 						// newest value to the list.
@@ -753,9 +754,9 @@ public final class MainArgsHandler {
 						// This variable name is not already found in the map, so
 						// create a mapping from this variable name to a list of
 						// values and add this first value.
-						List<String> newValueList = new ArrayList<>();
+						final List<String> newValueList = new ArrayList<>();
 						newValueList.add(value);
-						this.commandLineVariableValues.put(key, newValueList);
+						commandLineVariableValues.put(key, newValueList);
 					}
 				}
 			} else {
@@ -777,32 +778,29 @@ public final class MainArgsHandler {
 		// variable name is found in the command-line arguments)
 		// but now we need to check that the occurrence count of each variable
 		// falls within the permitted interval.
-		for (String variableName : permittedVariables.keySet()) {
+		for (final String variableName : permittedVariables.keySet()) {
 			// For each variable name in the permitted set . . .
 			// Retrieve the permitted interval
-			Interval<Integer> permittedCountInterval = permittedVariables.get(
+			final Interval<Integer> permittedCountInterval = permittedVariables.get(
 					variableName).permittedCountInterval;
 			// Determine the actual count provided on the command-line
-			List<String> actualVariableValues = commandLineVariableValues.get(
+			final List<String> actualVariableValues = commandLineVariableValues.get(
 					variableName);
-			int actualVariableCount = (actualVariableValues == null ? 0
-					: actualVariableValues.size());
+			final int actualVariableCount = actualVariableValues == null ? 0 : actualVariableValues.size();
 			// Check whether the actual count is permitted by the interval.
 			// If the actual count is outside of the permitted interval then
 			// throw an exception.
 			if (!permittedCountInterval.includes(actualVariableCount)) {
-				StringBuilder sb = new StringBuilder("Variable \"");
-				sb.append(variableName);
-				sb.append("\" appears too ");
-				sb.append((actualVariableCount < permittedCountInterval.
-						getLowerEndpoint() ? "few" : "many"));
-				sb.append(" times in command-line arguments. Permitted count ");
-				sb.append("must be in ");
-				sb.append(permittedCountInterval);
-				sb.append(" but actual count was ");
-				sb.append(actualVariableCount);
-				sb.append('.');
-				throw new IllegalArgumentException(sb.toString());
+				final String sb = "Variable \"" + variableName +
+						"\" appears too " +
+						(actualVariableCount < permittedCountInterval.getLowerEndpoint() ? "few" : "many") +
+						" times in command-line arguments. Permitted count " +
+						"must be in " +
+						permittedCountInterval +
+						" but actual count was " +
+						actualVariableCount +
+						'.';
+				throw new IllegalArgumentException(sb);
 			}
 		}
 	}
@@ -819,20 +817,20 @@ public final class MainArgsHandler {
 	 * @throws IllegalArgumentException if the specified flag name is not a name
 	 * recognised by this handler instance.
 	 */
-	public boolean foundFlag(String flagName) {
-		if (this.objectStatus != Status.POPRO) {
+	public boolean foundFlag(final String flagName) {
+		if (objectStatus != Status.POPRO) {
 			throw new IllegalStateException("Cannot query the set of flags "
 					+ "found on the command-line before processing has "
 					+ "been completed by calling the processMainArgs method.");
 		}
-		if (!this.permittedFlags.containsKey(flagName)) {
+		if (!permittedFlags.containsKey(flagName)) {
 			throw new IllegalArgumentException("Flag name " + flagName
 					+ " is not "
 					+ "in the set of permitted flag names, so it does not make "
 					+ "sense to check for it in the set of flag names found on "
 					+ "the command-line.");
 		}
-		return this.commandLineFlagSet.contains(flagName);
+		return commandLineFlagSet.contains(flagName);
 	}
 
 	/**
@@ -851,19 +849,19 @@ public final class MainArgsHandler {
 	 * @throws IllegalArgumentException if the specified variable name is not a
 	 * name recognised by this handler instance.
 	 */
-	public boolean foundVariable(String variableName) {
-		if (this.objectStatus != Status.POPRO) {
+	public boolean foundVariable(final String variableName) {
+		if (objectStatus != Status.POPRO) {
 			throw new IllegalStateException("Cannot query the set of variables "
 					+ "found on the command-line before processing has "
 					+ "been completed by calling the processMainArgs method.");
 		}
-		if (!this.permittedVariables.containsKey(variableName)) {
+		if (!permittedVariables.containsKey(variableName)) {
 			throw new IllegalArgumentException("Variable name " + variableName
 					+ " is not in the set of permitted variable names, so it "
 					+ "does not make sense to check for it in the set of "
 					+ "variable names found on the command-line.");
 		}
-		return this.commandLineVariableValues.containsKey(variableName);
+		return commandLineVariableValues.containsKey(variableName);
 	}
 
 	/**
@@ -881,19 +879,19 @@ public final class MainArgsHandler {
 	 * @throws IllegalArgumentException if the specified variable name is not a
 	 * name recognised by this handler instance.
 	 */
-	public List<String> getValuesFromVariable(String variableName) {
-		if (this.objectStatus != Status.POPRO) {
+	public List<String> getValuesFromVariable(final String variableName) {
+		if (objectStatus != Status.POPRO) {
 			throw new IllegalStateException("Cannot query the set of variable "
 					+ "values found on the command-line before processing has "
 					+ "been completed by calling the processMainArgs method.");
 		}
-		if (!this.permittedVariables.containsKey(variableName)) {
+		if (!permittedVariables.containsKey(variableName)) {
 			throw new IllegalArgumentException("Variable name " + variableName
 					+ " is not in the set of permitted variables, so it does "
 					+ "not make sense to check for it in the set of variables "
 					+ "found on the command-line.");
 		}
-		List<String> valueList = this.commandLineVariableValues.
+		final List<String> valueList = commandLineVariableValues.
 				get(variableName);
 		if (valueList == null) {
 			return new ArrayList<>();
@@ -925,13 +923,13 @@ public final class MainArgsHandler {
 	 * variables which can be supplied to the running application.
 	 */
 	public String getUsageSummary() {
-		if (this.objectStatus == Status.PREPRO) {
+		if (objectStatus == Status.PREPRO) {
 			throw new IllegalStateException("Cannot request usage summary text "
 					+ "before processing has begun.");
 		}
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("Valid command-line options:\n\n");
-		StringBuilder flagUsage = new StringBuilder();
+		final StringBuilder flagUsage = new StringBuilder();
 		flagUsage.append("Flags\nA flag has the form --flag-name (two hyphens "
 				+ "and then the flag name in lowercase). A flag cannot take a "
 				+ "value. "
@@ -944,7 +942,7 @@ public final class MainArgsHandler {
 				"The following command-line flags are accepted by this "
 				+ "application:\n\n");
 		int nonTestFlagCount = 0;
-		for (Flag flag : this.permittedFlags.values()) {
+		for (final Flag flag : permittedFlags.values()) {
 			if (flag.forTestUseOnly) {
 				// Do not show test flags as part of the end-user usage guide.
 				continue;
@@ -963,9 +961,9 @@ public final class MainArgsHandler {
 			sb.append("Flags\nNo command-line flags are required or accepted "
 					+ "by this application.\n\n");
 		} else {
-			sb.append(flagUsage.toString());
+			sb.append(flagUsage);
 		}
-		StringBuilder variableUsage = new StringBuilder();
+		final StringBuilder variableUsage = new StringBuilder();
 		variableUsage.append("Variables\nA variable must have the form "
 				+ "--variable-name=VALUE (two hyphens, then the variable name "
 				+ "in lowercase, then an equals symbol, then the value you "
@@ -979,7 +977,7 @@ public final class MainArgsHandler {
 		variableUsage.append("The following command-line variables "
 				+ "are accepted by this application:\n\n");
 		int nonTestVariableCount = 0;
-		for (Variable variable : this.permittedVariables.values()) {
+		for (final Variable variable : permittedVariables.values()) {
 			if (variable.forTestUseOnly) {
 				// Do not show test variables as part of end-user usage guide.
 				continue;
@@ -1001,13 +999,13 @@ public final class MainArgsHandler {
 			sb.append("Variables\nNo command-line variables are required or "
 					+ "accepted by this application.\n\n");
 		} else {
-			sb.append(variableUsage.toString());
+			sb.append(variableUsage);
 		}
 		return sb.toString();
 	}
 
-	private String intervalAsText(Interval<Integer> interval) {
-		int lower = interval.getLowerEndpoint();
+	private String intervalAsText(final Interval<Integer> interval) {
+		final int lower = interval.getLowerEndpoint();
 		if (interval.getUpperEndpoint() == null) {
 			if (lower == 0) {
 				return "Optional, can occur ANY number of times.";
@@ -1015,7 +1013,7 @@ public final class MainArgsHandler {
 			return "Must occur at least " + (lower == 1 ? "once." : lower
 					+ " times.");
 		}
-		int upper = interval.getUpperEndpoint();
+		final int upper = interval.getUpperEndpoint();
 		if (lower == 0) {
 			if (upper == 1) {
 				return "Optional, can occur at most once.";

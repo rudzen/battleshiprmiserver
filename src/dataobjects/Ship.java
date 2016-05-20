@@ -165,19 +165,19 @@ public class Ship implements Serializable {
     }
 
     public Ship(final Ship ship) {
-        this.endX = ship.endX;
-        this.endY = ship.endY;
-        this.hasUpgrade = ship.hasUpgrade;
-        this.hits = ship.hits;
-        this.horizontal = ship.horizontal;
-        this.isPlaced = ship.isPlaced;
-        this.length = ship.length;
-        this.life = ship.life;
-        this.location = ship.location;
-        this.startX = ship.startX;
-        this.startY = ship.startY;
-        this.upgrades = ship.upgrades;
-        this.type = ship.type;
+        endX = ship.endX;
+        endY = ship.endY;
+        hasUpgrade = ship.hasUpgrade;
+        hits = ship.hits;
+        horizontal = ship.horizontal;
+        isPlaced = ship.isPlaced;
+        length = ship.length;
+        life = ship.life;
+        location = ship.location;
+        startX = ship.startX;
+        startY = ship.startY;
+        upgrades = ship.upgrades;
+        type = ship.type;
     }
     
     
@@ -253,11 +253,11 @@ public class Ship implements Serializable {
         }
     }
 
-    public void addLocation(int x, int y, int pos) {
+    public void addLocation(final int x, final int y, final int pos) {
         location[pos] = new Point(x, y);
     }
 
-    public Point getLocation(int pos) {
+    public Point getLocation(final int pos) {
         return location[pos];
     }
 
@@ -266,7 +266,7 @@ public class Ship implements Serializable {
         return life;
     }
 
-    public void setLife(int life) {
+    public void setLife(final int life) {
         this.life = life;
     }
 
@@ -274,7 +274,7 @@ public class Ship implements Serializable {
         return startX;
     }
 
-    public void setStartX(int startX) {
+    public void setStartX(final int startX) {
         this.startX = startX;
     }
 
@@ -282,7 +282,7 @@ public class Ship implements Serializable {
         return startY;
     }
 
-    public void setStartY(int startY) {
+    public void setStartY(final int startY) {
         this.startY = startY;
     }
 
@@ -290,7 +290,7 @@ public class Ship implements Serializable {
         return endX;
     }
 
-    public void setEndX(int endX) {
+    public void setEndX(final int endX) {
         this.endX = endX;
     }
 
@@ -298,7 +298,7 @@ public class Ship implements Serializable {
         return endY;
     }
 
-    public void setEndY(int endY) {
+    public void setEndY(final int endY) {
         this.endY = endY;
     }
 
@@ -306,7 +306,7 @@ public class Ship implements Serializable {
         return type;
     }
 
-    public void setType(TYPE type) {
+    public void setType(final TYPE type) {
         this.type = type;
     }
 
@@ -314,7 +314,7 @@ public class Ship implements Serializable {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(final int length) {
         this.length = length;
     }
 
@@ -322,7 +322,7 @@ public class Ship implements Serializable {
         return hasUpgrade;
     }
 
-    public void setHasUpgrade(boolean hasUpgrade) {
+    public void setHasUpgrade(final boolean hasUpgrade) {
         this.hasUpgrade = hasUpgrade;
     }
 
@@ -330,7 +330,7 @@ public class Ship implements Serializable {
         return upgrades;
     }
 
-    public void setUpgrades(Upgrades upgrades) {
+    public void setUpgrades(final Upgrades upgrades) {
         this.upgrades = upgrades;
     }
 
@@ -338,7 +338,7 @@ public class Ship implements Serializable {
         return isPlaced;
     }
 
-    public void setIsPlaced(boolean isPlaced) {
+    public void setIsPlaced(final boolean isPlaced) {
         this.isPlaced = isPlaced;
     }
 
@@ -346,7 +346,7 @@ public class Ship implements Serializable {
         return location;
     }
 
-    public void setLocation(Point[] location) {
+    public void setLocation(final Point[] location) {
         this.location = location;
     }
 
@@ -354,7 +354,7 @@ public class Ship implements Serializable {
         return hits;
     }
 
-    public void setHits(int[] hits) {
+    public void setHits(final int[] hits) {
         this.hits = hits;
     }
 
@@ -362,7 +362,7 @@ public class Ship implements Serializable {
         return horizontal;
     }
 
-    public void setHorizontal(boolean horizontal) {
+    public void setHorizontal(final boolean horizontal) {
         this.horizontal = horizontal;
     }
 

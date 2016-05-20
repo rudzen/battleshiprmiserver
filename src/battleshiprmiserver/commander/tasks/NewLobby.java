@@ -34,7 +34,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientProperties;
-import rest.BattleshipJerseyClient;
+
 import rest.entities.Lobby;
 
 /**
@@ -53,20 +53,20 @@ public class NewLobby implements Runnable {
 
     @Override
     public void run() {
-        Client rest = ClientBuilder.newClient();
+        final Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
+        final javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
         //javax.ws.rs.core.Response res = rest.target("http://localhost:8080/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
         final String response = res.readEntity(String.class);
         System.out.println("newLobby response : " + response);
-        Lobby l = new Gson().fromJson(response, Lobby.class);
+        final Lobby l = new Gson().fromJson(response, Lobby.class);
         res.close();
         rest.close();
         
         try {
             client.setLobbyID(l.getLobbyid());
             client.showMessage("Lobby with ID : " + Integer.toString(l.getLobbyid()) + " created.", "Lobby created OK", JOptionPane.INFORMATION_MESSAGE);
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(NewLobby.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

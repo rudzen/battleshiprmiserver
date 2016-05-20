@@ -44,8 +44,8 @@ public class JSONShip implements Serializable {
         
     }
     
-    public JSONShip(String name, int length) {
-        this.shipname = name;
+    public JSONShip(final String name, final int length) {
+        shipname = name;
         this.length = length;
     }
 

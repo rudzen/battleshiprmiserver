@@ -25,13 +25,15 @@ package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import interfaces.IClientListener;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import rest.entities.Lobby;
+
+import interfaces.IClientListener;
+import rest.entities.Player;
 
 /**
  *
@@ -50,17 +52,18 @@ public class GetFreeLobbys extends GetAbstract {
     public void run() {
         final String s = rest.getFreeLobbies(Integer.toString(playerID));
         rest.close();
-        HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, rest.entities.Player>>() {}.getType());
-        ArrayList<String> freeLobbys = new ArrayList<>();
-        fromServer.keySet().stream().forEach((key) -> {
+        final HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new HashMapTypeToken().getType());
+        final ArrayList<String> freeLobbys = new ArrayList<>();
+        fromServer.keySet().stream().forEach(key -> {
             freeLobbys.add(key + ":" + fromServer.get(key).getPlayername());
         });
         try {
             System.out.println("Sending free lobbies to client.");
             client.setFreeLobbies(freeLobbys);
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(GetFreeLobbys.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private static class HashMapTypeToken extends TypeToken<HashMap<String, Player>> {}
 }

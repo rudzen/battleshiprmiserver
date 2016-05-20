@@ -23,13 +23,15 @@
  */
 package game;
 
-import dataobjects.Player;
-import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import dataobjects.Player;
+import interfaces.IClientListener;
 
 /**
  * This is the main game logic..
@@ -54,10 +56,10 @@ public class BattleGame extends BattleGameAbstract {
         try {
             final String sessionID = isInSession(player);
             if (sessionID != null) {
-                Player otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
+                final Player otherPlayer = sessions.get(sessionID).getOtherPlayer(player);
 
                 // TODO : Determine if the shot actually hit something here!!!
-                boolean hit = true;
+                final boolean hit = true;
                 players.get(otherPlayer.getName()).shotFired(x, y, hit);
 
                 // TODO : If hit, determine if the ship is sunk and the name of the sunken ship.
@@ -78,7 +80,7 @@ public class BattleGame extends BattleGameAbstract {
 
     private void clearOldSessions(final boolean notifyClients) throws RemoteException {
         final long NOW = System.currentTimeMillis();
-        for (GameSession gs : sessions.values()) {
+        for (final GameSession gs : sessions.values()) {
             if (NOW - gs.getTimeCreated() > 360000) {
                 if (notifyClients) {
                     if (gs.getPlayerOne() != null) {
@@ -100,7 +102,7 @@ public class BattleGame extends BattleGameAbstract {
         new Runnable() {
             @Override
             public void run() {
-                sessions.keySet().parallelStream().filter((s) -> (sessions.get(s).getClientOne() == null && sessions.get(s).getClientTwo() == null)).forEach((s) -> {
+                sessions.keySet().parallelStream().filter(s -> (sessions.get(s).getClientOne() == null && sessions.get(s).getClientTwo() == null)).forEach(s -> {
                     sessions.remove(s);
                 });
             }
@@ -162,7 +164,7 @@ public class BattleGame extends BattleGameAbstract {
                 sessionID = updateSessionID(player, players.get(player.getName()));
             }
         } else {
-            for (GameSession gs : sessions.values()) {
+            for (final GameSession gs : sessions.values()) {
                 if (!gs.isFull()) {
                     gs.setClientTwo(players.get(player.getName()));
                     gs.setPlayerTwo(player);
@@ -172,14 +174,14 @@ public class BattleGame extends BattleGameAbstract {
                     gs.getPlayerTwo().setToken(sessionID);
                     try {
                         gs.getClientOne().showMessage(sessionID, sessionID, 0);
-                    } catch (RemoteException ex) {
+                    } catch (final RemoteException ex) {
                         Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
             }
 
-            GameSession gs = new GameSession(player, players.get(player.getName()));
+            final GameSession gs = new GameSession(player, players.get(player.getName()));
             final String id = updateSessionID(player, players.get(player.getName()));
 
             gs.updateActionTime();
@@ -192,7 +194,7 @@ public class BattleGame extends BattleGameAbstract {
             System.out.print(player + " added");
             try {
                 client.showMessage("Added to server", player + " added to server player index", JOptionPane.INFORMATION_MESSAGE);
-            } catch (RemoteException ex) {
+            } catch (final RemoteException ex) {
                 Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
             }
             return true;
@@ -213,16 +215,14 @@ public class BattleGame extends BattleGameAbstract {
 
     public void sendMessageAll(final String sourceplayer, final String text, final String title, final int modal) {
 
-        for (final String target : players.keySet()) {
-            if (!target.equals(sourceplayer)) {
-                try {
-                    IClientListener client = players.get(target);
-                    client.showMessage(title, text, modal);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        players.keySet().parallelStream().filter(target -> !target.equals(sourceplayer)).forEach(target -> {
+            try {
+                final IClientListener client = players.get(target);
+                client.showMessage(title, text, modal);
+            } catch (final RemoteException ex) {
+                Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        });
     }
 
 }

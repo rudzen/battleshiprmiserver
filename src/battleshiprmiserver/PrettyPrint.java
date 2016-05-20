@@ -52,15 +52,15 @@ public final class PrettyPrint {
     private final int port;
     private int pos;
     private String title;
-    private String registry;
-    private String rest;
+    private final String registry;
+    private final String rest;
 
     private final ArrayList<String> menu = new ArrayList<>(41);
 
     public PrettyPrint(final String registry, final int port, final String rest_address) {
         this.registry = registry;
         this.port = port;
-        this.rest = rest_address;
+        rest = rest_address;
         pos = getTop(-1);
         pos = getStatus(pos);
         pos = getButtom(pos);
@@ -70,7 +70,7 @@ public final class PrettyPrint {
      * Prints out the current menu to console.
      */
     public void showMenu() {
-        menu.stream().forEach((s) -> {
+        menu.stream().forEach(s -> {
             System.out.println(s);
         });
     }
@@ -97,12 +97,12 @@ public final class PrettyPrint {
      * @return the row position when done.
      */
     private int getStatus(final int pos) {
-        String IP = getIPString();
+        final String IP = getIPString();
         int p = pos;
         menu.add(++p, makeSingleBordered(""));
         menu.add(++p, makeFilledBorder("Status"));
         menu.add(++p, makeSingleBordered("Date started             : " + new Date().toString().trim()));
-        menu.add(++p, makeSingleBordered("Server Local IP          : " + ((IP != null) ? IP : "<No NIC detected.>")));
+        menu.add(++p, makeSingleBordered("Server Local IP          : " + (IP != null ? IP : "<No NIC detected.>")));
         menu.add(++p, makeSingleBordered("RMI Registry             : " + registry));
         menu.add(++p, makeSingleBordered("Port                     : " + Integer.toString(port)));
         menu.add(++p, makeSingleBordered("REST Game Server         : " + rest));
@@ -123,7 +123,7 @@ public final class PrettyPrint {
 //        while (p < MAX_HEI) {
 //            this.menu.add(++p, dot + space(MAX_LEN - 2) + dot);
 //        }
-        this.menu.add(++p, overwrite(SEP, " < powered by con-dynmenu v0.2 by rudz > ", 30));
+        menu.add(++p, overwrite(SEP, " < powered by con-dynmenu v0.2 by rudz > ", 30));
         return p;
     }
 
@@ -142,14 +142,14 @@ public final class PrettyPrint {
             // priority for IPv4 addresses, if it fails, try get a IPv6
             localIP = Inet4Address.getLocalHost();
             returnString = localIP.toString().trim();
-        } catch (java.net.UnknownHostException ex) {
+        } catch (final java.net.UnknownHostException ex) {
             Logger.getLogger(PrettyPrint.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (localIP == null || localIP.toString().length() == 0) {
+            if (localIP == null || localIP.toString().isEmpty()) {
                 try {
                     localIP = Inet6Address.getLocalHost();
                     returnString = localIP.toString().trim();
-                } catch (java.net.UnknownHostException ex) {
+                } catch (final java.net.UnknownHostException ex) {
                     Logger.getLogger(PrettyPrint.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -172,14 +172,14 @@ public final class PrettyPrint {
      */
     private String makeFilledBorder(final String s) {
         final int sLen = s.length();
-        StringBuilder sb = new StringBuilder(80);
-        if (sLen < this.MAX_LEN - 2) {
-            if (sLen == this.MAX_LEN - 4) {
-                sb.append(this.dot).append(' ').append(s).append(' ').append(dot);
+        final StringBuilder sb = new StringBuilder(80);
+        if (sLen < MAX_LEN - 2) {
+            if (sLen == MAX_LEN - 4) {
+                sb.append(dot).append(' ').append(s).append(' ').append(dot);
             } else {
-                sb.append(replicate(dot, ((MAX_LEN - (sLen % 2)) - 2 - sLen) >> 1));
+                sb.append(replicate(dot, MAX_LEN - sLen % 2 - 2 - sLen >> 1));
                 sb.append(' ').append(s).append(' ');
-                sb.append(replicate(dot, ((MAX_LEN - (sLen % 2)) - 2 - sLen) >> 1));
+                sb.append(replicate(dot, MAX_LEN - sLen % 2 - 2 - sLen >> 1));
                 if (sLen % 2 != 0) {
                     sb.append(replicate(dot, sLen % 2));
                 }
@@ -202,17 +202,17 @@ public final class PrettyPrint {
         if (sLen > MAX_LEN - 2) {
             return s;
         }
-        StringBuilder sb = new StringBuilder(80);
+        final StringBuilder sb = new StringBuilder(80);
         if (sLen == MAX_LEN - 4) {
             sb.append(dot).append(' ').append(s).append(' ').append(dot);
         } else if (sLen < MAX_LEN - 4) {
             sb.append(dot);
-            sb.append(space(((MAX_LEN - (sLen % 2)) - 4 - sLen) >> 1));
+            sb.append(space(MAX_LEN - sLen % 2 - 4 - sLen >> 1));
             sb.append(' ').append(s).append(' ');
             if (sLen % 2 != 0) {
                 sb.append(space(sLen % 2));
             }
-            sb.append(space(((MAX_LEN - (sLen % 2)) - 4 - sLen) >> 1));
+            sb.append(space(MAX_LEN - sLen % 2 - 4 - sLen >> 1));
             sb.append(dot);
         } else {
             sb.append(s);
@@ -230,13 +230,10 @@ public final class PrettyPrint {
      */
     private String makeSingleBordered(final String s) {
         final int sLen = s.length();
-        if (sLen > this.MAX_LEN - 2) {
+        if (sLen > MAX_LEN - 2) {
             return s;
         }
-        StringBuilder sb = new StringBuilder(80);
-        sb.append(dot).append(' ').append(s);
-        sb.append(space(MAX_LEN - 3 - sLen)).append(dot);
-        return sb.toString();
+        return dot + ' ' + s + space(MAX_LEN - 3 - sLen) + dot;
     }
 
     /**
@@ -257,7 +254,7 @@ public final class PrettyPrint {
      * @return the string containing amount char
      */
     private static String replicate(final char c, final int amount) {
-        StringBuilder sb = new StringBuilder(1 + amount);
+        final StringBuilder sb = new StringBuilder(1 + amount);
         for (int i = 1; i <= amount; i++) {
             sb.append(c);
         }
@@ -265,7 +262,7 @@ public final class PrettyPrint {
     }
 
     private static String replicate(final String c, final int amount) {
-        StringBuilder sb = new StringBuilder(1 + amount * c.length());
+        final StringBuilder sb = new StringBuilder(1 + amount * c.length());
         for (int i = 1; i <= amount; i++) {
             sb.append(c);
         }
@@ -285,11 +282,11 @@ public final class PrettyPrint {
         if (len == 0) {
             return toInsert;
         }
-        int lenInsert = toInsert.length();
+        final int lenInsert = toInsert.length();
         if (lenInsert == 0) {
             return into;
         }
-        StringBuilder sb = new StringBuilder(len);
+        final StringBuilder sb = new StringBuilder(len);
         // no fault check from here!
         sb.append(into.substring(0, startPos - 1));
         sb.append(toInsert);

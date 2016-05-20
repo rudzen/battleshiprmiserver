@@ -23,9 +23,10 @@
  */
 package game;
 
+import java.util.Objects;
+
 import dataobjects.Player;
 import interfaces.IClientListener;
-import java.util.Objects;
 
 /**
  * Represents a game session.<br>
@@ -190,7 +191,7 @@ public class GameSession {
         return activeID;
     }
 
-    public void setActiveID(int activeID) {
+    public void setActiveID(final int activeID) {
         this.activeID = activeID;
     }
     
@@ -198,7 +199,7 @@ public class GameSession {
         return lobbyID;
     }
 
-    public void setLobbyID(int lobbyID) {
+    public void setLobbyID(final int lobbyID) {
         this.lobbyID = lobbyID;
     }
 
@@ -206,7 +207,7 @@ public class GameSession {
         return playerOneReady;
     }
 
-    public void setPlayerOneReady(boolean playerOneReady) {
+    public void setPlayerOneReady(final boolean playerOneReady) {
         this.playerOneReady = playerOneReady;
     }
 
@@ -214,7 +215,7 @@ public class GameSession {
         return playerTwoReady;
     }
 
-    public void setPlayerTwoReady(boolean playerTwoReady) {
+    public void setPlayerTwoReady(final boolean playerTwoReady) {
         this.playerTwoReady = playerTwoReady;
     }
     
@@ -222,7 +223,7 @@ public class GameSession {
         return lastAction;
     }
 
-    public void setLastAction(long lastAction) {
+    public void setLastAction(final long lastAction) {
         this.lastAction = lastAction;
     }
 
@@ -262,7 +263,7 @@ public class GameSession {
         return clientOne;
     }
 
-    public void setClientOne(IClientListener clientOne) {
+    public void setClientOne(final IClientListener clientOne) {
         this.clientOne = clientOne;
     }
 
@@ -270,28 +271,28 @@ public class GameSession {
         return clientTwo;
     }
 
-    public void setClientTwo(IClientListener clientTwo) {
+    public void setClientTwo(final IClientListener clientTwo) {
         this.clientTwo = clientTwo;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.playerOne);
-        hash = 97 * hash + Objects.hashCode(this.playerTwo);
-        hash = 97 * hash + Objects.hashCode(this.clientOne);
-        hash = 97 * hash + Objects.hashCode(this.clientTwo);
-        hash = 97 * hash + Objects.hashCode(this.gameSessionID);
-        hash = 97 * hash + (int) (this.timeCreated ^ (this.timeCreated >>> 32));
-        hash = 97 * hash + (this.playerOneReady ? 1 : 0);
-        hash = 97 * hash + (this.playerTwoReady ? 1 : 0);
-        hash = 97 * hash + this.lobbyID;
-        hash = 97 * hash + this.activeID;
+        hash = 97 * hash + Objects.hashCode(playerOne);
+        hash = 97 * hash + Objects.hashCode(playerTwo);
+        hash = 97 * hash + Objects.hashCode(clientOne);
+        hash = 97 * hash + Objects.hashCode(clientTwo);
+        hash = 97 * hash + Objects.hashCode(gameSessionID);
+        hash = 97 * hash + (int) (timeCreated ^ timeCreated >>> 32);
+        hash = 97 * hash + (playerOneReady ? 1 : 0);
+        hash = 97 * hash + (playerTwoReady ? 1 : 0);
+        hash = 97 * hash + lobbyID;
+        hash = 97 * hash + activeID;
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -302,28 +303,28 @@ public class GameSession {
             return false;
         }
         final GameSession other = (GameSession) obj;
-        if (this.timeCreated != other.timeCreated) {
+        if (timeCreated != other.timeCreated) {
             return false;
         }
-        if (!Objects.equals(this.gameSessionID, other.gameSessionID)) {
+        if (!Objects.equals(gameSessionID, other.gameSessionID)) {
             return false;
         }
-        if (!Objects.equals(this.playerOne, other.playerOne)) {
+        if (!Objects.equals(playerOne, other.playerOne)) {
             return false;
         }
-        if (!Objects.equals(this.playerTwo, other.playerTwo)) {
+        if (!Objects.equals(playerTwo, other.playerTwo)) {
             return false;
         }
-        if (!Objects.equals(this.clientOne, other.clientOne)) {
+        if (!Objects.equals(clientOne, other.clientOne)) {
             return false;
         }
-        if (this.lobbyID != other.lobbyID) {
+        if (lobbyID != other.lobbyID) {
             return false;
         }
-        if (this.activeID != other.activeID) {
+        if (activeID != other.activeID) {
             return false;
         }
-        return Objects.equals(this.clientTwo, other.clientTwo);
+        return Objects.equals(clientTwo, other.clientTwo);
     }
 
     @Override

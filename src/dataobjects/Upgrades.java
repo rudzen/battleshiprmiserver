@@ -193,7 +193,7 @@ public class Upgrades implements Serializable {
         return armor;
     }
 
-    public void setArmor(int armor) {
+    public void setArmor(final int armor) {
         this.armor = armor;
     }
 
@@ -201,7 +201,7 @@ public class Upgrades implements Serializable {
         return sonar;
     }
 
-    public void setSonar(int sonar) {
+    public void setSonar(final int sonar) {
         this.sonar = sonar;
     }
 
@@ -209,11 +209,11 @@ public class Upgrades implements Serializable {
         return power;
     }
 
-    public void setPower(int power) {
+    public void setPower(final int power) {
         this.power = power;
     }
     
-    public void setDecoy(int decoy) {
+    public void setDecoy(final int decoy) {
         this.decoy = decoy;
     }
     

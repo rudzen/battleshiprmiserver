@@ -82,7 +82,7 @@ public interface Interval<T extends Comparable<T>> {
 	 * An endpoint can be either open (endpoint value is excluded from interval)
 	 * or closed (endpoint value is included in interval).</p>
 	 */
-	public static enum EndpointMode {
+	enum EndpointMode {
 
 		/**
 		 * Indicates that the corresponding endpoint value is
@@ -102,7 +102,7 @@ public interface Interval<T extends Comparable<T>> {
 	 * @return the value of the lower endpoint, or <code>null</code> if there is
 	 * no lower bound for this interval.
 	 */
-	public T getLowerEndpoint();
+	T getLowerEndpoint();
 
 	/**
 	 * Returns the upper endpoint value of this interval.
@@ -110,21 +110,21 @@ public interface Interval<T extends Comparable<T>> {
 	 * @return the value of the upper endpoint, or <code>null</code> if there is
 	 * no upper bound for this interval.
 	 */
-	public T getUpperEndpoint();
+	T getUpperEndpoint();
 
 	/**
 	 * Returns the endpoint mode of the lower endpoint of this interval.
 	 *
 	 * @return the mode of the lower endpoint.
 	 */
-	public EndpointMode getLowerEndpointMode();
+	EndpointMode getLowerEndpointMode();
 
 	/**
 	 * Returns the endpoint mode of the upper endpoint of this interval.
 	 *
 	 * @return the mode of the upper endpoint.
 	 */
-	public EndpointMode getUpperEndpointMode();
+	EndpointMode getUpperEndpointMode();
 
 	/**
 	 * Reports on whether this interval includes the specified value.
@@ -135,7 +135,7 @@ public interface Interval<T extends Comparable<T>> {
 	 * @throws NullPointerException if <code>null</code> is provided to this
 	 * method.
 	 */
-	public boolean includes(T value);
+	boolean includes(T value);
 
 	/**
 	 * Reports on whether this interval wholly contains the specified interval.
@@ -150,5 +150,5 @@ public interface Interval<T extends Comparable<T>> {
 	 * @throws NullPointerException if <code>null</code> is provided to this
 	 * method.
 	 */
-	public boolean includes(Interval<T> interval);
+	boolean includes(Interval<T> interval);
 }

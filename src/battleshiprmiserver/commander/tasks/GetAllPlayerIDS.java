@@ -25,13 +25,17 @@ package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import interfaces.IClientListener;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
+
+import interfaces.IClientListener;
+import rest.entities.Player;
 
 /**
  * Get all playerID's from the REST server and pass them back to the RMI client.
@@ -48,11 +52,11 @@ public class GetAllPlayerIDS extends GetAbstract {
         final String s = rest.getPlayerIds();
         rest.close();
         if (s != null) {
-            HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new TypeToken<HashMap<String, rest.entities.Player>>() {}.getType());
+            final HashMap<String, rest.entities.Player> fromServer = new Gson().fromJson(s, new HashMapTypeToken().getType());
             try {
                 if (!fromServer.isEmpty()) {
                     final ArrayList<String> toClient = new ArrayList<>();
-                    fromServer.keySet().stream().forEach((l) -> {
+                    fromServer.keySet().stream().forEach(l -> {
                         toClient.add(l + ":" + fromServer.get(l).getPlayername());
                     });
                     client.playerList(toClient);
@@ -61,9 +65,11 @@ public class GetAllPlayerIDS extends GetAbstract {
                 } else {
                     client.showMessage("No player IDs found", "Server message", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (RemoteException ex) {
+            } catch (final RemoteException ex) {
                 Logger.getLogger(GetAllPlayerIDS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
+
+    private static class HashMapTypeToken extends TypeToken<HashMap<String, Player>> {}
 }

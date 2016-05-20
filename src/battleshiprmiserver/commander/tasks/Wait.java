@@ -25,12 +25,14 @@ package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import interfaces.IClientListener;
+
 import java.awt.Point;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import interfaces.IClientListener;
 
 /**
  * Shadow of the rest servers wait...
@@ -51,17 +53,18 @@ public class Wait extends GetAbstract {
     public void run() {
         final String s = rest.waitForOpponent(Integer.toString(lobbyID), Integer.toString(playerID));
         rest.close();
-        ArrayList<Point> fromServer = new Gson().fromJson(s, new TypeToken<ArrayList<Point>>() {}.getType());
-        int[][] board = new int[10][10];
-        fromServer.parallelStream().forEach((p) -> {
+        final ArrayList<Point> fromServer = new Gson().fromJson(s, new ArrayListTypeToken().getType());
+        final int[][] board = new int[10][10];
+        fromServer.parallelStream().forEach(p -> {
             board[p.x][p.y] = 1;
         });
         try {
             client.updateOpponentBoard(board);
             client.canPlay(true);
-        } catch (RemoteException ex) {
+        } catch (final RemoteException ex) {
             Logger.getLogger(Wait.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    private static class ArrayListTypeToken extends TypeToken<ArrayList<Point>> {}
 }

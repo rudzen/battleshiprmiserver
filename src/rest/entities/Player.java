@@ -24,20 +24,21 @@ public class Player implements Serializable {
     
     
     public Player() {
-        setArmor(0);
-        setDecoy(0);
-        setWeapon(0);
-        setSonar(0);
-        setPoint(1000);
-        setLoss(0);
-        setWon(0);
-        setPlayername("DefaultName");
-        setPlayerid(-1);
-        setPassword("1234");
-        setSalt("salt");
+        armor = 0;
+        decoy = 0;
+        weapon = 0;
+        sonar = 0;
+        point = 1000;
+        loss = 0;
+        won = 0;
+        playername = "DefaultName";
+        final Integer playerid1 = -1;
+        playerid = playerid1;
+        password = "1234";
+        salt = "salt";
     }
 
-    public Player(Integer playerid) {
+    public Player(final Integer playerid) {
         this.playerid = playerid;
     }
 
@@ -45,7 +46,7 @@ public class Player implements Serializable {
         return playerid;
     }
 
-    public void setPlayerid(Integer playerid) {
+    public void setPlayerid(final Integer playerid) {
         this.playerid = playerid;
     }
 
@@ -53,7 +54,7 @@ public class Player implements Serializable {
         return playername;
     }
 
-    public void setPlayername(String playername) {
+    public void setPlayername(final String playername) {
         this.playername = playername;
     }
 
@@ -61,7 +62,7 @@ public class Player implements Serializable {
         return won;
     }
 
-    public void setWon(Integer won) {
+    public void setWon(final Integer won) {
         this.won = won;
     }
 
@@ -69,7 +70,7 @@ public class Player implements Serializable {
         return loss;
     }
 
-    public void setLoss(Integer loss) {
+    public void setLoss(final Integer loss) {
         this.loss = loss;
     }
 
@@ -77,7 +78,7 @@ public class Player implements Serializable {
         return point;
     }
 
-    public void setPoint(Integer point) {
+    public void setPoint(final Integer point) {
         this.point = point;
     }
 
@@ -85,7 +86,7 @@ public class Player implements Serializable {
         return weapon;
     }
 
-    public void setWeapon(Integer weapon) {
+    public void setWeapon(final Integer weapon) {
         this.weapon = weapon;
     }
 
@@ -93,7 +94,7 @@ public class Player implements Serializable {
         return armor;
     }
 
-    public void setArmor(Integer armor) {
+    public void setArmor(final Integer armor) {
         this.armor = armor;
     }
 
@@ -101,7 +102,7 @@ public class Player implements Serializable {
         return decoy;
     }
 
-    public void setDecoy(Integer decoy) {
+    public void setDecoy(final Integer decoy) {
         this.decoy = decoy;
     }
 
@@ -109,7 +110,7 @@ public class Player implements Serializable {
         return sonar;
     }
 
-    public void setSonar(Integer sonar) {
+    public void setSonar(final Integer sonar) {
         this.sonar = sonar;
     }
 
@@ -117,7 +118,7 @@ public class Player implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -125,25 +126,25 @@ public class Player implements Serializable {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(final String salt) {
         this.salt = salt;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (playerid != null ? playerid.hashCode() : 0);
+        hash += playerid != null ? playerid.hashCode() : 0;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Player)) {
             return false;
         }
-        Player other = (Player) object;
-        return !((this.playerid == null && other.playerid != null) || (this.playerid != null && !this.playerid.equals(other.playerid)));
+        final Player other = (Player) object;
+        return !(playerid == null && other.playerid != null || playerid != null && !playerid.equals(other.playerid));
     }
 
     @Override

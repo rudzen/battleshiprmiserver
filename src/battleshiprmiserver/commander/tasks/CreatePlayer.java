@@ -31,13 +31,13 @@ import interfaces.IClientListener;
  */
 public class CreatePlayer extends GetAbstract {
 
-    public CreatePlayer(IClientListener client) {
+    public CreatePlayer(final IClientListener client) {
         super(client);
     }
 
     @Override
     public void run() {
-        String s = rest.createPlayer(Double.toHexString(Math.random() * 10));
+        final String s = rest.createPlayer(Double.toHexString(Math.random() * 10));
         rest.close();
     }
     

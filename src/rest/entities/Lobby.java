@@ -27,13 +27,13 @@ public class Lobby implements Serializable {
         
     }
     
-    public Lobby(Integer lobbyid, Player defender) {
+    public Lobby(final Integer lobbyid, final Player defender) {
         this.lobbyid = lobbyid;
         this.defender = defender;
         defenderBoard = new Board(this, defender);
     }
 
-    public Lobby(Integer lobbyid, Player defender, Player attacker) {
+    public Lobby(final Integer lobbyid, final Player defender, final Player attacker) {
         this(lobbyid, defender);
         this.attacker = attacker;
         attackerBoard = new Board(this, attacker);
@@ -55,7 +55,7 @@ public class Lobby implements Serializable {
         return attacker.getPlayerid();
     }
 
-    public boolean setAttacker(Player attacker) {
+    public boolean setAttacker(final Player attacker) {
         if (this.attacker != null || attacker == null) {
             return false;
         }
@@ -76,11 +76,11 @@ public class Lobby implements Serializable {
         return new Board[]{attackerBoard, defenderBoard};
     }
 
-    public Board getBoard(int playerid) {
+    public Board getBoard(final int playerid) {
         if (playerid == getDefenderid()) {
-            return getDefenderBoard();
+            return defenderBoard;
         } else if (playerid == getAttackerid()) {
-            return getAttackerBoard();
+            return attackerBoard;
         } else {
             return null;
         }
@@ -105,21 +105,18 @@ public class Lobby implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (lobbyid != null ? lobbyid.hashCode() : 0);
+        hash += lobbyid != null ? lobbyid.hashCode() : 0;
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Lobby)) {
             return false;
         }
-        Lobby other = (Lobby) object;
-        if ((this.lobbyid == null && other.lobbyid != null) || (this.lobbyid != null && !this.lobbyid.equals(other.lobbyid))) {
-            return false;
-        }
-        return true;
+        final Lobby other = (Lobby) object;
+        return !(lobbyid == null && other.lobbyid != null || lobbyid != null && !lobbyid.equals(other.lobbyid));
     }
 
     @Override

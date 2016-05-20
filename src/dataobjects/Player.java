@@ -67,15 +67,15 @@ public class Player implements Serializable {
     }
 
     public Player(final Player player) {
-        this(player.getName());
-        id = player.getId();
-        token = player.getToken();
+        this(player.name);
+        id = player.id;
+        token = player.token;
         for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; i++) {
-                board[i][j] = player.getBoard()[i][j];
+            for (final int j = 0; j < 10; i++) {
+                board[i][j] = player.board[i][j];
             }
         }
-        ships.addAll(player.getShips());
+        ships.addAll(player.ships);
     }
 
     public void initShips() {
@@ -85,11 +85,11 @@ public class Player implements Serializable {
         ships.add(new Ship(-1, -1, Ship.TYPE.SUBMARINE, false));
         ships.add(new Ship(-1, -1, Ship.TYPE.DESTROYER, false));
         ships.add(new Ship(-1, -1, Ship.TYPE.PATROL_BOAT, false));
-        ships.stream().map((s) -> {
+        ships.stream().map(s -> {
             s.setIsPlaced(false);
             return s;
-        }).forEach((s) -> {
-            Point[] p = new Point[s.getLength()];
+        }).forEach(s -> {
+            final Point[] p = new Point[s.getLength()];
             for (int i = 0; i < p.length; i++) {
                 p[i] = new Point(-1, -1);
             }
@@ -107,7 +107,7 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(150);
+        final StringBuilder sb = new StringBuilder(150);
         sb.append("Name : ").append(name).append("\n");
         sb.append("ID   : ").append(id).append("\n");
         sb.append("------------\n-");
@@ -117,7 +117,7 @@ public class Player implements Serializable {
             }
             sb.append("-\n");
         }
-        ships.stream().forEach((s) -> {
+        ships.stream().forEach(s -> {
             sb.append(s);
         });
         return sb.toString();
@@ -128,7 +128,7 @@ public class Player implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -136,7 +136,7 @@ public class Player implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -144,7 +144,7 @@ public class Player implements Serializable {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(final String token) {
         this.token = token;
     }
 
@@ -152,7 +152,7 @@ public class Player implements Serializable {
         return board;
     }
 
-    public void setBoard(int[][] board) {
+    public void setBoard(final int[][] board) {
         this.board = board;
     }
 
@@ -160,7 +160,7 @@ public class Player implements Serializable {
         return ships;
     }
 
-    public void setShips(ArrayList<Ship> ships) {
+    public void setShips(final ArrayList<Ship> ships) {
         this.ships = ships;
     }
 

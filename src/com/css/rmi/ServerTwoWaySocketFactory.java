@@ -64,7 +64,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
      * client.
      * @throws java.io.IOException
      */
-    public void addRequestSocket(final byte[] address, Socket socket) throws IOException {
+    public void addRequestSocket(final byte[] address, final Socket socket) throws IOException {
 
         final DataOutputStream requestOutStream = new DataOutputStream(socket.getOutputStream());
         final DataInputStream requestInStream = new DataInputStream(socket.getInputStream());
@@ -79,11 +79,11 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
                 try {
                     for (;;) {
                         // Read port from data input stream
-                        int port = requestInStream.readInt();
-                        String endpoint = EndpointInfo.getEndpointString(address, port);
+                        final int port = requestInStream.readInt();
+                        final String endpoint = EndpointInfo.getEndpointString(address, port);
                         requestStreams.put(endpoint, requestOutStream);
                     }
-                } catch (IOException e) {
+                } catch (final IOException e) {
                 }
             }
         }.start();
@@ -103,9 +103,9 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
      */
     @Override
     public Socket createSocket(final String address, final int port) throws IOException {
-        String endpoint = EndpointInfo.getEndpointString(address, port);
+        final String endpoint = EndpointInfo.getEndpointString(address, port);
 
-        DataOutputStream requestStream = (DataOutputStream) requestStreams.get(endpoint);
+        final DataOutputStream requestStream = (DataOutputStream) requestStreams.get(endpoint);
 
         if (requestStream == null) {
             return new Socket(address, port);
@@ -187,22 +187,22 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
                 sock = new BufferedSocket();
                 implAccept(sock);
 
-                InputStream in = sock.getInputStream();
+                final InputStream in = sock.getInputStream();
                 in.mark(TwoWay.MAX_MESSAGE_LENGTH);
 
-                DataInputStream dis = new DataInputStream(in);
-                DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
+                final DataInputStream dis = new DataInputStream(in);
+                final DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
 
-                int magic = dis.readInt();
+                final int magic = dis.readInt();
                 if (magic != TwoWay.PROTOCOL_MAGIC) {
                     in.reset();
                     break;
                 }
 
-                int opcode = dis.readInt();
+                final int opcode = dis.readInt();
 
                 if (opcode == TwoWay.REGISTER_CALLBACK_SOCKET_SOURCE) {
-                    byte[] address = new byte[4];
+                    final byte[] address = new byte[4];
                     dis.read(address, 0, 4);
 
                     addRequestSocket(address, sock);
@@ -216,11 +216,11 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
                     dos.writeInt(sock.getLocalPort());
                     dos.flush();
                 } else if (opcode == TwoWay.RETURN_CALLBACK_SOCKET) {
-                    byte[] address = new byte[4];
+                    final byte[] address = new byte[4];
                     dis.read(address, 0, 4);
-                    int port = dis.readInt();
+                    final int port = dis.readInt();
 
-                    SocketPool pool = (SocketPool) socketPools.get(EndpointInfo.getEndpointString(address, port));
+                    final SocketPool pool = (SocketPool) socketPools.get(EndpointInfo.getEndpointString(address, port));
                     pool.addSocket(sock);
                 }
 
@@ -257,6 +257,6 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
      */
     @Override
     public boolean equals(final Object that) {
-        return (that != null) && (that.getClass().equals(this.getClass()));
+        return that != null && that.getClass().equals(getClass());
     }
 }

@@ -41,14 +41,14 @@ public class MD5InputStream extends FilterInputStream {
     /**
      * MD5 context
      */
-    private MD5 md5;
+    private final MD5 md5;
 
     /**
      * Creates a MD5InputStream
      *
      * @param in	The input stream
      */
-    public MD5InputStream(InputStream in) {
+    public MD5InputStream(final InputStream in) {
         super(in);
 
         md5 = new MD5();
@@ -59,8 +59,9 @@ public class MD5InputStream extends FilterInputStream {
      *
      * @see java.io.FilterInputStream
      */
+    @Override
     public int read() throws IOException {
-        int c = in.read();
+        final int c = in.read();
 
         if (c == -1) {
             return -1;
@@ -80,8 +81,9 @@ public class MD5InputStream extends FilterInputStream {
      *
      * @see java.io.FilterInputStream
      */
-    public int read(byte bytes[], int offset, int length) throws IOException {
-        int r;
+    @Override
+    public int read(final byte[] bytes, final int offset, final int length) throws IOException {
+        final int r;
 
         if ((r = in.read(bytes, offset, length)) == -1) {
             return r;
@@ -111,7 +113,7 @@ public class MD5InputStream extends FilterInputStream {
      * here.
    *
      */
-    public static void main(String[] arg) {
+    public static void main(final String[] arg) {
         try {
 
             ////////////////////////////////////////////////////////////////
@@ -120,25 +122,25 @@ public class MD5InputStream extends FilterInputStream {
             //
             /////////
             // determine the filename to use and the MD5 impelementation to use
-            String filename = arg[arg.length - 1];
+            final String filename = arg[arg.length - 1];
             boolean use_default_md5 = false;
             boolean use_native_lib = true;
             for (int i = 0; i < arg.length - 1; i++) {
-                if (arg[i].equals("--use-default-md5")) {
+                if ("--use-default-md5".equals(arg[i])) {
                     use_default_md5 = true;
-                } else if (arg[i].equals("--no-native-lib")) {
+                } else if ("--no-native-lib".equals(arg[i])) {
                     use_native_lib = false;
                 }
             }
 
             // initialize common variables
-            byte[] buf = new byte[65536];
+            final byte[] buf = new byte[65536];
             int num_read;
 
             //   Use the default MD5 implementation that comes with Java
             if (use_default_md5) {
-                InputStream in = new BufferedInputStream(new FileInputStream(filename));
-                java.security.MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+                final InputStream in = new BufferedInputStream(new FileInputStream(filename));
+                final java.security.MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
                 while ((num_read = in.read(buf)) != -1) {
                     digest.update(buf, 0, num_read);
                 }
@@ -154,12 +156,12 @@ public class MD5InputStream extends FilterInputStream {
                 }
 
                 //    calculate the checksum
-                MD5InputStream in = new MD5InputStream(new BufferedInputStream(new FileInputStream(filename)));
+                final MD5InputStream in = new MD5InputStream(new BufferedInputStream(new FileInputStream(filename)));
                 while ((num_read = in.read(buf)) != -1);
                 System.out.println(MD5.asHex(in.hash()) + "  " + filename);
                 in.close();
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }

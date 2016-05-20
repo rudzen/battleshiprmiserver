@@ -24,10 +24,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import dataobjects.Player;
-import dataobjects.Ship;
-import dataobjects.Upgrades;
-import game.GameSession;
+
 import java.awt.Point;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -35,6 +32,11 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import dataobjects.Player;
+import dataobjects.Ship;
+import dataobjects.Upgrades;
+import game.GameSession;
 import rest.entities.Board;
 import rest.entities.Lobby;
 
@@ -87,12 +89,12 @@ public final class BattleshipJerseyHelper {
     }
 
     public static Board shipsToBoard(final int lobbyID, final Player player) {
-        Lobby l = new Lobby(lobbyID, playerToRestPlayer(player));
+        final Lobby l = new Lobby(lobbyID, playerToRestPlayer(player));
         return new Board(l, l.getDefender());
     }
 
     private static rest.entities.Player playerToRestPlayer(final Player player) {
-        rest.entities.Player p = new rest.entities.Player();
+        final rest.entities.Player p = new rest.entities.Player();
         p.setArmor(player.getShip(0).getUpgrades().getArmor());
         p.setDecoy(player.getShip(0).getUpgrades().getDecoy());
         p.setPlayerid(player.getId());
@@ -108,7 +110,7 @@ public final class BattleshipJerseyHelper {
      * @param t The type to convert
      * @return The name of the ship based on the type
      */
-    private static String shipTypeToString(Ship.TYPE t) {
+    private static String shipTypeToString(final Ship.TYPE t) {
         if (t == Ship.TYPE.AIRCRAFT_CARRIER) {
             return "0";
         } else if (t == Ship.TYPE.BATTLESHIP) {
@@ -150,10 +152,10 @@ public final class BattleshipJerseyHelper {
      * @return The IShip object for the java clients.
      */
     public static Ship stringToShip(final String string) {
-        StringTokenizer tokenizer = new StringTokenizer(string, "/");
-        Ship s = new Ship();
-        Point start;
-        String tmp[];
+        final StringTokenizer tokenizer = new StringTokenizer(string, "/");
+        final Ship s = new Ship();
+        final Point start;
+        String[] tmp;
         int len;
 
         s.setType(shipStringToType(tokenizer.nextToken()));
@@ -178,28 +180,28 @@ public final class BattleshipJerseyHelper {
      * @param restPlayer The rest player to convert
      * @return The new player object
      */
-    public static Player restPlayerToLocal(rest.entities.Player restPlayer) {
-        Player p = new Player(restPlayer.getPlayername());
+    public static Player restPlayerToLocal(final rest.entities.Player restPlayer) {
+        final Player p = new Player(restPlayer.getPlayername());
         p.initShips(); // this is just so there wont be a NPE at some point!
 
         /* set up the upgrades for the ships */
-        ArrayList<Ship> ships = p.getShips();
-        ships.parallelStream().map((ship) -> {
+        final ArrayList<Ship> ships = p.getShips();
+        ships.parallelStream().map(ship -> {
             if (restPlayer.getArmor() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.ARMOR, restPlayer.getArmor());
             }
             return ship;
-        }).map((ship) -> {
+        }).map(ship -> {
             if (restPlayer.getDecoy() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.DECOY, restPlayer.getDecoy());
             }
             return ship;
-        }).map((ship) -> {
+        }).map(ship -> {
             if (restPlayer.getWeapon() > 0) {
                 ship.addUpgrade(Upgrades.UPGRADES.POWER, restPlayer.getWeapon());
             }
             return ship;
-        }).filter((ship) -> (restPlayer.getSonar() > 0)).forEach((ship) -> {
+        }).filter(ship -> (restPlayer.getSonar() > 0)).forEach(ship -> {
             ship.addUpgrade(Upgrades.UPGRADES.SONAR, restPlayer.getSonar());
         });
         p.setShips(ships);
@@ -218,7 +220,7 @@ public final class BattleshipJerseyHelper {
      * @return The ship
      * @deprecated Not used anymore
      */
-    private static Ship populateUpgrade(Ship theShip, final Integer amount, Upgrades.UPGRADES upgradeType) {
+    private static Ship populateUpgrade(final Ship theShip, final Integer amount, final Upgrades.UPGRADES upgradeType) {
         if (amount > 0) {
             for (int i = 0; i < amount; i++) {
                 theShip.addUpgrade(upgradeType);
@@ -242,10 +244,10 @@ public final class BattleshipJerseyHelper {
 //        Lobby l = g.fromJson(lobby, Lobby.class);
 //        g = null; // help the GC on the way!
 
-        rest.entities.Player rP = l.getDefender();
+        final rest.entities.Player rP = l.getDefender();
 
         /* convert player one */
-        Player p1 = restPlayerToLocal(rP);
+        final Player p1 = restPlayerToLocal(rP);
 
         /* set player two if exists */
         Player p2 = null;
@@ -254,7 +256,7 @@ public final class BattleshipJerseyHelper {
         }
 
         /* convert the boards */
-        Board[] boards = l.getBoards();
+        final Board[] boards = l.getBoards();
 
         /*
     board defined as :
@@ -286,7 +288,7 @@ public final class BattleshipJerseyHelper {
         }
 
         /* put the data in the GameSession object */
-        GameSession gs = new GameSession(null, null);
+        final GameSession gs = new GameSession(null, null);
 
         /* convert both ids */
         gs.setLobbyID(l.getLobbyid());
@@ -310,7 +312,7 @@ public final class BattleshipJerseyHelper {
 
     public String convertGameSession(final GameSession gs) {
 
-        Gson g = new Gson();
+        final Gson g = new Gson();
 
         /* convert all the shit back again!!!! :) */
         return null;
@@ -318,7 +320,7 @@ public final class BattleshipJerseyHelper {
 
     public static int[][] convertLobbyBoard(final Board lobbyBoard) {
 
-        int[][] board;
+        final int[][] board;
 
         board = new int[10][10];
         for (int j = 0; j < 10; j++) {
@@ -340,7 +342,7 @@ public final class BattleshipJerseyHelper {
     public static StringBuilder urlEncode(final StringBuilder sb, final String s) {
         try {
             sb.append(URLEncoder.encode(s, "UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
+        } catch (final UnsupportedEncodingException ex) {
             Logger.getLogger(BattleshipJerseyHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return sb;

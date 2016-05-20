@@ -31,27 +31,27 @@ public class ShipList extends ArrayList<Ship>{
         return deployed;
     }
     
-    public String newShip(int x, int y, int type, boolean dir){
-        return " "+this.size() + " " + this.add(new Ship(shipnames[type], shiplengths[type], x, y, dir));
+    public String newShip(final int x, final int y, final int type, final boolean dir){
+        return " "+ size() + " " + add(new Ship(shipnames[type], shiplengths[type], x, y, dir));
     }
     
     public String getJSON(){
-        ArrayList<JSONShip> r = new ArrayList<>();
-        this.parallelStream().forEach((ship) -> {
+        final ArrayList<JSONShip> r = new ArrayList<>();
+        parallelStream().forEach(ship -> {
             r.add(ship.j);
         });
         return "\"ships\":"+new Gson().toJson(r);
     }
     
     @Override
-    public boolean add(Ship e){
-        if(super.size() > 5) return false;
-        else if(super.size() == 4) this.deployed = true;
+    public boolean add(final Ship e){
+        if(size() > 5) return false;
+        else if(size() == 4) deployed = true;
         return super.add(e);
     }
     
     @Override
-    public void add(int i, Ship e){
+    public void add(final int i, final Ship e){
         add(e);
     }
     

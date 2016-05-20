@@ -24,14 +24,17 @@
 package game;
 
 import com.twmacinta.util.MD5;
-import dataobjects.Player;
-import interfaces.IClientListener;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+
 import javax.swing.JOptionPane;
+
+import dataobjects.Player;
+import interfaces.IClientListener;
 
 /**
  *
@@ -76,7 +79,7 @@ public abstract class BattleGameAbstract {
 
     protected String isInSession(final IClientListener client) {
 
-        for (GameSession gs : sessions.values()) {
+        for (final GameSession gs : sessions.values()) {
             if (!gs.isFull() && gs.isInSession(client)) {
                 return gs.getGameSessionID();
             }
@@ -85,7 +88,7 @@ public abstract class BattleGameAbstract {
     }
 
     protected String isInSession(final Player player) {
-        for (GameSession gs : sessions.values()) {
+        for (final GameSession gs : sessions.values()) {
             if (gs.isInSession(player)) {
                 return gs.getGameSessionID();
             }
@@ -95,7 +98,7 @@ public abstract class BattleGameAbstract {
 
     protected ArrayList<String> getFreePlayerNames() {
         final ArrayList<String> list = new ArrayList<>();
-        sessions.values().parallelStream().filter((gs) -> (!gs.isFull())).forEach((gs) -> {
+        sessions.values().parallelStream().filter(gs -> (!gs.isFull())).forEach(gs -> {
             list.add(gs.getPlayerOne().getName());
         });
         return list;
@@ -104,7 +107,7 @@ public abstract class BattleGameAbstract {
     protected void endOldSessions() {
 
         final long now = System.currentTimeMillis();
-        sessions.values().parallelStream().filter((gs) -> (now - gs.getTimeCreated() > TIME_LIMIT)).forEach((gs) -> {
+        sessions.values().parallelStream().filter(gs -> (now - gs.getTimeCreated() > TIME_LIMIT)).forEach(gs -> {
             try {
                 gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);
                 gs.getClientOne().showMessage(Messages.MSG_GAME_TERMINATED, Messages.TIME_LIMIT_MSG, JOptionPane.ERROR_MESSAGE);

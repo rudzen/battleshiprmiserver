@@ -29,7 +29,7 @@ public class EndpointInfo {
      * @param host
      * @param port
      */
-    public EndpointInfo(String host, int port) {
+    public EndpointInfo(final String host, final int port) {
         this.host = host;
         this.port = port;
     }
@@ -41,7 +41,7 @@ public class EndpointInfo {
      * @param port The port part of the endpoint string.
      * @return The endpoint string.
      */
-    public static String getEndpointString(String address, int port) {
+    public static String getEndpointString(final String address, final int port) {
         return address + ":" + port;
     }
 
@@ -52,7 +52,7 @@ public class EndpointInfo {
      * @param port The port part of the endpoint string.
      * @return The endpoint string.
      */
-    public static String getEndpointString(byte[] address, int port) {
+    public static String getEndpointString(final byte[] address, final int port) {
         return getEndpointString(getAddressString(address), port);
     }
 
@@ -62,11 +62,11 @@ public class EndpointInfo {
      * @param address The four bytes of an IP address.
      * @return The corresponding string (a.b.c.d format).
      */
-    public static String getAddressString(byte[] address) {
-        return ((int) address[0] & 0xff) + "."
-                + ((int) address[1] & 0xff) + "."
-                + ((int) address[2] & 0xff) + "."
-                + ((int) address[3] & 0xff);
+    public static String getAddressString(final byte[] address) {
+        return (address[0] & 0xff) + "."
+                + (address[1] & 0xff) + "."
+                + (address[2] & 0xff) + "."
+                + (address[3] & 0xff);
     }
 
     /**
