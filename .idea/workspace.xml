@@ -4,55 +4,18 @@
     <option name="ANALYZE_TEST_SOURCES" value="false" />
     <option name="SCOPE_TYPE" value="4" />
   </component>
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="BattleshipRMIServer:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="b7bb226f-62ad-441c-a932-fde970be9b7d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/args/MainArgsHandler.java" afterPath="$PROJECT_DIR$/src/args/MainArgsHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/args/intervals/GenericInterval.java" afterPath="$PROJECT_DIR$/src/args/intervals/GenericInterval.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/args/intervals/Interval.java" afterPath="$PROJECT_DIR$/src/args/intervals/Interval.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/args/intervals/IntervalComparator.java" afterPath="$PROJECT_DIR$/src/args/intervals/IntervalComparator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMI.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMIHelper.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMIHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/PrettyPrint.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/PrettyPrint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/CreatePlayer.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/CreatePlayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/DeployShips.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/DeployShips.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/FireShot.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/FireShot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetAllPlayerIDS.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetAllPlayerIDS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetFreeLobbys.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetFreeLobbys.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetLobbys.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetLobbys.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetMoves.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetMoves.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetPlayerID.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetPlayerID.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/JoinLobby.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/JoinLobby.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/LoginTask.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/LoginTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/NewLobby.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/NewLobby.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/Wait.java" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/Wait.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/css/rmi/EndpointInfo.java" afterPath="$PROJECT_DIR$/src/com/css/rmi/EndpointInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/css/rmi/ServerTwoWaySocketFactory.java" afterPath="$PROJECT_DIR$/src/com/css/rmi/ServerTwoWaySocketFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/css/rmi/SocketPool.java" afterPath="$PROJECT_DIR$/src/com/css/rmi/SocketPool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/css/rmi/TwoWay.java" afterPath="$PROJECT_DIR$/src/com/css/rmi/TwoWay.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/twmacinta/io/NullOutputStream.java" afterPath="$PROJECT_DIR$/src/com/twmacinta/io/NullOutputStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/twmacinta/util/MD5.java" afterPath="$PROJECT_DIR$/src/com/twmacinta/util/MD5.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/twmacinta/util/MD5InputStream.java" afterPath="$PROJECT_DIR$/src/com/twmacinta/util/MD5InputStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/twmacinta/util/MD5OutputStream.java" afterPath="$PROJECT_DIR$/src/com/twmacinta/util/MD5OutputStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/twmacinta/util/MD5State.java" afterPath="$PROJECT_DIR$/src/com/twmacinta/util/MD5State.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dataobjects/Player.java" afterPath="$PROJECT_DIR$/src/dataobjects/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dataobjects/Ship.java" afterPath="$PROJECT_DIR$/src/dataobjects/Ship.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dataobjects/Upgrades.java" afterPath="$PROJECT_DIR$/src/dataobjects/Upgrades.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game/BattleGame.java" afterPath="$PROJECT_DIR$/src/game/BattleGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game/BattleGameAbstract.java" afterPath="$PROJECT_DIR$/src/game/BattleGameAbstract.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/game/GameSession.java" afterPath="$PROJECT_DIR$/src/game/GameSession.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/interfaces/IClientListener.java" afterPath="$PROJECT_DIR$/src/interfaces/IClientListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/login/Login.java" afterPath="$PROJECT_DIR$/src/login/Login.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/BattleshipJerseyClient.java" afterPath="$PROJECT_DIR$/src/rest/BattleshipJerseyClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/BattleshipJerseyHelper.java" afterPath="$PROJECT_DIR$/src/rest/BattleshipJerseyHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/NewJerseyClient.java" afterPath="$PROJECT_DIR$/src/rest/NewJerseyClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/Board.java" afterPath="$PROJECT_DIR$/src/rest/entities/Board.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/Fire.java" afterPath="$PROJECT_DIR$/src/rest/entities/Fire.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/JSONShip.java" afterPath="$PROJECT_DIR$/src/rest/entities/JSONShip.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/Lobby.java" afterPath="$PROJECT_DIR$/src/rest/entities/Lobby.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/Player.java" afterPath="$PROJECT_DIR$/src/rest/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/Ship.java" afterPath="$PROJECT_DIR$/src/rest/entities/Ship.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/rest/entities/ShipList.java" afterPath="$PROJECT_DIR$/src/rest/entities/ShipList.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/gson_2_6_21.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BattleshipRMIServer.iml" afterPath="$PROJECT_DIR$/BattleshipRMIServer.iml" />
     </list>
     <ignored path="BattleshipRMIServer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,110 +37,7 @@
     <favorites_list name="BattleshipRMIServer" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BattleshipServerRMI.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="81" column="24" selection-start-line="81" selection-start-column="24" selection-end-line="81" selection-end-column="24" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Board.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/rest/entities/Board.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="24">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerTwoWaySocketFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/css/rmi/ServerTwoWaySocketFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2628">
-              <caret line="241" column="8" selection-start-line="241" selection-start-column="8" selection-end-line="241" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BattleGameAbstract.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/BattleGameAbstract.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1044">
-              <caret line="120" column="55" selection-start-line="120" selection-start-column="55" selection-end-line="120" selection-end-column="55" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BattleGame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/BattleGame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2220">
-              <caret line="219" column="0" selection-start-line="219" selection-start-column="0" selection-end-line="219" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MD5.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/twmacinta/util/MD5.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1980">
-              <caret line="165" column="18" selection-start-line="165" selection-start-column="18" selection-end-line="165" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SocketPool.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/css/rmi/SocketPool.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GenericInterval.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/args/intervals/GenericInterval.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetFreeLobbys.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetFreeLobbys.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="40" column="3" selection-start-line="40" selection-start-column="3" selection-end-line="40" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -241,10 +101,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="439" />
-    <option name="y" value="60" />
-    <option name="width" value="1188" />
-    <option name="height" value="909" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1035" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -293,7 +153,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -326,76 +186,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BattleshipRMIServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BattleshipRMIServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="battleshiprmiserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BattleshipRMIServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BattleshipRMIServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="battleshiprmiserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="commander" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BattleshipRMIServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BattleshipRMIServer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="battleshiprmiserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="commander" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tasks" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -405,6 +199,13 @@
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="battleshiprmiserver" />
   </component>
   <component name="RunManager" selected="Application.BattleshipServerRMI">
     <configuration default="false" name="BattleshipServerRMI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -852,18 +653,21 @@
       <updated>1463720223931</updated>
       <workItem from="1463720226266" duration="2444000" />
       <workItem from="1463727535872" duration="65000" />
+      <workItem from="1463727816305" duration="652000" />
+      <workItem from="1463732685900" duration="488000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2509000" />
+    <option name="totallyTimeSpent" value="3649000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="439" y="60" width="1188" height="909" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1035" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24431819" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -873,7 +677,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28318584" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17039403" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -885,7 +689,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24431819" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32954547" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -911,12 +714,20 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetFreeLobbys.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="40" column="3" selection-start-line="40" selection-start-column="3" selection-end-line="40" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="81" column="24" selection-start-line="81" selection-start-column="24" selection-end-line="81" selection-end-column="24" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -996,7 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="59" column="25" selection-start-line="59" selection-start-column="25" selection-end-line="59" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1004,7 +814,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="86" column="32" selection-start-line="86" selection-start-column="32" selection-end-line="86" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1048,7 +857,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1070,7 +878,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="188" column="35" selection-start-line="188" selection-start-column="35" selection-end-line="188" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1113,7 +920,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="57" column="50" selection-start-line="57" selection-start-column="50" selection-end-line="57" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1121,7 +927,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="56" column="10" selection-start-line="56" selection-start-column="10" selection-end-line="56" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1129,7 +934,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="55" column="62" selection-start-line="55" selection-start-column="62" selection-end-line="55" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1137,7 +941,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="54" column="90" selection-start-line="54" selection-start-column="90" selection-end-line="54" selection-end-column="90" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1159,7 +962,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="83" column="8" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1188,7 +990,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
           <caret line="235" column="0" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1236,7 +1037,7 @@
         <state relative-caret-position="420">
           <caret line="81" column="24" selection-start-line="81" selection-start-column="24" selection-end-line="81" selection-end-column="24" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1282,5 +1083,96 @@
         </state>
       </provider>
     </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>BattleshipRMIServer:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>ECLIPSE</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>BattleshipRMIServer</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8 (1)</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>gson-2.6.2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

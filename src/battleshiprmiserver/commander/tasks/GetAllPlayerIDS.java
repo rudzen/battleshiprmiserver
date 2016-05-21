@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
-import interfaces.IClientListener;
 import rest.entities.Player;
+import interfaces.IClientRMI;
 
 /**
  * Get all playerID's from the REST server and pass them back to the RMI client.
@@ -43,7 +43,7 @@ import rest.entities.Player;
  */
 public class GetAllPlayerIDS extends GetAbstract {
 
-    public GetAllPlayerIDS(final IClientListener client) {
+    public GetAllPlayerIDS(final IClientRMI client) {
         super(client);
     }
 

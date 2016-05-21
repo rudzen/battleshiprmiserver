@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import dataobjects.Player;
-import interfaces.IClientListener;
+import interfaces.IClientRMI;
 
 /**
  * This is the main game logic..
@@ -40,7 +40,7 @@ import interfaces.IClientListener;
  */
 public class BattleGame extends BattleGameAbstract {
 
-    public BattleGame(final ConcurrentHashMap<String, IClientListener> players, final ConcurrentHashMap<String, GameSession> sessions) {
+    public BattleGame(final ConcurrentHashMap<String, IClientRMI> players, final ConcurrentHashMap<String, GameSession> sessions) {
         super(players, sessions);
     }
 
@@ -116,7 +116,7 @@ public class BattleGame extends BattleGameAbstract {
      * @param client The client to generate the session with
      * @return true if session was created, otherwise false.
      */
-    public synchronized boolean createSession(final Player player, final IClientListener client) {
+    public synchronized boolean createSession(final Player player, final IClientRMI client) {
         final String sessionID = updateSessionID(player, client);
         if (!sessions.containsKey(sessionID)) {
             final GameSession g = new GameSession(player, client);
@@ -136,7 +136,7 @@ public class BattleGame extends BattleGameAbstract {
      * @param clientTwo The client interface for the second player
      * @return true if session was created, otherwise false.
      */
-    public synchronized boolean createSession(final Player playerOne, final Player playerTwo, final IClientListener clientOne, final IClientListener clientTwo) {
+    public synchronized boolean createSession(final Player playerOne, final Player playerTwo, final IClientRMI clientOne, final IClientRMI clientTwo) {
         final String sessionID = updateSessionID(playerOne.toString(), clientOne, playerTwo.toString(), clientTwo);
         if (sessionID != null && !sessions.containsKey(sessionID)) {
             final GameSession g = new GameSession(playerOne, clientOne, playerTwo, clientTwo);
@@ -189,7 +189,7 @@ public class BattleGame extends BattleGameAbstract {
         return sessionID;
     }
 
-    public boolean addPlayer(final String player, final IClientListener client) {
+    public boolean addPlayer(final String player, final IClientRMI client) {
         if (players.put(player, client) != null) {
             System.out.print(player + " added");
             try {
@@ -217,7 +217,7 @@ public class BattleGame extends BattleGameAbstract {
 
         players.keySet().parallelStream().filter(target -> !target.equals(sourceplayer)).forEach(target -> {
             try {
-                final IClientListener client = players.get(target);
+                final IClientRMI client = players.get(target);
                 client.showMessage(title, text, modal);
             } catch (final RemoteException ex) {
                 Logger.getLogger(BattleGame.class.getName()).log(Level.SEVERE, null, ex);

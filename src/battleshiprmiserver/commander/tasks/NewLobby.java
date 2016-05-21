@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
-import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,17 +35,18 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientProperties;
 
 import rest.entities.Lobby;
+import interfaces.IClientRMI;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class NewLobby implements Runnable {
 
     private final int playerID;
-    private final IClientListener client;
+    private final IClientRMI client;
     
-    public NewLobby(final IClientListener client, final int playerID) {
+    public NewLobby(final IClientRMI client, final int playerID) {
         this.client = client;
         this.playerID = playerID;
     }

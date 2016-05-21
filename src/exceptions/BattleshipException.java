@@ -21,32 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package rest.entities;
-
-import java.awt.Point;
-import java.io.Serializable;
+package exceptions;
 
 /**
- *
+ * Simple exception to handle potential errors with this Server or connected Client part
  * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
-public class JSONShip implements Serializable {
+public class BattleshipException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5665271627436053973L;
 
-    public String shipname;
-    public Integer length, row, col;
-    public Boolean horizontal;
-    public boolean isDestroyed = false;
-    public Point[] cordinates;
+    String error;
 
-    public JSONShip() {
-        
-    }
-    
-    public JSONShip(final String name, final int length) {
-        shipname = name;
-        this.length = length;
+    public BattleshipException(String error) {
+        this.error = error;
     }
 
+    public BattleshipException(String error, String message) {
+        super(message);
+        this.error = error;
+    }
+
+    public BattleshipException(String error, String message, Throwable cause) {
+        super(message, cause);
+        this.error = error;
+    }
+
+    public BattleshipException(String error, Throwable cause) {
+        super(cause);
+        this.error = error;
+    }
+
+    public BattleshipException(String error, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.error = error;
+    }
 }

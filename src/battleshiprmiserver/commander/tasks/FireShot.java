@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
-import interfaces.IClientListener;
 import rest.entities.Fire;
+import interfaces.IClientRMI;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class FireShot extends GetAbstract {
 
@@ -45,7 +45,7 @@ public class FireShot extends GetAbstract {
     private final int x;
     private final int y;
 
-    public FireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) {
+    public FireShot(final IClientRMI client, final int lobbyID, final int playerID, final int x, final int y) {
         super(client);
         this.lobbyID = lobbyID;
         this.playerID = playerID;

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,13 +36,13 @@ import battleshiprmiserver.commander.tasks.JoinLobby;
 import battleshiprmiserver.commander.tasks.NewLobby;
 import battleshiprmiserver.commander.tasks.Wait;
 import dataobjects.Player;
-import interfaces.IClientListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import interfaces.IClientRMI;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class FutureBasic {
 
@@ -67,7 +67,7 @@ public class FutureBasic {
      * @param lobbyID the lobbyID to deploy in
      * @param player The player who is deploying
      */
-    public static void deployShips(final IClientListener client, final int lobbyID, final Player player) {
+    public static void deployShips(final IClientRMI client, final int lobbyID, final Player player) {
         POOL.submit(new DeployShips(client, lobbyID, player));
     }
 
@@ -80,7 +80,7 @@ public class FutureBasic {
      * @param x
      * @param y
      */
-    public static void fireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) {
+    public static void fireShot(final IClientRMI client, final int lobbyID, final int playerID, final int x, final int y) {
         POOL.submit(new FireShot(client, lobbyID, playerID, x, y));
     }
 
@@ -89,7 +89,7 @@ public class FutureBasic {
      *
      * @param client The client requesting the list
      */
-    public static void getAllPlayerIDs(final IClientListener client) {
+    public static void getAllPlayerIDs(final IClientRMI client) {
         POOL.submit(new GetAllPlayerIDS(client));
     }
 
@@ -99,7 +99,7 @@ public class FutureBasic {
      * @param client The client interface calling the command
      * @param playerID The player ID requesting the lobbies
      */
-    public static void getFreeLobbys(final IClientListener client, final int playerID) {
+    public static void getFreeLobbys(final IClientRMI client, final int playerID) {
         POOL.submit(new GetFreeLobbys(client, playerID));
     }
 
@@ -109,7 +109,7 @@ public class FutureBasic {
      * @param client The client interface calling the command
      * @param playerID The player ID requesting the lobbies
      */
-    public static void getLobbys(final IClientListener client, final int playerID) {
+    public static void getLobbys(final IClientRMI client, final int playerID) {
         POOL.submit(new GetLobbys(client, playerID));
     }
 
@@ -117,7 +117,7 @@ public class FutureBasic {
         POOL.submit(new GetPlayer());
     }
 
-    public static void getPlayerID(final IClientListener client, final String name) {
+    public static void getPlayerID(final IClientRMI client, final String name) {
         POOL.submit(new GetPlayerID(client, name));
     }
 
@@ -128,11 +128,11 @@ public class FutureBasic {
      * @param lobbyID The lobby ID
      * @param playerID The player ID
      */
-    public static void getMoves(final IClientListener client, final int lobbyID, final int playerID) {
+    public static void getMoves(final IClientRMI client, final int lobbyID, final int playerID) {
         POOL.submit(new GetMoves(client, lobbyID, playerID));
     }
 
-    public static void joinLobby(final IClientListener client, final int lobbyID, final int playerID) {
+    public static void joinLobby(final IClientRMI client, final int lobbyID, final int playerID) {
         POOL.submit(new JoinLobby(client, lobbyID, playerID));
     }
 
@@ -143,15 +143,15 @@ public class FutureBasic {
      * @param lobbyID The lobby ID
      * @param playerID The player ID
      */
-    public static void wait(final IClientListener client, final int lobbyID, final int playerID) {
+    public static void wait(final IClientRMI client, final int lobbyID, final int playerID) {
         POOL.submit(new Wait(client, lobbyID, playerID));
     }
 
-    public static void login(final IClientListener client, final String u, final String p) {
+    public static void login(final IClientRMI client, final String u, final String p) {
         POOL.submit(new LoginTask(client, u, p));
     }
 
-    public static void newLobby(final IClientListener client, final int playerID) {
+    public static void newLobby(final IClientRMI client, final int playerID) {
 //        Random rnd = new Random();
 //        for (;;) {
 //            POOL.submit(new NewLobby(client, rnd.nextInt(4)));

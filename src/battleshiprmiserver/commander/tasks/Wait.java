@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import interfaces.IClientListener;
+import interfaces.IClientRMI;
 
 /**
  * Shadow of the rest servers wait...
@@ -43,7 +43,7 @@ public class Wait extends GetAbstract {
     private final int playerID;
     private final int lobbyID;
     
-    public Wait(final IClientListener client, final int lobbyID, final int playerID) {
+    public Wait(final IClientRMI client, final int lobbyID, final int playerID) {
         super(client);
         this.playerID = playerID;
         this.lobbyID = lobbyID;

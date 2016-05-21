@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * 09.May.2016
  * -----------
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  * - Reworked syntax for modern Java (8).
  * - Added usage of Java 8 concurrency library for better performance.
  */

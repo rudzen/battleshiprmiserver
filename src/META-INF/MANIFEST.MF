@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Class-Path: gson-2.6.2.jar hk2-locator-2.2.0-b21.jar jersey-entity-fil
+ tering-2.5.1.jar validation-api-1.1.0.Final.jar guava-14.0.1.jar jers
+ ey-container-servlet.jar osgi-resource-locator-1.0.1.jar hk2-api-2.2.
+ 0-b21.jar javax.inject-2.2.0-b21.jar jersey-common.jar asm-all-repack
+ aged-2.2.0-b21.jar eclipselink.jar javax.servlet-api-3.0.1.jar cglib-
+ 2.2.0-b21.jar jersey-server.jar jersey-media-moxy-2.5.1.jar hk2-utils
+ -2.2.0-b21.jar jersey-container-servlet-core.jar jersey-client.jar ja
+ vax.ws.rs-api-2.0.jar jaxb-api-2.2.7.jar org.osgi.core-4.2.0.jar pers
+ istence-api-1.0.jar javax.annotation-api-1.2.jar gson-2.6.2.jar org.o
+ sgi.core-4.2.0.jar jersey-entity-filtering-2.5.1.jar jersey-server.ja
+ r cglib-2.2.0-b21.jar jersey-client.jar jersey-common.jar jersey-cont
+ ainer-servlet-core.jar javax.inject-2.2.0-b21.jar osgi-resource-locat
+ or-1.0.1.jar jersey-container-servlet.jar validation-api-1.1.0.Final.
+ jar jersey-media-moxy-2.5.1.jar hk2-api-2.2.0-b21.jar eclipselink.jar
+  jaxb-api-2.2.7.jar javax.annotation-api-1.2.jar hk2-utils-2.2.0-b21.
+ jar hk2-locator-2.2.0-b21.jar javax.servlet-api-3.0.1.jar asm-all-rep
+ ackaged-2.2.0-b21.jar guava-14.0.1.jar persistence-api-1.0.jar javax.
+ ws.rs-api-2.0.jar
+Main-Class: battleshiprmiserver.BattleshipServerRMI
+

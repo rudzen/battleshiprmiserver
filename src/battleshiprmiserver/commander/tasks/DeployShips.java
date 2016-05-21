@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package battleshiprmiserver.commander.tasks;
 
 import com.google.gson.Gson;
 import dataobjects.Player;
-import interfaces.IClientListener;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,17 +38,18 @@ import org.glassfish.jersey.client.ClientProperties;
 import rest.BattleshipJerseyHelper;
 import rest.entities.ShipResponse;
 import rest.entities.Result;
+import interfaces.IClientRMI;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class DeployShips extends GetAbstract {
 
     private final Player player;
     private final int lobbyID;
 
-    public DeployShips(final IClientListener client, final int lobbyID, final Player player) {
+    public DeployShips(final IClientRMI client, final int lobbyID, final Player player) {
         super(client);
         this.player = player;
         this.lobbyID = lobbyID;

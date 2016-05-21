@@ -1,7 +1,7 @@
 ///*
 // * The MIT License
 // *
-// * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+// * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
 // *
 // * Permission is hereby granted, free of charge, to any person obtaining a copy
 // * of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@
 ///**
 // * Thread to deploy board on server.
 // *
-// * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+// * @author Rudy Alex Kohn (s133235@student.dtu.dk)
 // */
 //public class DeployBoard implements Runnable {
 //

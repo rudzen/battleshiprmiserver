@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +39,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dataobjects.Player;
-import interfaces.IClientListener;
 import rest.BattleshipJerseyHelper;
+import interfaces.IClientRMI;
 
 /**
  * Login thread for RMI klient using REST interface.<br>
@@ -50,14 +50,14 @@ import rest.BattleshipJerseyHelper;
  */
 public class LoginTask implements Runnable {
 
-    private final IClientListener client;
+    private final IClientRMI client;
     private final String u;
     private final String p;
 
     private static final String wrong = "Wrong password";
     private static final String login = "Login";
 
-    public LoginTask(final IClientListener client, final String u, final String p) {
+    public LoginTask(final IClientRMI client, final String u, final String p) {
         this.client = client;
         this.u = u;
         this.p = p;

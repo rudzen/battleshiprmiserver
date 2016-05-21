@@ -32,7 +32,7 @@ import java.io.*;
  * author of the code, although I did optimize it (substantially) and fix some
  * bugs.
  *
- * @author	Santeri Paavolainen <santtu@cs.hut.fi>
+ * @author	Santeri Paavolainen (santtu@cs.hut.fi)
  * @author	Timothy W Macinta (twm@alum.mit.edu) (added main() method)
  *
  */

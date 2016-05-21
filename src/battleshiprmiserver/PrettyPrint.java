@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2015-6 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2015-6 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,8 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */package battleshiprmiserver;
+ */
+package battleshiprmiserver;
 
 import java.net.Inet4Address;
 import java.net.Inet6Address;
@@ -39,7 +40,7 @@ public final class PrettyPrint {
     private final int MAX_LEN = 78;
     private final int MAX_HEI = 20;
 
-    private final String dot = "\u00AA";
+    private final String dot = "\u201C";
 
     private final String SEP = replicate(dot, MAX_LEN);
 
@@ -134,7 +135,6 @@ public final class PrettyPrint {
      *
      * @return the IP as string.
      */
-    @SuppressWarnings({"static-access", "null"})
     private static String getIPString() {
         InetAddress localIP = null;
         String returnString = null;
@@ -155,7 +155,7 @@ public final class PrettyPrint {
             }
             if (localIP == null) {
                 returnString = "";
-            } else if (returnString.contains("/")) {
+            } else if (returnString != null && returnString.contains("/")) {
                 returnString = returnString.substring(returnString.indexOf("/"));
             }
         }
@@ -177,11 +177,13 @@ public final class PrettyPrint {
             if (sLen == MAX_LEN - 4) {
                 sb.append(dot).append(' ').append(s).append(' ').append(dot);
             } else {
-                sb.append(replicate(dot, MAX_LEN - sLen % 2 - 2 - sLen >> 1));
+                final int lenMod2 = sLen % 2;
+                final String dots = replicate(dot, MAX_LEN - lenMod2 - 2 - sLen >> 1);
+                sb.append(dots);
                 sb.append(' ').append(s).append(' ');
-                sb.append(replicate(dot, MAX_LEN - sLen % 2 - 2 - sLen >> 1));
+                sb.append(dots);
                 if (sLen % 2 != 0) {
-                    sb.append(replicate(dot, sLen % 2));
+                    sb.append(replicate(dot, lenMod2));
                 }
             }
         } else {
@@ -207,12 +209,14 @@ public final class PrettyPrint {
             sb.append(dot).append(' ').append(s).append(' ').append(dot);
         } else if (sLen < MAX_LEN - 4) {
             sb.append(dot);
-            sb.append(space(MAX_LEN - sLen % 2 - 4 - sLen >> 1));
+            final int lenMod2 = sLen % 2;
+            final String dots = space(MAX_LEN - lenMod2 - 4 - sLen >> 1);
+            sb.append(dots);
             sb.append(' ').append(s).append(' ');
             if (sLen % 2 != 0) {
-                sb.append(space(sLen % 2));
+                sb.append(space(lenMod2));
             }
-            sb.append(space(MAX_LEN - sLen % 2 - 4 - sLen >> 1));
+            sb.append(dots);
             sb.append(dot);
         } else {
             sb.append(s);

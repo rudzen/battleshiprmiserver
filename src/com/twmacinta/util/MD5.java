@@ -87,7 +87,7 @@ import java.io.*;
  * The second option is to call com.twmacinta.util.MD5.initNativeLibrary(true)
  * before any MD5 objects are constructed.
  *
- * @author Santeri Paavolainen <sjpaavol@cc.helsinki.fi>
+ * @author Santeri Paavolainen (sjpaavol@cc.helsinki.fi)
  * @author Timothy W Macinta (twm@alum.mit.edu) (optimizations and bug fixes)
  */
 public class MD5 {
@@ -619,9 +619,9 @@ public class MD5 {
     }
 
     /**
-     * Update buffer with a single integer (only & 0xff part is used, as a byte)
+     * Update buffer with a single integer (only &amp; 0xff part is used, as a byte)
      *
-     * @param i Integer value, which is then converted to byte as i & 0xff
+     * @param i Integer value, which is then converted to byte as i &amp; 0xff
      *
      */
     public void Update(final int i) {
@@ -710,6 +710,7 @@ public class MD5 {
     /**
      * Convenience method for initNativeLibrary(false).
      *
+     * @return 
      */
     public static synchronized final boolean initNativeLibrary() {
         return initNativeLibrary(false);

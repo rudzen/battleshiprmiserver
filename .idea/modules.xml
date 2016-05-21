@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BattleshipRMIServer.iml" filepath="$PROJECT_DIR$/BattleshipRMIServer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/build/generated-sources/generated-sources.iml" filepath="$PROJECT_DIR$/build/generated-sources/generated-sources.iml" />
-      <module fileurl="file://$PROJECT_DIR$/build/generated/jax-wsCache/jax-wsCache.iml" filepath="$PROJECT_DIR$/build/generated/jax-wsCache/jax-wsCache.iml" />
     </modules>
   </component>
 </project>

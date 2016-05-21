@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,12 @@ package login;
 
 import java.rmi.RemoteException;
 
-import interfaces.IClientListener;
+import interfaces.IClientRMI;
 
 /**
  * Simple SOAP login system.....
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public final class Login {
 
@@ -38,7 +38,7 @@ public final class Login {
     private final static String IMPL = "BrugeradminImplService";
     private final static String WSDL = "http://javabog.dk:9901/brugeradmin?wsdl";
     
-    public static boolean loginBA(final String userName, final String password, final IClientListener client) throws RemoteException {
+    public static boolean loginBA(final String userName, final String password, final IClientRMI client) throws RemoteException {
 /*
         try {
             QName qname = new QName(ADDRESS, IMPL);
@@ -58,7 +58,7 @@ public final class Login {
         return false;
     }
     
-    public static boolean loginOWNAGE(final String userName, final String password, final IClientListener client) {
+    public static boolean loginOWNAGE(final String userName, final String password, final IClientRMI client) {
         return false;
     }
     

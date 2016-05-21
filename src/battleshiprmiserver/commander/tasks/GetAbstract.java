@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,19 @@
  */
 package battleshiprmiserver.commander.tasks;
 
-import interfaces.IClientListener;
 import rest.BattleshipJerseyClient;
+import interfaces.IClientRMI;
 
 /**
  * Generic abstraction of needed objects to complete the task
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public abstract class GetAbstract implements Runnable {
     
-    protected IClientListener client;
+    protected IClientRMI client;
     protected BattleshipJerseyClient rest = new BattleshipJerseyClient();
     
-    public GetAbstract(final IClientListener client) {
+    public GetAbstract(final IClientRMI client) {
         this.client = client;
     }
     

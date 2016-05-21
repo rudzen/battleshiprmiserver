@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ package game;
 import java.util.Objects;
 
 import dataobjects.Player;
-import interfaces.IClientListener;
+import interfaces.IClientRMI;
 
 /**
  * Represents a game session.<br>
@@ -48,10 +48,10 @@ public class GameSession {
     private Player playerTwo;
 
     /* player one's client interface */
-    private IClientListener clientOne;
+    private IClientRMI clientOne;
     
     /* player two's client interface */
-    private IClientListener clientTwo;
+    private IClientRMI clientTwo;
 
     /* the game session ID - this is a MD5 hash (very good for the purpose and very fast!) */
     private String gameSessionID;
@@ -75,7 +75,7 @@ public class GameSession {
     private int activeID;
     
     /* constructor for one player */
-    public GameSession(final Player playerOne, final IClientListener clientOne) {
+    public GameSession(final Player playerOne, final IClientRMI clientOne) {
         this.playerOne = playerOne;
         this.clientOne = clientOne;
         timeCreated = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class GameSession {
     }
 
     /* constructor for two players */
-    public GameSession(final Player playerOne, final IClientListener clientOne, final Player playerTwo, final IClientListener clientTwo) {
+    public GameSession(final Player playerOne, final IClientRMI clientOne, final Player playerTwo, final IClientRMI clientTwo) {
         this(playerOne, clientOne);
         this.playerTwo = playerTwo;
         this.clientTwo = clientTwo;
@@ -115,7 +115,7 @@ public class GameSession {
      * @param client The client interface to check for
      * @return true if exists, otherwise false
      */
-    public boolean isInSession(final IClientListener client) {
+    public boolean isInSession(final IClientRMI client) {
         updateActionTime();
         return clientOne.equals(client) || clientTwo.equals(client);
     }
@@ -136,7 +136,7 @@ public class GameSession {
      * @return The other players client interface
      * @deprecated 
      */
-    public IClientListener getOtherPlayer(final IClientListener client) {
+    public IClientRMI getOtherPlayer(final IClientRMI client) {
         updateActionTime();
         return clientOne.equals(client) ? clientTwo : clientOne;
     }
@@ -146,7 +146,7 @@ public class GameSession {
      * @param playerName The player requesting the opponent
      * @return The other players client interface.
      */
-    public IClientListener getOtherPlayer(final String playerName) {
+    public IClientRMI getOtherPlayer(final String playerName) {
         updateActionTime();
         return playerOne.getName().equals(playerName) ? clientTwo : clientOne;
     }
@@ -159,12 +159,12 @@ public class GameSession {
         lastAction = System.currentTimeMillis();
     }
 
-    public void setPlayerOneAll(final Player playerOne, final IClientListener clientOne) {
+    public void setPlayerOneAll(final Player playerOne, final IClientRMI clientOne) {
         this.playerOne = playerOne;
         this.clientOne = clientOne;
     }
 
-    public void setPlayerTwoAll(final Player playerTwo, final IClientListener clientTwo) {
+    public void setPlayerTwoAll(final Player playerTwo, final IClientRMI clientTwo) {
         this.playerTwo = playerTwo;
         this.clientTwo = clientTwo;
     }
@@ -173,7 +173,7 @@ public class GameSession {
         return playerName.equals(playerOne.getName()) ? playerOne : playerTwo;
     }
     
-    public IClientListener getClientByName(final String playerName) {
+    public IClientRMI getClientByName(final String playerName) {
         return playerName.equals(playerOne.getName()) ? clientOne : clientTwo;
     }
     
@@ -259,19 +259,19 @@ public class GameSession {
         this.playerTwo = playerTwo;
     }
 
-    public IClientListener getClientOne() {
+    public IClientRMI getClientOne() {
         return clientOne;
     }
 
-    public void setClientOne(final IClientListener clientOne) {
+    public void setClientOne(final IClientRMI clientOne) {
         this.clientOne = clientOne;
     }
 
-    public IClientListener getClientTwo() {
+    public IClientRMI getClientTwo() {
         return clientTwo;
     }
 
-    public void setClientTwo(final IClientListener clientTwo) {
+    public void setClientTwo(final IClientRMI clientTwo) {
         this.clientTwo = clientTwo;
     }
 

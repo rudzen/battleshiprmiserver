@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,8 @@
  */
 package battleshiprmiserver;
 
-import com.css.rmi.ServerTwoWaySocketFactory;
-
-import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Random;
 import java.util.Timer;
@@ -47,13 +42,14 @@ import dataobjects.Player;
 import game.BattleGame;
 import game.GameSession;
 import interfaces.IBattleShip;
-import interfaces.IClientListener;
+import interfaces.IClientRMI;
+import javax.jws.WebService;
 
 /**
  *
  * @author rudz
  */
-@SuppressWarnings("serial")
+@WebService(endpointInterface = "interfaces.IBattleshipSOAP")
 public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleShip {
 
     /**
@@ -64,7 +60,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private static volatile BattleGame bg;
 
     /* the client interface index based on player names as string */
-    private static final ConcurrentHashMap<String, IClientListener> index = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, IClientRMI> index = new ConcurrentHashMap<>();
 
     /* the game session(s) based on the sessionID which is uniqly generated on player enter/leave session */
     private static final ConcurrentHashMap<String, GameSession> sessions = new ConcurrentHashMap<>();
@@ -76,7 +72,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
      */
     private static final ConcurrentHashMap<String, Player> players = new ConcurrentHashMap<>();
 
-    private static final ConcurrentHashMap<Integer, IClientListener> id_index = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Integer, IClientRMI> id_index = new ConcurrentHashMap<>();
+    private static final long serialVersionUID = 1L;
 
     /* timer to check for dead clients */
     private final Timer deadTimer = new Timer(true);
@@ -94,55 +91,11 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     public BattleshipServerRMI() throws RemoteException {
         super(Registry.REGISTRY_PORT);
 
+        /* configure battlegame object */
+        bg = new BattleGame(index, sessions);
+
         /* initiate the timer to check for dead clients */
         deadTimer.scheduleAtFixedRate(new DeadTimerMaintenance(), 90000, 90000);
-    }
-
-    public static void main(final String[] args) {
-        System.out.println("Loading battleship server, please wait.");
-        try {
-
-            if (args.length >= 1) {
-                BattleshipServerRMIHelper.setArgs(args);
-                System.out.println("Command line argument values changed to : " + Args.all());
-            }
-
-            /* set new socket through custom two-way socket factory */
-            RMISocketFactory.setSocketFactory(new ServerTwoWaySocketFactory());
-
-            /* export the registry from the same JVM */
-            LocateRegistry.createRegistry(Args.port);
-
-            /* set the REST address to be used */
-            //BattleshipJerseyClient.BASE_URI = Args.game_address;
-
-            /* Load the service */
-            final BattleshipServerRMI server = new BattleshipServerRMI();
-
-            if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new SecurityManager());
-                //System.setProperty("java.rmi.server.hostname", myIP);
-                System.setProperty("java.rmi.server.hostname", "localhost");
-                System.out.println("SecurityManager created.");
-            }
-
-            /* Print the basic information about the server */
-            new PrettyPrint(Args.ip, Args.port, Args.game_address).showMenu();
-
-            final String registration = "rmi://" + Args.registry() + "/Battleship";
-            System.out.println("Using registry : " + registration);
-
-            /* Register with service so that clients can find us */
-            Naming.rebind(registration, server);
-
-            /* configure battlegame object */
-            bg = new BattleGame(index, sessions);
-
-        } catch (final RemoteException re) {
-            System.err.println("Remote Error - " + re);
-        } catch (final Exception e) {
-            System.err.println("Error - " + e);
-        }
     }
 
     public void updateUser() {
@@ -159,7 +112,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
      * @throws RemoteException
      */
     @Override
-    public void login(final IClientListener client, final String user, final String pw) throws RemoteException {
+    public void login(final IClientRMI client, final String user, final String pw) throws RemoteException {
         System.out.println("Attempted login by : " + user);
 //        for (;;) {
 //            FutureBasic.login(client, Double.toString(Math.random()), pw);
@@ -197,14 +150,14 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public boolean registerClient(final IClientListener clientInterface, final String playerName) throws RemoteException {
+    public boolean registerClient(final IClientRMI clientInterface, final String playerName) throws RemoteException {
         new RegisterClient(playerName, clientInterface).run();
         updateUser();
         return index.contains(clientInterface);
     }
 
     @Override
-    public boolean removeClient(final IClientListener clientInterface, final String playerName, final String sessionID) throws RemoteException {
+    public boolean removeClient(final IClientRMI clientInterface, final String playerName, final String sessionID) throws RemoteException {
         System.out.println("Disconnected manually -> " + playerName);
         index.remove(playerName);
         updateUser();
@@ -215,12 +168,10 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     public Player getOther(final Player playerOne) throws RemoteException {
         games_lock.lock();
         Player returnPlayer = null;
-        boolean found = false;
         try {
             for (final GameSession gs : bg.getSessions().values()) {
                 if (gs.isInSession(playerOne)) {
                     returnPlayer = gs.getOtherPlayer(playerOne);
-                    found = true;
                     break;
                 }
             }
@@ -234,7 +185,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void fireShot(final IClientListener client, final int lobbyID, final int playerID, final int x, final int y) throws RemoteException {
+    public void fireShot(final IClientRMI client, final int lobbyID, final int playerID, final int x, final int y) throws RemoteException {
         FutureBasic.fireShot(client, lobbyID, playerID, x, y);
     }
 
@@ -245,13 +196,13 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void deployShips(final IClientListener client, final int lobbyID, final Player player) throws RemoteException {
+    public void deployShips(final IClientRMI client, final int lobbyID, final Player player) throws RemoteException {
         //System.out.println(player + " -> deployShips() :\n" + Arrays.toString(BattleshipJerseyHelper.shipsToString(player.getShips())));
         FutureBasic.deployShips(client, lobbyID, player);
     }
 
     @Override
-    public void updatePlayer(final IClientListener client, final Player player) throws RemoteException {
+    public void updatePlayer(final IClientRMI client, final Player player) throws RemoteException {
         /* this functionality is NOT allowed to be run by multiple users at the same time!!!! */
         try {
             games_lock.lock();
@@ -295,51 +246,51 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     @Override
-    public void requestOtherPlayers(final IClientListener client, final int playerID) throws RemoteException {
+    public void requestOtherPlayers(final IClientRMI client, final int playerID) throws RemoteException {
         System.out.println("Player : " + client.getPlayer().getName() + " requesting other players.");
         FutureBasic.getLobbys(client, playerID);
     }
 
     @Override
-    public void requestFreeLobbies(final IClientListener client, final int playerID) throws RemoteException {
+    public void requestFreeLobbies(final IClientRMI client, final int playerID) throws RemoteException {
         System.out.println("Player : " + client.getPlayer().getName() + " requesting free lobbies.");
         FutureBasic.getFreeLobbys(client, playerID);
     }
 
     @Override
-    public void requestLobbyID(final IClientListener client, final int playerID) throws RemoteException {
+    public void requestLobbyID(final IClientRMI client, final int playerID) throws RemoteException {
         System.out.println("Player (ID) : " + playerID + " is requesting lobby ID");
         FutureBasic.newLobby(client, playerID);
     }
 
     @Override
-    public void ping(final IClientListener client, final long time) throws RemoteException {
+    public void ping(final IClientRMI client, final long time) throws RemoteException {
         client.ping(time);
     }
 
     @Override
-    public void requestAllPlayerIDs(final IClientListener client) throws RemoteException {
+    public void requestAllPlayerIDs(final IClientRMI client) throws RemoteException {
         System.out.println("Player : " + client.getPlayer().getName() + " is requesting all player IDs");
         FutureBasic.getAllPlayerIDs(client);
     }
 
     @Override
-    public void wait(final IClientListener client, final int lobbyID, final int playerID) throws RemoteException {
+    public void wait(final IClientRMI client, final int lobbyID, final int playerID) throws RemoteException {
         FutureBasic.wait(client, lobbyID, playerID);
     }
 
     @Override
-    public void joinLobby(final IClientListener cliet, final int lobbyID, final int playerID) throws RemoteException {
+    public void joinLobby(final IClientRMI cliet, final int lobbyID, final int playerID) throws RemoteException {
         FutureBasic.joinLobby(cliet, lobbyID, playerID);
     }
 
     @Override
-    public void requestAllLobbies(final IClientListener client, final int playerID) throws RemoteException {
+    public void requestAllLobbies(final IClientRMI client, final int playerID) throws RemoteException {
         FutureBasic.getLobbys(client, playerID);
     }
 
     @Override
-    public void debug_CreateLobbies(final IClientListener client, final int amount) throws RemoteException {
+    public void debug_CreateLobbies(final IClientRMI client, final int amount) throws RemoteException {
         games_lock.lock();
         System.out.println("DEBUG: Creating " + amount + " lobbies. (DEBUG FUNCTIONALITY IS NOW LOCKED!)");
         final Random rnd = new Random();
@@ -356,6 +307,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     private static class PublicMessage implements Runnable {
+
         private final String origin;
         private final String message;
         private final String title;
@@ -382,10 +334,11 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     }
 
     private static class RegisterClient implements Runnable {
-        private final String playerName;
-        private final IClientListener clientInterface;
 
-        public RegisterClient(final String playerName, final IClientListener clientInterface) {
+        private final String playerName;
+        private final IClientRMI clientInterface;
+
+        public RegisterClient(final String playerName, final IClientRMI clientInterface) {
             this.playerName = playerName;
             this.clientInterface = clientInterface;
         }

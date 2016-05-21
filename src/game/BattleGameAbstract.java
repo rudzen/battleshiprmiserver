@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JOptionPane;
 
 import dataobjects.Player;
-import interfaces.IClientListener;
+import interfaces.IClientRMI;
 
 /**
  *
@@ -55,7 +55,7 @@ public abstract class BattleGameAbstract {
      * The players mapping for the server. K = Player name V = Player's client
      * interface for callback
      */
-    protected final ConcurrentHashMap<String, IClientListener> players; // player's name + the players client interface
+    protected final ConcurrentHashMap<String, IClientRMI> players; // player's name + the players client interface
 
     /**
      * The md5 object used to calculate sessionIDs with
@@ -69,7 +69,7 @@ public abstract class BattleGameAbstract {
      */
     private final ReentrantLock md5_lock;
 
-    protected BattleGameAbstract(final ConcurrentHashMap<String, IClientListener> players, final ConcurrentHashMap<String, GameSession> sessions) {
+    protected BattleGameAbstract(final ConcurrentHashMap<String, IClientRMI> players, final ConcurrentHashMap<String, GameSession> sessions) {
         this.sessions = sessions;
         this.players = players; 
         md5_lock = new ReentrantLock(true);
@@ -77,7 +77,7 @@ public abstract class BattleGameAbstract {
         md5 = new MD5();
     }
 
-    protected String isInSession(final IClientListener client) {
+    protected String isInSession(final IClientRMI client) {
 
         for (final GameSession gs : sessions.values()) {
             if (!gs.isFull() && gs.isInSession(client)) {
@@ -124,7 +124,7 @@ public abstract class BattleGameAbstract {
      * @param client The players client interface callback
      * @return The new session ID
      */
-    public String updateSessionID(final Player player, final IClientListener client) {
+    public String updateSessionID(final Player player, final IClientRMI client) {
         md5_lock.lock();
 
         md5.Init();
@@ -144,7 +144,7 @@ public abstract class BattleGameAbstract {
         return md;
     }
 
-    public String updateSessionID(final String playerOne, final IClientListener clientOne, final String playerTwo, final IClientListener clientTwo) {
+    public String updateSessionID(final String playerOne, final IClientRMI clientOne, final String playerTwo, final IClientRMI clientTwo) {
         md5_lock.lock();
 
         md5.Init();
@@ -179,7 +179,7 @@ public abstract class BattleGameAbstract {
         return sessions;
     }
 
-    public Map<String, IClientListener> getPlayers() {
+    public Map<String, IClientRMI> getPlayers() {
         return players;
     }
 }

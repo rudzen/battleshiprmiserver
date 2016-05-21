@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,12 @@ import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
-import interfaces.IClientListener;
 import rest.BattleshipJerseyHelper;
+import interfaces.IClientRMI;
 
 /**
  *
- * @author Rudy Alex Kohn <s133235@student.dtu.dk>
+ * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public class GetPlayerID extends GetAbstract implements Runnable {
 
@@ -47,7 +47,7 @@ public class GetPlayerID extends GetAbstract implements Runnable {
      * @param name
      * @param client
      */
-    public GetPlayerID(final IClientListener client, final String name) {
+    public GetPlayerID(final IClientRMI client, final String name) {
         super(client);
         this.name = name;
     }

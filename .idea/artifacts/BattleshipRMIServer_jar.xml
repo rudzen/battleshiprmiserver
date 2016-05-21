@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact name="BattleshipRMIServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BattleshipRMIServer_jar</output-path>
+    <root id="root">
+      <element id="archive" name="BattleshipRMIServer.jar">
+        <element id="module-output" name="BattleshipRMIServer" />
+      </element>
+      <element id="library" level="project" name="gson-2.6.2" />
+      <element id="library" level="project" name="lib" />
+      <element id="library" level="project" name="restlib" />
+      <element id="library" level="project" name="javax.ws.rs-api-2.0" />
+    </root>
+  </artifact>
+</component>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
+ * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,11 @@ import java.util.ArrayList;
 /**
  * Server -> Client callback interface. These are the methods being called on
  * the client.
+ * SOAP - not implemented yet (just a copy of RMI interface)
  *
  * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
-public interface IClientListener extends Remote {
+public interface IClientSOAP extends Remote {
 
     /**
      * Informs client if it can play or not, this is called with basic lee every
