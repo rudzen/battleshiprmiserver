@@ -45,6 +45,9 @@ import interfaces.IBattleShip;
 import interfaces.IChatClient;
 import interfaces.IClientRMI;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
 import javax.jws.WebService;
 
 /**
@@ -322,10 +325,15 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             returnList.add(s);
         });
 
-        chat_index.keySet().parallelStream().forEach((s) -> {
+        returnList.sort((String o1, String o2) -> {
+            return o1.compareTo(o2);
+        });
+
+        chat_index.keySet().stream().forEach((s) -> {
             try {
                 chat_index.get(s).getAllUsers(returnList);
             } catch (RemoteException ex) {
+                //chat_index.remove(s);
                 Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -335,6 +343,23 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     public void removeChatClient(IChatClient client, String name) throws RemoteException {
         chat_index.remove(name);
         index.get(name).showMessage("Disconnected from chat.", "Server message", JOptionPane.INFORMATION_MESSAGE);
+        ArrayList<String> returnList = new ArrayList<>();
+        chat_index.keySet().stream().forEach((s) -> {
+            returnList.add(s);
+        });
+
+        returnList.sort((String o1, String o2) -> {
+            return o1.compareTo(o2);
+        });
+
+        chat_index.keySet().stream().forEach((s) -> {
+            try {
+                chat_index.get(s).newMessage("<Server>", name + " disconnected.");
+                chat_index.get(s).getAllUsers(returnList);
+            } catch (RemoteException ex) {
+                Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     @Override
@@ -343,7 +368,6 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         for (IChatClient c : chat_index.values()) {
             c.newMessage(name, message);
         }
-
     }
 
     private static class PublicMessage implements Runnable {
@@ -431,6 +455,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                         System.out.println("Maintenance : " + s + " removed from index..");
                         index.remove(s);
                         players.remove(s);
+                        chat_index.remove(s);
                     }
                 }
                 if (index.size() != clientCount.get()) {
@@ -457,5 +482,4 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             }
         }
     }
-
 }
