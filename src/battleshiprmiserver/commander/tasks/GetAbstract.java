@@ -35,9 +35,13 @@ public abstract class GetAbstract implements Runnable {
     protected IClientRMI client;
     protected BattleshipJerseyClient rest = new BattleshipJerseyClient();
     
+    protected final static int DEF_TIMEOUT = 1000; 
+    
     public GetAbstract(final IClientRMI client) {
         this.client = client;
     }
-    
+
+    @Override
+    public abstract void run();
     
 }

@@ -25,27 +25,30 @@ package battleshiprmiserver;
 
 /**
  * Simple argument wrapper class
+ *
  * @author Rudy Alex Kohn (s133235@student.dtu.dk)
  */
 public final class Args {
-    
+
     public static String ip;
     public static int port;
     public static String game_address;
-    
+
     static {
         ip = "localhost";
         port = 6769;
         //game_address = "http://localhost:8080/BattleshipREST/test/";
-        game_address = "http://104.46.52.169:8080/BattleshipREST/test/";
+        //game_address = "http://104.46.52.169:8080/BattleshipREST/test/";
+        game_address = "http://ubuntu4.javabog.dk:6004/BattleshipREST/test/";
+
     }
-    
+
     public static String all() {
         return "Args{" + "ip=" + ip + ", port=" + port + ", game_address=" + game_address + '}';
     }
-    
+
     public static String registry() {
         return ip + ":" + Integer.toString(port);
     }
-    
+
 }

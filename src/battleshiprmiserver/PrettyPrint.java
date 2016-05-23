@@ -40,13 +40,13 @@ public final class PrettyPrint {
     private final int MAX_LEN = 78;
     private final int MAX_HEI = 20;
 
-    private final String dot = "\u201C";
+    private final String dot = "*";
 
     private final String SEP = replicate(dot, MAX_LEN);
 
     private final String TITEL = "BattleShip RMI Server v1";
     private final String TITEL2 = "";//Configure port with --hangman-port=<port>";
-    private final String INFO = "R.A.Kohn s133235";
+    private final String INFO = "R.A.Kohn";
 
     private final int TITLE_LEN = TITEL.length() + TITEL2.length();
 
@@ -100,7 +100,7 @@ public final class PrettyPrint {
     private int getStatus(final int pos) {
         final String IP = getIPString();
         int p = pos;
-        menu.add(++p, makeSingleBordered(""));
+        menu.add(++p, makeSingleBorderCentered("s133235@student.dtu"));
         menu.add(++p, makeFilledBorder("Status"));
         menu.add(++p, makeSingleBordered("Date started             : " + new Date().toString().trim()));
         menu.add(++p, makeSingleBordered("Server Local IP          : " + (IP != null ? IP : "<No NIC detected.>")));

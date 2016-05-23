@@ -76,27 +76,27 @@ public final class Main {
                 Naming.rebind(registration, server);
                 System.out.println("RMI Initialized.. " + registration + ' ');
 
-                if (runSOAP) {
-                    System.out.print("Initializing SOAP webservice.. ");
-
-                    Args.port++;
-                    boolean portOK = false;
-
-                    //IBattleShipSOAP soapServer = new BattleshipServerRMI();
-                    while (Args.port <= 65535) {
-                        try {
-                            Endpoint.publish(String.format("http://localhost/Battleship/soap", Args.ip, String.valueOf(Args.port)), server);
-                            portOK = true;
-                            break;
-                        } catch (final Exception e) {
-                            System.out.println(Arrays.toString(e.getStackTrace()));
-                            //System.out.println(e.getMessage());
-                            break;
-                            //System.out.println(String.format("\nFailed for port %s.\n Trying port %s", Args.port, ++Args.port));
-                            //System.out.print("Initializing SOAP webservice.. ");
-                        }
-                    }
-                }
+//                if (runSOAP) {
+//                    System.out.print("Initializing SOAP webservice.. ");
+//
+//                    Args.port++;
+//                    boolean portOK = false;
+//
+//                    //IBattleShipSOAP soapServer = new BattleshipServerRMI();
+//                    while (Args.port <= 65535) {
+//                        try {
+//                            Endpoint.publish(String.format("http://localhost/Battleship/soap", Args.ip, String.valueOf(Args.port)), server);
+//                            portOK = true;
+//                            break;
+//                        } catch (final Exception e) {
+//                            System.out.println(Arrays.toString(e.getStackTrace()));
+//                            //System.out.println(e.getMessage());
+//                            break;
+//                            //System.out.println(String.format("\nFailed for port %s.\n Trying port %s", Args.port, ++Args.port));
+//                            //System.out.print("Initializing SOAP webservice.. ");
+//                        }
+//                    }
+//                }
             }
             System.out.print("OK.\n");
         } catch (final RemoteException re) {

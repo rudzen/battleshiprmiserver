@@ -55,8 +55,10 @@ public class NewLobby implements Runnable {
     public void run() {
         final Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        final javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
-        //javax.ws.rs.core.Response res = rest.target("http://localhost:8080/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
+        
+        final javax.ws.rs.core.Response res = rest.target("http://ubuntu4.javabog.dk:6004/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
+        //final javax.ws.rs.core.Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/res/new/lobby/playerid=" + Integer.toString(playerID)).request(MediaType.APPLICATION_JSON).put(Entity.json(""));
+        
         final String response = res.readEntity(String.class);
         System.out.println("newLobby response : " + response);
         final Lobby l = new Gson().fromJson(response, Lobby.class);

@@ -67,8 +67,13 @@ public class LoginTask implements Runnable {
     public void run() {
         final Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        //Response res = rest.target("http://localhost:8080/BattleshipREST/test/database/login/BA/playerid=" + u + "/password=" + p).request(MediaType.APPLICATION_JSON).get();
-        Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=" + BattleshipJerseyHelper.fixString(u) + "/password=" + BattleshipJerseyHelper.fixString(p)).request(MediaType.APPLICATION_JSON).get();
+        //rest.property(ClientProperties.CONNECT_TIMEOUT, 2000);
+        //rest.property(ClientProperties.READ_TIMEOUT, 2000);
+
+        //Response res = rest.target("http://localhost:8080/BattleshipREST/test/database/login/BA/playerid=" + BattleshipJerseyHelper.fixString(u) + "/password=" + BattleshipJerseyHelper.fixString(p)).request(MediaType.APPLICATION_JSON).get();
+        Response res = rest.target("http://ubuntu4.javabog.dk:6004/BattleshipREST/test/database/login/BA/playerid=" + u + "/password=" + p).request(MediaType.APPLICATION_JSON).get();
+//        Response res = rest.target("http://104.46.52.169:8080/BattleshipREST/test/database/login/BA/playerid=" + BattleshipJerseyHelper.fixString(u) + "/password=" + BattleshipJerseyHelper.fixString(p)).request(MediaType.APPLICATION_JSON).get();
+
         String s = res.readEntity(String.class);
         //System.out.println(s);
 
@@ -76,13 +81,15 @@ public class LoginTask implements Runnable {
         //String s = rest.loginBA(u, p);
         //System.out.println("Login response : " + s);
         try {
-            if (s.contains(wrong)) {
+            if (s == null || s.isEmpty()) {
+                client.showMessage("Unable to perform login.", "Login error", JOptionPane.ERROR_MESSAGE);
+            } else if (s.contains(wrong)) {
                 /* wrong password answer from server, let the client know */
                 client.showMessage(wrong, login, JOptionPane.ERROR_MESSAGE);
             } else if (s.contains("com.mysql.jdbc.exceptions.jdbc4.MySQL")) {
                 /* sql exception */
-                @SuppressWarnings("ThrowableResultIgnored") final
-                SQLException se = new Gson().fromJson(s, SQLException.class);
+                @SuppressWarnings("ThrowableResultIgnored")
+                final SQLException se = new Gson().fromJson(s, SQLException.class);
                 client.showMessage("SQL Error : " + se.getMessage(), login, JOptionPane.ERROR_MESSAGE);
             } else if ("1".equals(s)) {
                 /* server returns "1" if the player was created */

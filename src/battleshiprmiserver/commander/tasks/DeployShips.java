@@ -73,7 +73,9 @@ public class DeployShips extends GetAbstract {
 
         final Client rest = ClientBuilder.newClient();
         rest.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION, true);
-        final String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + BattleshipJerseyHelper.fixString(responseJSon);
+        
+        final String thething = "http://ubuntu4.javabog.dk:6004/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + BattleshipJerseyHelper.fixString(responseJSon);
+        //final String thething = "http://104.46.52.169:8080/BattleshipREST/test/res/deploy_ships/" + Integer.toString(lobbyID) + "/" + Integer.toString(player.getId()) + "/" + BattleshipJerseyHelper.fixString(responseJSon);
 
         System.out.println("deploy() url " + thething);
         System.out.println(thething.charAt(96));
