@@ -42,7 +42,9 @@ import dataobjects.Player;
 import game.BattleGame;
 import game.GameSession;
 import interfaces.IBattleShip;
+import interfaces.IChatClient;
 import interfaces.IClientRMI;
+import java.util.ArrayList;
 import javax.jws.WebService;
 
 /**
@@ -75,7 +77,12 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     private static final ConcurrentHashMap<Integer, IClientRMI> id_index = new ConcurrentHashMap<>();
     private static final long serialVersionUID = 1L;
 
-    /* timer to check for dead clients */
+    /* chat stuff (testing) */
+    private static final ConcurrentHashMap<String, IChatClient> chat_index = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, String> chat_messages = new ConcurrentHashMap<>();
+
+    /* end of chat stuff */
+ /* timer to check for dead clients */
     private final Timer deadTimer = new Timer(true);
 
     /* to keep track of how many clients there are connected. */
@@ -302,6 +309,39 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
         } finally {
             games_lock.unlock();
+        }
+
+    }
+
+    @Override
+    public void registerChatClient(IChatClient client, String name) throws RemoteException {
+        chat_index.put(name, client);
+        client.newMessage("<Server>", "Joined chat. Welcome!");
+        ArrayList<String> returnList = new ArrayList<>();
+        chat_index.keySet().stream().forEach((s) -> {
+            returnList.add(s);
+        });
+
+        chat_index.keySet().parallelStream().forEach((s) -> {
+            try {
+                chat_index.get(s).getAllUsers(returnList);
+            } catch (RemoteException ex) {
+                Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+
+    @Override
+    public void removeChatClient(IChatClient client, String name) throws RemoteException {
+        chat_index.remove(name);
+        index.get(name).showMessage("Disconnected from chat.", "Server message", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void sendMessage(IChatClient client, String name, String message) throws RemoteException {
+        chat_messages.put(name, message);
+        for (IChatClient c : chat_index.values()) {
+            c.newMessage(name, message);
         }
 
     }

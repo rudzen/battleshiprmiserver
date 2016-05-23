@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2016 Rudy Alex Kohn (s133235@student.dtu.dk).
+ * Copyright 2016 Rudy Alex Kohn <s133235@student.dtu.dk>.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,15 @@
  */
 package interfaces;
 
-import dataobjects.Player;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+
+import dataobjects.Player;
 
 /**
  * The server's interface. Called by the client.
  *
- * @author Rudy Alex Kohn (s133235@student.dtu.dk)
+ * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public interface IBattleShip extends Remote {
 
@@ -49,7 +50,7 @@ public interface IBattleShip extends Remote {
      *
      * @param clientInterface The client interface to remove
      * @param playerName The player
-     * @param sessionID
+     * @param sessionID The session md5 string ID
      * @return true if removed, otherwise false.
      * @throws RemoteException If server is unreachable
      */
@@ -60,7 +61,7 @@ public interface IBattleShip extends Remote {
     /**
      * Let the server know at what location you attempted to fire a shot at.
      *
-     * @param client
+     * @param client The client interface
      * @param lobbyID The lobby ID
      * @param playerID The player shooting
      * @param x the X
@@ -102,7 +103,7 @@ public interface IBattleShip extends Remote {
     /**
      * Deploy set-up of ships to the server.
      *
-     * @param client
+     * @param client The client interface
      * @param player The player
      * @param lobbyID The lobby ID
      * @throws RemoteException If server is unreachable
@@ -112,7 +113,7 @@ public interface IBattleShip extends Remote {
     /**
      * Updates the player that belongs to the client listener interface.
      *
-     * @param client
+     * @param client The client interface
      * @param player The new player object
      * @throws RemoteException If server is unreachable
      */
@@ -232,19 +233,27 @@ public interface IBattleShip extends Remote {
 
     /**
      * Request all lobbies from the server
+     *
      * @param client The client
      * @param playerID The playerID
      * @throws RemoteException If server is unreachable
      */
     void requestAllLobbies(IClientRMI client, int playerID) throws RemoteException;
 
-    
     /**
      * Debug functionality to add X lobbies.
+     *
      * @param client The client
      * @param amount The amount of lobbies to create
      * @throws RemoteException If server is unreachable
      */
     void debug_CreateLobbies(IClientRMI client, int amount) throws RemoteException;
-    
+
+    /* chat test */
+    void registerChatClient(IChatClient client, String name) throws RemoteException;
+
+    void removeChatClient(IChatClient client, String name) throws RemoteException;
+
+    void sendMessage(IChatClient client, String name, String message) throws RemoteException;
+
 }
