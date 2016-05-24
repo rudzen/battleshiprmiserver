@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utility.Statics;
 
 /**
  * Simple class to print out stuff to console that looks nice!
@@ -102,12 +103,13 @@ public final class PrettyPrint {
         int p = pos;
         menu.add(++p, makeSingleBorderCentered("s133235@student.dtu"));
         menu.add(++p, makeFilledBorder("Status"));
-        menu.add(++p, makeSingleBordered("Date started             : " + new Date().toString().trim()));
-        menu.add(++p, makeSingleBordered("Server Local IP          : " + (IP != null ? IP : "<No NIC detected.>")));
-        menu.add(++p, makeSingleBordered("RMI Registry             : " + registry));
-        menu.add(++p, makeSingleBordered("Port                     : " + Integer.toString(port)));
-        menu.add(++p, makeSingleBordered("REST Game Server         : " + rest));
-        menu.add(++p, makeSingleBordered("Clients Connected        : " + "N/A"));
+        menu.add(++p, makeSingleBordered("Date started          : " + new Date().toString().trim()));
+        menu.add(++p, makeSingleBordered("Date build            : " + Statics.buildDate.toString().trim()));
+        menu.add(++p, makeSingleBordered("Server Local IP       : " + (IP != null ? IP : "<No NIC detected.>")));
+        menu.add(++p, makeSingleBordered("RMI Registry          : " + registry));
+        menu.add(++p, makeSingleBordered("Port                  : " + Integer.toString(port)));
+        menu.add(++p, makeSingleBordered("Game Server           : " + rest));
+        menu.add(++p, makeSingleBordered("Clients Connected     : " + "N/A"));
         return p;
     }
 
