@@ -33,26 +33,26 @@ public class BattleshipException extends Exception {
 
     String error;
 
-    public BattleshipException(String error) {
+    public BattleshipException(final String error) {
         this.error = error;
     }
 
-    public BattleshipException(String error, String message) {
+    public BattleshipException(final String error, final String message) {
         super(message);
         this.error = error;
     }
 
-    public BattleshipException(String error, String message, Throwable cause) {
+    public BattleshipException(final String error, final String message, final Throwable cause) {
         super(message, cause);
         this.error = error;
     }
 
-    public BattleshipException(String error, Throwable cause) {
+    public BattleshipException(final String error, final Throwable cause) {
         super(cause);
         this.error = error;
     }
 
-    public BattleshipException(String error, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public BattleshipException(final String error, final String message, final Throwable cause, final boolean enableSuppression, final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.error = error;
     }

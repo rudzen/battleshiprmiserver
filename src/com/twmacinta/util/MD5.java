@@ -114,7 +114,7 @@ public class MD5 {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     };
 
-    private static boolean native_lib_loaded = false;
+    private static boolean native_lib_loaded;
     private static boolean native_lib_init_pending = true;
 
     /**

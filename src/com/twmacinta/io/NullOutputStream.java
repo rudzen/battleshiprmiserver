@@ -26,7 +26,7 @@ import java.io.*;
 
 public class NullOutputStream extends OutputStream {
 
-  private boolean closed = false;
+  private boolean closed;
 
   public NullOutputStream() {
   }

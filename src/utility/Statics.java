@@ -64,31 +64,31 @@ public final class Statics {
      */
     private static Date getClassBuildTime() {
         Date d = null;
-        Class<?> currentClass = new Object() {
+        final Class<?> currentClass = new Object() {
         }.getClass().getEnclosingClass();
-        URL resource = currentClass.getResource(currentClass.getSimpleName() + ".class");
+        final URL resource = currentClass.getResource(currentClass.getSimpleName() + ".class");
         if (resource != null) {
-            String path;
+            final String path;
             switch (resource.getProtocol()) {
                 case "file":
                     try {
                         d = new Date(new File(resource.toURI()).lastModified());
-                    } catch (URISyntaxException ignored) {
+                    } catch (final URISyntaxException ignored) {
                     }
                     break;
                 case "jar":
                     path = resource.getPath();
-                    d = new Date(new File(path.substring(5, path.indexOf("!"))).lastModified());
+                    d = new Date(new File(path.substring(5, path.indexOf('!'))).lastModified());
                     break;
                 case "zip":
                     path = resource.getPath();
-                    File jarFileOnDisk = new File(path.substring(0, path.indexOf("!")));
+                    final File jarFileOnDisk = new File(path.substring(0, path.indexOf('!')));
                     //long jfodLastModifiedLong = jarFileOnDisk.lastModified ();
                     //Date jfodLasModifiedDate = new Date(jfodLastModifiedLong);
                     try (JarFile jf = new JarFile(jarFileOnDisk)) {
-                        ZipEntry ze = jf.getEntry(path.substring(path.indexOf("!") + 2));//Skip the ! and the /
-                        long zeTimeLong = ze.getTime();
-                        Date zeTimeDate = new Date(zeTimeLong);
+                        final ZipEntry ze = jf.getEntry(path.substring(path.indexOf('!') + 2));//Skip the ! and the /
+                        final long zeTimeLong = ze.getTime();
+                        final Date zeTimeDate = new Date(zeTimeLong);
                         d = zeTimeDate;
                     } catch (IOException | RuntimeException ignored) {
                     }

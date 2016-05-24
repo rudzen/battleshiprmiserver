@@ -38,16 +38,16 @@ import utility.Statics;
  */
 public final class PrettyPrint {
 
-    private final int MAX_LEN = 78;
-    private final int MAX_HEI = 20;
+    private static final int MAX_LEN = 78;
+    private static final int MAX_HEI = 20;
 
-    private final String dot = "*";
+    private static final String dot = "*";
 
     private final String SEP = replicate(dot, MAX_LEN);
 
-    private final String TITEL = "BattleShip RMI Server v1";
-    private final String TITEL2 = "";//Configure port with --hangman-port=<port>";
-    private final String INFO = "R.A.Kohn";
+    private static final String TITEL = "BattleShip RMI Server v1";
+    private static final String TITEL2 = "";//Configure port with --hangman-port=<port>";
+    private static final String INFO = "R.A.Kohn";
 
     private final int TITLE_LEN = TITEL.length() + TITEL2.length();
 
@@ -158,7 +158,7 @@ public final class PrettyPrint {
             if (localIP == null) {
                 returnString = "";
             } else if (returnString != null && returnString.contains("/")) {
-                returnString = returnString.substring(returnString.indexOf("/"));
+                returnString = returnString.substring(returnString.indexOf('/'));
             }
         }
         return returnString;

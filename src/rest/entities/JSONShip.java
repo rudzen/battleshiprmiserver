@@ -37,7 +37,7 @@ public class JSONShip implements Serializable {
     public String shipname;
     public Integer length, row, col;
     public Boolean horizontal;
-    public boolean isDestroyed = false;
+    public boolean isDestroyed;
     public Point[] cordinates;
 
     public JSONShip() {

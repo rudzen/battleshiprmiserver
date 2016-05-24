@@ -321,10 +321,7 @@ public class GameSession {
         if (lobbyID != other.lobbyID) {
             return false;
         }
-        if (activeID != other.activeID) {
-            return false;
-        }
-        return Objects.equals(clientTwo, other.clientTwo);
+        return activeID == other.activeID && Objects.equals(clientTwo, other.clientTwo);
     }
 
     @Override

@@ -33,7 +33,7 @@ public  class SocketPool {
                 while (socketList.isEmpty()) {
                     wait();
                 }
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new InterruptedIOException();
             }
 

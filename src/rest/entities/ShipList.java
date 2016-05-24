@@ -21,7 +21,7 @@ public class ShipList extends ArrayList<Ship>{
         5, 4, 3, 3, 2
     };
     private static final long serialVersionUID = 1L;
-    protected boolean deployed = false;
+    protected boolean deployed;
     
     public ShipList(){
         super();

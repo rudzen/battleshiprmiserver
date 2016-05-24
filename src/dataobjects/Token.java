@@ -21,29 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package token;
+package dataobjects;
 
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Token holder class.
+ *
  * @author Rudy Alex Kohn <s133235@student.dtu.dk>
  */
 public final class Token implements Serializable {
 
     private static final long serialVersionUID = 5125315929384373192L;
-    
-    private String token;
+
+    private AtomicReference<String> token_real;
 
     public Token(String token) {
-        this.token = token;
+        token_real = new AtomicReference<>();
+        token_real.set(token);
     }
 
+    public AtomicReference<String> getToken_real() {
+        return token_real;
+    }
+
+    public void setToken_real(AtomicReference<String> token_real) {
+        this.token_real = token_real;
+    }
+
+    
+    /* fake getters and setters for token */
     public String getToken() {
-        return token;
+        return token_real.get();
     }
 
     public void setToken(String token) {
-        this.token = token;
+        token_real.set(token);
     }
 }
