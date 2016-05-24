@@ -501,6 +501,22 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                         }
                     }
                 }
+
+                if (!chat_index.isEmpty()) {
+                    final ArrayList<String> list = new ArrayList<>();
+                    list.addAll(chat_index.keySet());
+                    list.sort((String o1, String o2) -> {
+                        return o1.compareTo(o2);
+                    });
+                    chat_index.keySet().stream().forEach((s) -> {
+                        try {
+                            chat_index.get(s).getAllUsers(list);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                }
+
                 System.out.println("Maintenance : Removed " + count + " sessions.");
             }
         }
