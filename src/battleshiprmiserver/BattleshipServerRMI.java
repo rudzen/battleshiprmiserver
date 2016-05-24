@@ -82,7 +82,8 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
 
     /* chat stuff (testing) */
     private static final ConcurrentHashMap<String, IChatClient> chat_index = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<String, String> chat_messages = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, String> chat_messages = new ConcurrentHashMap<>();
+
 
     /* end of chat stuff */
  /* timer to check for dead clients */
@@ -319,10 +320,15 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
     @Override
     public void registerChatClient(IChatClient client, String name) throws RemoteException {
         chat_index.put(name, client);
-        client.newMessage("<Server>", "Joined chat. Welcome!");
-        ArrayList<String> returnList = new ArrayList<>();
+        System.out.println("User joined chat : " + name);
+        final ArrayList<String> returnList = new ArrayList<>(chat_index.size());
         chat_index.keySet().stream().forEach((s) -> {
             returnList.add(s);
+            try {
+                chat_index.get(s).newMessage("<Server>", name + " joined chat.");
+            } catch (RemoteException ex) {
+                Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         returnList.sort((String o1, String o2) -> {
@@ -333,17 +339,18 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
             try {
                 chat_index.get(s).getAllUsers(returnList);
             } catch (RemoteException ex) {
-                //chat_index.remove(s);
                 Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
     }
 
     @Override
     public void removeChatClient(IChatClient client, String name) throws RemoteException {
         chat_index.remove(name);
+        System.out.println("User left chat : " + name);
         index.get(name).showMessage("Disconnected from chat.", "Server message", JOptionPane.INFORMATION_MESSAGE);
-        ArrayList<String> returnList = new ArrayList<>();
+        ArrayList<String> returnList = new ArrayList<>(chat_index.size());
         chat_index.keySet().stream().forEach((s) -> {
             returnList.add(s);
         });
@@ -351,6 +358,9 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
         returnList.sort((String o1, String o2) -> {
             return o1.compareTo(o2);
         });
+
+        // in case the user switched login name and still are in chat.
+        client.newMessage("<Server>", "Disconnected from chat.");
 
         chat_index.keySet().stream().forEach((s) -> {
             try {
@@ -360,6 +370,19 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                 Logger.getLogger(BattleshipServerRMI.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+
+    @Override
+    public void updateChatClient(IChatClient client, String oldUser, String newUser) throws RemoteException {
+        if (chat_index.containsKey(oldUser)) {
+            IChatClient c = chat_index.get(oldUser);
+            System.out.println("User chat ID updated : " + oldUser + " > " + newUser);
+            removeChatClient(client, oldUser);
+            registerChatClient(c, newUser);
+        } else {
+            System.out.println("User " + oldUser + " was not in chat index, adding as new user.");
+            registerChatClient(client, newUser);
+        }
     }
 
     @Override
@@ -421,7 +444,7 @@ public class BattleshipServerRMI extends UnicastRemoteObject implements IBattleS
                     });
                 } else {
                     System.out.println("User added to index : " + playerName);
-                    clientInterface.showMessage("You have been added to the server index", "Server notification", JOptionPane.INFORMATION_MESSAGE);
+                    //clientInterface.showMessage("You have been added to the server index", "Server notification", JOptionPane.INFORMATION_MESSAGE);
                 }
                 index.put(playerName, clientInterface);
                 players.put(playerName, clientInterface.getPlayer());
