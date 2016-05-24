@@ -49,7 +49,7 @@ public final class Main {
 
             if (runRMI) {
                 /* set new socket through custom two-way socket factory */
-                RMISocketFactory.setSocketFactory(new ServerTwoWaySocketFactory());
+                //RMISocketFactory.setSocketFactory(new ServerTwoWaySocketFactory());
 
                 /* export the registry from the same JVM */
                 LocateRegistry.createRegistry(Args.port);
@@ -58,7 +58,7 @@ public final class Main {
                 if (System.getSecurityManager() == null) {
                     System.setSecurityManager(new SecurityManager());
                     //System.setProperty("java.rmi.server.hostname", myIP);
-                    System.setProperty("java.rmi.server.hostname", "localhost");
+                    System.setProperty("java.rmi.server.hostname", Args.ip);
                     System.out.println("SecurityManager created.");
                 }
 

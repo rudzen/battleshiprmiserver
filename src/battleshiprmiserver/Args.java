@@ -23,6 +23,11 @@
  */
 package battleshiprmiserver;
 
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utility.Statics;
+
 /**
  * Simple argument wrapper class
  *
@@ -35,7 +40,13 @@ public final class Args {
     public static String game_address;
 
     static {
-        ip = "localhost";
+        try {
+            ip = Statics.getFirstNonLoopbackAddress(true, false).getHostAddress();
+        } catch (SocketException ex) {
+            Logger.getLogger(Args.class.getName()).log(Level.SEVERE, null, ex);
+            ip = "localhost";
+        }
+        //ip = "localhost";
         port = 6769;
         //game_address = "http://localhost:8080/BattleshipREST/test/";
         //game_address = "http://104.46.52.169:8080/BattleshipREST/test/";
