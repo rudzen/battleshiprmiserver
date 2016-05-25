@@ -57,7 +57,6 @@ public final class Main {
                 /* set the REST address to be used */
                 if (System.getSecurityManager() == null) {
                     System.setSecurityManager(new SecurityManager());
-                    //System.setProperty("java.rmi.server.hostname", myIP);
                     System.setProperty("java.rmi.server.hostname", Args.ip);
                     System.out.println("SecurityManager created.");
                 }

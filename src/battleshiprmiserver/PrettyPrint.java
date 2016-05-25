@@ -46,7 +46,7 @@ public final class PrettyPrint {
     private final String SEP = replicate(dot, MAX_LEN);
 
     private static final String TITEL = "BattleShip RMI Server v1";
-    private static final String TITEL2 = "";//Configure port with --hangman-port=<port>";
+    private static final String TITEL2 = "A conceptual test for RMI";//Configure port with --hangman-port=<port>";
     private static final String INFO = "R.A.Kohn";
 
     private final int TITLE_LEN = TITEL.length() + TITEL2.length();
@@ -99,17 +99,17 @@ public final class PrettyPrint {
      * @return the row position when done.
      */
     private int getStatus(final int pos) {
-        final String IP = getIPString();
+        final String IP = Args.ip;//getIPString();
         int p = pos;
         menu.add(++p, makeSingleBorderCentered("s133235@student.dtu"));
         menu.add(++p, makeFilledBorder("Status"));
-        menu.add(++p, makeSingleBordered("Date started          : " + new Date().toString().trim()));
-        menu.add(++p, makeSingleBordered("Date build            : " + Statics.buildDate.toString().trim()));
-        menu.add(++p, makeSingleBordered("Server Local IP       : " + (IP != null ? IP : "<No NIC detected.>")));
-        menu.add(++p, makeSingleBordered("RMI Registry          : " + registry));
-        menu.add(++p, makeSingleBordered("Port                  : " + Integer.toString(port)));
-        menu.add(++p, makeSingleBordered("Game Server           : " + rest));
-        menu.add(++p, makeSingleBordered("Clients Connected     : " + "N/A"));
+        menu.add(++p, makeSingleBordered("Date started       : " + new Date().toString().trim()));
+        menu.add(++p, makeSingleBordered("Date build         : " + Statics.buildDate.toString().trim()));
+        menu.add(++p, makeSingleBordered("Server Local IP    : " + (IP != null ? IP : "<No NIC detected.>")));
+        menu.add(++p, makeSingleBordered("RMI Registry       : " + registry));
+        menu.add(++p, makeSingleBordered("Port               : " + Integer.toString(port)));
+        menu.add(++p, makeSingleBordered("Game Server        : " + rest));
+//        menu.add(++p, makeSingleBordered("Clients Connected     : " + "N/A"));
         return p;
     }
 

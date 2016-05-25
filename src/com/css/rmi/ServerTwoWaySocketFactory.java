@@ -105,7 +105,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
     public Socket createSocket(final String address, final int port) throws IOException {
         final String endpoint = EndpointInfo.getEndpointString(address, port);
 
-        final DataOutputStream requestStream = (DataOutputStream) requestStreams.get(endpoint);
+        final DataOutputStream requestStream = requestStreams.get(endpoint);
 
         if (requestStream == null) {
             return new Socket(address, port);
@@ -114,7 +114,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
         SocketPool requestPool;
 
         synchronized (socketPools) {
-            requestPool = (SocketPool) socketPools.get(endpoint);
+            requestPool = socketPools.get(endpoint);
 
             if (requestPool == null) {
                 requestPool = new SocketPool();
@@ -220,7 +220,7 @@ public class ServerTwoWaySocketFactory extends RMISocketFactory {
                     dis.read(address, 0, 4);
                     final int port = dis.readInt();
 
-                    final SocketPool pool = (SocketPool) socketPools.get(EndpointInfo.getEndpointString(address, port));
+                    final SocketPool pool = socketPools.get(EndpointInfo.getEndpointString(address, port));
                     pool.addSocket(sock);
                 }
 
