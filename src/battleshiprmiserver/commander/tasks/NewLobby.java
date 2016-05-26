@@ -67,7 +67,7 @@ public class NewLobby implements Runnable {
         
         try {
             client.setLobbyID(l.getLobbyid());
-            client.showMessage("Lobby with ID : " + Integer.toString(l.getLobbyid()) + " created.", "Lobby created OK", JOptionPane.INFORMATION_MESSAGE);
+            //client.showMessage("Lobby with ID : " + Integer.toString(l.getLobbyid()) + " created.", "Lobby created OK", JOptionPane.INFORMATION_MESSAGE);
         } catch (final RemoteException ex) {
             Logger.getLogger(NewLobby.class.getName()).log(Level.SEVERE, null, ex);
         }

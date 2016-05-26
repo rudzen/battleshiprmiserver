@@ -55,7 +55,7 @@ public class GetLobbys extends GetAbstract implements Runnable {
         final Gson g = new Gson();
         final HashMap<String, Lobby> fromServer = g.fromJson(s, new HashMapTypeToken().getType());
         final ArrayList<String> names = new ArrayList<>();
-        fromServer.values().parallelStream().forEach(l -> {
+        fromServer.values().stream().forEach(l -> {
             names.add(Integer.toString(l.getLobbyid()) + " : " + l.getDefender().getPlayername());
         });
         names.add("Osten");

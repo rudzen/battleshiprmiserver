@@ -78,9 +78,7 @@ public final class BattleshipJerseyHelper {
             for (final Ship s : ships) {
                 r[posR++] = shipTypeToString(s.getType());
                 r[posR++] = Integer.toString(s.getStartX());
-                System.out.println("Ship parsed StartX : " + r[posR - 1] + " is " + s.getStartX());
                 r[posR++] = Integer.toString(s.getStartY());
-                System.out.println("Ship parsed StartY : " + r[posR - 1] + " is " + s.getStartY());
                 r[posR++] = Boolean.toString(s.isHorizontal());
             }
             return r;
