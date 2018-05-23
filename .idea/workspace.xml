@@ -10,61 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7bb226f-62ad-441c-a932-fde970be9b7d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/Args.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/Args.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMIHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/BattleshipServerRMIHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/PrettyPrint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/PrettyPrint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/FutureBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/FutureBasic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/CreatePlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/CreatePlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/DeployBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/DeployBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/DeployShips.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/DeployShips.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/FireShot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/FireShot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetAbstract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetAbstract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetAllPlayerIDS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetAllPlayerIDS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetFreeLobbys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetFreeLobbys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetLobbys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetLobbys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetMoves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetMoves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetPlayerID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/GetPlayerID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/JoinLobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/JoinLobby.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/LoginTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/LoginTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/NewLobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/NewLobby.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/Wait.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/battleshiprmiserver/commander/tasks/Wait.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dataobjects/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataobjects/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dataobjects/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataobjects/Ship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dataobjects/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataobjects/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dataobjects/Upgrades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataobjects/Upgrades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/exceptions/BattleshipException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/exceptions/BattleshipException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/BattleGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/BattleGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/BattleGameAbstract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/BattleGameAbstract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/GameHelpers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameHelpers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/GameSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/Messages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Messages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaces/IBattleShip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/IBattleShip.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaces/IChatClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/IChatClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaces/IClientRMI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/IClientRMI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interfaces/IClientSOAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interfaces/IClientSOAP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/login/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/login/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/BattleshipJerseyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/BattleshipJerseyClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/BattleshipJerseyHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/BattleshipJerseyHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/DatabaseJerseyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/DatabaseJerseyClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/NewJerseyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/NewJerseyClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/Fire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/Fire.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/JSONShip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/JSONShip.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/Lobby.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/RedirectURL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/RedirectURL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/Ship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/ShipList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/ShipList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rest/entities/ShipResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/rest/entities/ShipResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/token/TokenHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/token/TokenHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utility/Statics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utility/Statics.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
     </list>
     <ignored path="BattleshipRMIServer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -201,6 +147,23 @@
             <path>
               <item name="battleshiprmiserver" type="b2602c69:ProjectViewProjectNode" />
               <item name="battleshiprmiserver" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="battleshiprmiserver" type="b2602c69:ProjectViewProjectNode" />
+              <item name="battleshiprmiserver" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="battleshiprmiserver" type="b2602c69:ProjectViewProjectNode" />
+              <item name="battleshiprmiserver" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="args" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="battleshiprmiserver" type="b2602c69:ProjectViewProjectNode" />
+              <item name="battleshiprmiserver" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="interfaces" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -466,12 +429,20 @@
       <workItem from="1463727816305" duration="652000" />
       <workItem from="1463732685900" duration="488000" />
       <workItem from="1464099455107" duration="421000" />
-      <workItem from="1527076180280" duration="764000" />
+      <workItem from="1527076180280" duration="1602000" />
     </task>
+    <task id="LOCAL-00001" summary="Updated license information in various files.">
+      <created>1527077004798</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1527077004798</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4834000" />
+    <option name="totallyTimeSpent" value="5672000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="104" y="17" width="1936" height="1035" extended-state="0" />
@@ -524,6 +495,12 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="Updated license information in various files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated license information in various files." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -744,13 +721,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/interfaces/IClientRMI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/interfaces/IClientSOAP.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
@@ -886,6 +856,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/manifest.mf">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/interfaces/IClientRMI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="23" />
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">
